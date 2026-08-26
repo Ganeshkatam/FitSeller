@@ -1,26 +1,42 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MailCheck } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/Field";
+import { getHumanErrorMessage } from "@/lib/utils";
 
 export default function ForgotPassword() {
   const { requestPasswordReset } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setError(null);
     setLoading(true);
     try {
       await requestPasswordReset(email.trim());
       setSent(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send reset email");
+      navigate("/error", {
+        state: {
+          category: "auth",
+          code: "reset_failed",
+          account: email.trim(),
+          title: "Unable to Send Reset Link",
+          message: getHumanErrorMessage(
+            err,
+            "We could not send a reset email. Please verify your business email and try again."
+          ),
+          backTo: "/auth/forgot-password",
+          primaryActionLabel: "Try Again",
+          primaryActionUrl: "/auth/forgot-password",
+          secondaryActionLabel: "Sign In",
+          secondaryActionUrl: "/auth/sign-in",
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -64,12 +80,6 @@ export default function ForgotPassword() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-
-        {error && (
-          <p className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-            {error}
-          </p>
-        )}
 
         <Button type="submit" size="lg" loading={loading} className="w-full">
           Send reset link

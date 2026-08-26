@@ -15,8 +15,11 @@ interface AuthState {
   profile: Profile | null;
   seller: Seller | null;
   loading: boolean;
+  authError: string | null;
+  clearAuthError: () => void;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
   updatePassword: (password: string) => Promise<void>;
@@ -34,6 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [seller, setSeller] = useState<Seller | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -59,29 +63,102 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function loadSellerContext(userId: string, email: string) {
     try {
-      const { data: profileData } = await supabase
+      const cleanEmail = email.trim().toLowerCase();
+      const userMeta = session?.user?.user_metadata;
+
+      // 1. Ensure Profile exists
+      const { data: existingProfile } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", userId)
         .maybeSingle();
+
+      let profileData = existingProfile;
+      if (!profileData) {
+        const rawName =
+          userMeta?.full_name ??
+          userMeta?.name ??
+          cleanEmail.split("@")[0] ??
+          "Seller";
+        const { data: newProfile } = await supabase
+          .from("profiles")
+          .upsert(
+            {
+              id: userId,
+              email: cleanEmail,
+              full_name: rawName,
+              display_name: rawName,
+              avatar_url: userMeta?.avatar_url ?? userMeta?.picture ?? null,
+              role: "seller",
+            },
+            { onConflict: "id" }
+          )
+          .select()
+          .maybeSingle();
+        profileData = newProfile ?? null;
+      }
       setProfile(profileData);
 
-      const byProfile = await supabase
+      // 2. Check if a Seller record exists
+      const { data: existingSeller } = await supabase
         .from("sellers")
         .select("*")
-        .eq("profile_id", userId)
+        .or(`profile_id.eq.${userId},business_email.eq.${cleanEmail}`)
         .maybeSingle();
-      if (byProfile.data) {
-        setSeller(byProfile.data);
-        return;
+
+      let sellerRecord = existingSeller;
+
+      // 3. When no seller account exists, CREATE A NEW SELLER ACCOUNT AUTOMATICALLY
+      if (!sellerRecord) {
+        const rawName =
+          profileData?.full_name ??
+          userMeta?.full_name ??
+          userMeta?.name ??
+          cleanEmail.split("@")[0] ??
+          "Seller";
+        const businessName =
+          rawName.charAt(0).toUpperCase() + rawName.slice(1) + " Store";
+
+        const { data: createdSeller, error: createSellerErr } = await supabase
+          .from("sellers")
+          .insert({
+            profile_id: userId,
+            business_email: cleanEmail,
+            business_name: businessName,
+            status: "active",
+          })
+          .select()
+          .maybeSingle();
+
+        if (!createSellerErr && createdSeller) {
+          sellerRecord = createdSeller;
+
+          // Also auto-initialize merchant wallet
+          try {
+            await supabase.from("wallets").insert({
+              seller_id: createdSeller.id,
+              available_balance: 0,
+              pending_balance: 0,
+              on_hold_balance: 0,
+              currency: "INR",
+            });
+          } catch {
+            // Ignore if wallets table is not present
+          }
+        }
+      } else if (!sellerRecord.profile_id && userId) {
+        // Link profile_id if not yet linked
+        const { data: linkedSeller } = await supabase
+          .from("sellers")
+          .update({ profile_id: userId })
+          .eq("id", sellerRecord.id)
+          .select()
+          .maybeSingle();
+        if (linkedSeller) sellerRecord = linkedSeller;
       }
 
-      const byEmail = await supabase
-        .from("sellers")
-        .select("*")
-        .eq("business_email", email)
-        .maybeSingle();
-      setSeller(byEmail.data ?? null);
+      setSeller(sellerRecord);
+      setAuthError(null);
     } catch {
       setProfile(null);
       setSeller(null);
@@ -89,26 +166,88 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function signIn(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
+    setAuthError(null);
+    const cleanEmail = email.trim().toLowerCase();
+
+    // 1. Try standard password login
+    const { data: authData, error: authErr } = await supabase.auth.signInWithPassword({
+      email: cleanEmail,
       password,
     });
-    if (error) throw error;
+
+    if (!authErr && authData.user) {
+      // Login succeeded; loadSellerContext will auto-provision profile/seller if missing
+      return;
+    }
+
+    // 2. If login failed due to invalid credentials, check if we should auto-create the account
+    const errMsg = authErr?.message?.toLowerCase() ?? "";
+    if (errMsg.includes("invalid login credentials") || errMsg.includes("invalid credentials")) {
+      const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
+        email: cleanEmail,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+        },
+      });
+
+      if (!signUpErr && signUpData.user) {
+        // Account was created successfully!
+        if (signUpData.session) {
+          setSession(signUpData.session);
+          return;
+        }
+        // If email confirmation is required:
+        throw new Error("We've created your account! Please check your email to verify and complete sign in.");
+      }
+
+      const signUpMsg = signUpErr?.message?.toLowerCase() ?? "";
+      if (signUpMsg.includes("already registered") || signUpMsg.includes("already exists") || signUpMsg.includes("user already exist")) {
+        // Account exists, meaning the password was incorrect
+        throw new Error("Incorrect password for this account. Please try again or reset your password.");
+      }
+
+      if (signUpErr) {
+        throw signUpErr;
+      }
+    }
+
+    if (authErr) throw authErr;
   }
 
   async function signUp(email: string, password: string) {
-    const { error } = await supabase.auth.signUp({
-      email,
+    setAuthError(null);
+    const cleanEmail = email.trim().toLowerCase();
+
+    const { data, error } = await supabase.auth.signUp({
+      email: cleanEmail,
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/verify-email`,
       },
     });
     if (error) throw error;
+
+    if (data.session) {
+      setSession(data.session);
+    }
   }
 
   async function requestPasswordReset(email: string) {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Verify account exists before initiating password reset
+    const { data: sellerData } = await supabase
+      .from("sellers")
+      .select("id")
+      .eq("business_email", cleanEmail)
+      .maybeSingle();
+
+    if (!sellerData) {
+      throw new Error("No seller account found with this email address.");
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
       redirectTo: `${window.location.origin}/auth/reset-password`,
     });
     if (error) throw error;
@@ -122,7 +261,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function resendVerification(email: string) {
     const { error } = await supabase.auth.resend({
       type: "signup",
-      email,
+      email: email.trim().toLowerCase(),
       options: {
         emailRedirectTo: `${window.location.origin}/auth/verify-email`,
       },
@@ -130,7 +269,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw error;
   }
 
+  async function signInWithGoogle() {
+    setAuthError(null);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/`,
+      },
+    });
+    if (error) throw error;
+  }
+
   async function signOut() {
+    setAuthError(null);
     await supabase.auth.signOut();
   }
 
@@ -142,8 +293,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profile,
         seller,
         loading,
+        authError,
+        clearAuthError: () => setAuthError(null),
         signIn,
         signUp,
+        signInWithGoogle,
         signOut,
         requestPasswordReset,
         updatePassword,

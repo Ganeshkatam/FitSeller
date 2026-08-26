@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/Field";
 import { Spinner } from "@/components/ui/States";
+import { getHumanErrorMessage } from "@/lib/utils";
 
 type Phase = "checking" | "verified" | "pending" | "invalid";
 
@@ -21,7 +22,6 @@ export default function VerifyEmail() {
   );
   const [sending, setSending] = useState(false);
   const [resent, setResent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   // Supabase consumes the confirmation token in the URL automatically;
   // check whether that produced a session.
@@ -42,13 +42,26 @@ export default function VerifyEmail() {
 
   async function handleResend(e: FormEvent) {
     e.preventDefault();
-    setError(null);
     setSending(true);
     try {
       await resendVerification(email.trim());
       setResent(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to resend verification email");
+      navigate("/error", {
+        state: {
+          category: "auth",
+          code: "resend_verification_failed",
+          account: email.trim(),
+          title: "Verification Email Dispatch Failed",
+          message: getHumanErrorMessage(
+            err,
+            "Unable to dispatch verification email. Please verify the email address."
+          ),
+          backTo: "/auth/verify-email",
+          primaryActionLabel: "Try Again",
+          primaryActionUrl: "/auth/verify-email",
+        },
+      });
     } finally {
       setSending(false);
     }
@@ -104,12 +117,6 @@ export default function VerifyEmail() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-
-        {error && (
-          <p className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-            {error}
-          </p>
-        )}
 
         <Button type="submit" loading={sending} disabled={resent} className="w-full">
           {resent ? "Email sent" : "Resend verification email"}

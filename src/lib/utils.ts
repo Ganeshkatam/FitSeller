@@ -59,3 +59,92 @@ export function timeAgo(value: string | null | undefined) {
   if (days < 30) return `${days}d ago`;
   return formatDate(value);
 }
+
+/** Translates raw database/auth/network error messages into clean, polished user notices */
+export function getHumanErrorMessage(
+  err: unknown,
+  fallback = "An unexpected error occurred. Please try again or contact support."
+): string {
+  if (!err) return fallback;
+
+  const raw = typeof err === "string" ? err : err instanceof Error ? err.message : String(err);
+  const msg = raw.toLowerCase();
+
+  // Invalid credentials
+  if (
+    msg.includes("invalid login credentials") ||
+    msg.includes("invalid email or password") ||
+    msg.includes("invalid credentials")
+  ) {
+    return "Incorrect email or password. Please check your credentials and try again.";
+  }
+
+  // Access denied / Unregistered seller
+  if (
+    msg.includes("no seller account") ||
+    msg.includes("not a registered seller") ||
+    msg.includes("access denied") ||
+    msg.includes("restricted") ||
+    msg.includes("pre-registered") ||
+    msg.includes("not authorized") ||
+    msg.includes("unauthorized")
+  ) {
+    return "Access restricted to authorized sellers. If you believe this is an error, please contact your administrator.";
+  }
+
+  // Email unconfirmed
+  if (msg.includes("email not confirmed") || msg.includes("email unverified")) {
+    return "Your business email has not been verified yet. Please check your inbox for the verification link.";
+  }
+
+  // User already registered
+  if (
+    msg.includes("already registered") ||
+    msg.includes("already exists") ||
+    msg.includes("user already exist")
+  ) {
+    return "An account with this email address already exists. Please sign in instead.";
+  }
+
+  // Rate limit / Too many requests
+  if (
+    msg.includes("too many requests") ||
+    msg.includes("rate limit") ||
+    msg.includes("over_email_send_rate_limit")
+  ) {
+    return "Too many attempts. Please wait a few moments before trying again.";
+  }
+
+  // Password requirements
+  if (msg.includes("password should be at least") || msg.includes("password requirements")) {
+    return "Please ensure your password meets all security requirements.";
+  }
+
+  // Passwords don't match
+  if (msg.includes("passwords do not match") || msg.includes("passwords match")) {
+    return "The entered passwords do not match. Please re-enter them carefully.";
+  }
+
+  // Link expired / Invalid token
+  if (
+    msg.includes("token has expired") ||
+    msg.includes("invalid token") ||
+    msg.includes("expired or invalid") ||
+    msg.includes("link expired")
+  ) {
+    return "This security link has expired or is invalid. Please request a new one.";
+  }
+
+  // Network / Connection
+  if (
+    msg.includes("failed to fetch") ||
+    msg.includes("network") ||
+    msg.includes("connection") ||
+    msg.includes("timeout")
+  ) {
+    return "Unable to connect to the server. Please check your network connection and try again.";
+  }
+
+  return fallback;
+}
+

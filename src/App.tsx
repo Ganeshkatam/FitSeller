@@ -10,6 +10,7 @@ const SignUp = lazy(() => import("./pages/auth/SignUp"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const VerifyEmail = lazy(() => import("./pages/auth/VerifyEmail"));
+const GlobalError = lazy(() => import("./pages/GlobalError"));
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Products = lazy(() => import("./pages/Products"));
@@ -31,25 +32,35 @@ function Suspended({ children }: { children: ReactNode }) {
   return <Suspense fallback={<PageLoader />}>{children}</Suspense>;
 }
 
-/** Blocks app routes for unauthenticated visitors */
+/** Blocks app routes for visitors without an active session AND valid seller record */
 function RequireAuth({ children }: { children: ReactNode }) {
-  const { session } = useAuth();
+  const { session, seller, loading } = useAuth();
   const location = useLocation();
-  if (!session) {
+
+  if (loading) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  if (!session || !seller) {
     return <Navigate to="/auth/sign-in" replace state={{ from: location.pathname }} />;
   }
   return <>{children}</>;
 }
 
-/** Redirects authenticated users away from guest-only auth pages
+/** Redirects authenticated sellers away from guest-only auth pages
  *  (reset-password and verify-email must stay reachable mid-session) */
 function GuestOnly({ children }: { children: ReactNode }) {
-  const { session } = useAuth();
+  const { session, seller } = useAuth();
   const location = useLocation();
-  const allowWithSession = ["/auth/reset-password", "/auth/verify-email"].includes(
-    location.pathname
-  );
-  if (session && !allowWithSession) {
+  const allowWithSession = [
+    "/auth/reset-password",
+    "/auth/verify-email",
+  ].includes(location.pathname);
+  if (session && seller && !allowWithSession) {
     return <Navigate to="/" replace />;
   }
   return <>{children}</>;
@@ -68,6 +79,9 @@ export default function App() {
 
   return (
     <Routes>
+      {/* ---- Standalone Global Error Route (accessible by any use case) ---- */}
+      <Route path="/error" element={<Suspended><GlobalError /></Suspended>} />
+
       {/* ---- Auth routes (interactive background layout) ---- */}
       <Route element={<AuthLayout />}>
         <Route path="/auth/sign-in" element={<GuestOnly><Suspended><SignIn /></Suspended></GuestOnly>} />
@@ -103,6 +117,6 @@ export default function App() {
 }
 
 function RootRedirect() {
-  const { session } = useAuth();
-  return <Navigate to={session ? "/" : "/auth/sign-in"} replace />;
+  const { session, seller } = useAuth();
+  return <Navigate to={session && seller ? "/" : "/auth/sign-in"} replace />;
 }

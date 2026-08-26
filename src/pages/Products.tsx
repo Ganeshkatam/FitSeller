@@ -17,7 +17,7 @@ import {
 } from "../components/ui/dialog";
 import { EmptyState, TableSkeleton } from "../components/ui/States";
 import { useToast } from "../components/ui/Toast";
-import { formatPaise, paiseToRupees } from "../lib/utils";
+import { formatPaise, paiseToRupees, getHumanErrorMessage } from "../lib/utils";
 import {
   GENDER_OPTIONS,
   SIZE_OPTIONS,
@@ -367,7 +367,7 @@ function OfferModal({
       toast("success", isNew ? "You're now selling this product" : "Offer updated");
       onSaved();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save offer");
+      setError(getHumanErrorMessage(err, "Failed to save offer. Please check the values and try again."));
     } finally {
       setSaving(false);
     }
@@ -511,8 +511,9 @@ function CreateProductModal({
 
       onSaved(!!sellPrice);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create product");
-      toast("error", err instanceof Error ? err.message : "Failed to create product");
+      const sanitized = getHumanErrorMessage(err, "Failed to create product. Please verify the product details.");
+      setError(sanitized);
+      toast("error", sanitized);
     } finally {
       setSaving(false);
     }

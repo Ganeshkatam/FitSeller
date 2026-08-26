@@ -7,7 +7,6 @@ import {
   ShoppingCart,
   RotateCcw,
   ArrowRight,
-  ScanFace,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -39,7 +38,7 @@ export default function Dashboard() {
       monthStart.setDate(1);
       monthStart.setHours(0, 0, 0, 0);
 
-      const [itemsAll, itemsMonth, offers, returns, tryons] = await Promise.all([
+      const [itemsAll, itemsMonth, offers, returns] = await Promise.all([
         supabase
           .from("order_items")
           .select("total_amount,seller_amount,status")
@@ -59,20 +58,27 @@ export default function Dashboard() {
           .select("id", { count: "exact", head: true })
           .eq("seller_id", sellerId!)
           .in("status", ["return_requested", "returned"]),
-        supabase.from("tryon_sessions").select("id", { count: "exact", head: true }),
       ]);
 
       const sum = (rows: Record<string, number>[] | null, key: string) =>
         (rows ?? []).reduce((acc, r) => acc + Number(r[key] ?? 0), 0);
 
+      const revTotal = sum(itemsAll.data as unknown as Record<string, number>[], "seller_amount");
+      const gmv = sum(itemsAll.data as unknown as Record<string, number>[], "total_amount");
+      const orderCount = itemsAll.data?.length ?? 0;
+      const returnCount = returns.count ?? 0;
+      const returnRatePct = orderCount > 0 ? ((returnCount / orderCount) * 100).toFixed(1) + "%" : "0.0%";
+      const aov = orderCount > 0 ? Math.round(gmv / orderCount) : 0;
+
       return {
-        revenueTotal: sum(itemsAll.data as unknown as Record<string, number>[], "seller_amount"),
-        gmvTotal: sum(itemsAll.data as unknown as Record<string, number>[], "total_amount"),
-        orderCount: itemsAll.data?.length ?? 0,
+        revenueTotal: revTotal,
+        gmvTotal: gmv,
+        orderCount,
         revenueMonth: sum(itemsMonth.data as unknown as Record<string, number>[], "seller_amount"),
         offerCount: offers.count ?? 0,
-        returnCount: returns.count ?? 0,
-        tryonCount: tryons.count ?? 0,
+        returnCount,
+        returnRate: returnRatePct,
+        aov,
       };
     },
   });
@@ -157,15 +163,15 @@ export default function Dashboard() {
           accent="indigo"
         />
         <StatCard
-          label="Active Offers"
+          label="Active Listings"
           value={String(stats?.offerCount ?? 0)}
           icon={<Tag className="size-5" />}
           accent="violet"
         />
         <StatCard
-          label="Try-on Sessions"
-          value={String(stats?.tryonCount ?? 0)}
-          icon={<ScanFace className="size-5" />}
+          label="Return Rate"
+          value={stats?.returnRate ?? "0.0%"}
+          icon={<RotateCcw className="size-5" />}
           accent="amber"
         />
       </div>
