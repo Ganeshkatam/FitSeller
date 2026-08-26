@@ -45,9 +45,29 @@ function RequireAuth({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!session || !seller) {
+  if (!session) {
     return <Navigate to="/auth/sign-in" replace state={{ from: location.pathname }} />;
   }
+
+  if (!seller) {
+    return (
+      <Navigate
+        to="/error"
+        replace
+        state={{
+          category: "account",
+          code: "SELLER_PROFILE_UNLINKED",
+          account: session.user.email,
+          title: "Merchant Store Profile Missing",
+          message: "You are signed in, but no active seller profile was found for this account.",
+          backTo: "/auth/sign-in",
+          primaryActionLabel: "Sign In With Another Account",
+          primaryActionUrl: "/auth/sign-in",
+        }}
+      />
+    );
+  }
+
   return <>{children}</>;
 }
 

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Eye, EyeOff, AlertCircle, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/Field";
@@ -30,9 +30,10 @@ function GoogleIcon({ className = "size-4.5" }: { className?: string }) {
 }
 
 export default function SignIn() {
-  const { signIn, signInWithGoogle, clearAuthError } = useAuth();
+  const { signIn, signInWithGoogle, authError, clearAuthError } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [params] = useSearchParams();
   const from = (location.state as { from?: string } | null)?.from ?? "/";
 
   const [email, setEmail] = useState("");
@@ -40,6 +41,14 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [dismissAlert, setDismissAlert] = useState(false);
+
+  const incomingError =
+    (location.state as { error?: string; message?: string } | null)?.error ||
+    (location.state as { error?: string; message?: string } | null)?.message ||
+    params.get("error") ||
+    params.get("message") ||
+    authError;
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -104,6 +113,24 @@ export default function SignIn() {
       <p className="mt-1 text-sm text-muted-foreground">
         Sign in to manage your fitMirror store
       </p>
+
+      {incomingError && !dismissAlert && (
+        <div className="mt-4 flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-sm text-destructive font-medium">
+          <AlertCircle className="mt-0.5 size-4.5 shrink-0 text-destructive" />
+          <div className="flex-1 leading-snug">{getHumanErrorMessage(incomingError)}</div>
+          <button
+            type="button"
+            onClick={() => {
+              setDismissAlert(true);
+              clearAuthError();
+            }}
+            className="text-destructive/70 hover:text-destructive transition-colors cursor-pointer"
+            aria-label="Dismiss error"
+          >
+            <X className="size-4" />
+          </button>
+        </div>
+      )}
 
       {/* Google OAuth Button */}
       <div className="mt-6">
