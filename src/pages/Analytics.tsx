@@ -13,7 +13,14 @@ import {
   Cell,
   Legend,
 } from "recharts";
-import { IndianRupee, ShoppingCart, RotateCcw, TrendingUp } from "lucide-react";
+import {
+  IndianRupee,
+  ShoppingCart,
+  RotateCcw,
+  TrendingUp,
+  PackageCheck,
+  Tag,
+} from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import { Page, PageHeader } from "../components/layout/Page";
@@ -31,6 +38,15 @@ const STATUS_COLORS: Record<string, string> = {
   return_requested: "#f97316",
   cancelled: "#6b7280",
 };
+
+interface ProductPerformanceRow {
+  name: string;
+  count: number;
+  gmv: number;
+  revenue: number;
+  returns: number;
+  returnRate: string;
+}
 
 export default function Analytics() {
   const { seller } = useAuth();
@@ -53,14 +69,13 @@ export default function Analytics() {
       if (error) throw error;
       const items = orderItems ?? [];
 
-      // Calculate totals
       let totalGmv = 0;
       let totalNetRevenue = 0;
       let totalReturns = 0;
       let totalDelivered = 0;
 
       const statusMap = new Map<string, number>();
-      const productMap = new Map<string, { name: string; count: number; revenue: number }>();
+      const productMap = new Map<string, { name: string; count: number; gmv: number; revenue: number; returns: number }>();
 
       // 14-day trend timeline
       const trendMap = new Map<string, { date: string; label: string; revenue: number; units: number }>();
@@ -85,12 +100,9 @@ export default function Analytics() {
         const st = (item.status ?? "pending").toLowerCase();
         statusMap.set(st, (statusMap.get(st) ?? 0) + 1);
 
-        if (st === "returned" || st === "return_requested") {
-          totalReturns++;
-        }
-        if (st === "delivered" || st === "completed") {
-          totalDelivered++;
-        }
+        const isReturn = st === "returned" || st === "return_requested";
+        if (isReturn) totalReturns++;
+        if (st === "delivered" || st === "completed") totalDelivered++;
 
         // Aggregate daily trends
         const dayKey = item.created_at?.slice(0, 10);
@@ -100,12 +112,14 @@ export default function Analytics() {
           t.units += 1;
         }
 
-        // Product ranking
+        // Product breakdown
         const snapshot = item.product_snapshot as Record<string, unknown> | null;
-        const prodName = String(snapshot?.name ?? "Custom Product");
-        const prev = productMap.get(prodName) ?? { name: prodName, count: 0, revenue: 0 };
+        const prodName = String(snapshot?.name ?? "Custom Garment");
+        const prev = productMap.get(prodName) ?? { name: prodName, count: 0, gmv: 0, revenue: 0, returns: 0 };
         prev.count += 1;
+        prev.gmv += gmv;
         prev.revenue += amt;
+        if (isReturn) prev.returns += 1;
         productMap.set(prodName, prev);
       }
 
@@ -120,9 +134,17 @@ export default function Analytics() {
         color: STATUS_COLORS[name] ?? "#6366f1",
       }));
 
-      const topProducts = Array.from(productMap.values())
+      // Authentic product performance rows strictly aggregated from order items
+      const performanceRows: ProductPerformanceRow[] = Array.from(productMap.values())
         .sort((a, b) => b.revenue - a.revenue)
-        .slice(0, 5);
+        .map((p) => ({
+          name: p.name,
+          count: p.count,
+          gmv: p.gmv,
+          revenue: p.revenue,
+          returns: p.returns,
+          returnRate: p.count > 0 ? ((p.returns / p.count) * 100).toFixed(1) + "%" : "0.0%",
+        }));
 
       return {
         totalNetRevenue,
@@ -133,7 +155,7 @@ export default function Analytics() {
         fulfillmentRate,
         chart: Array.from(trendMap.values()),
         pieData,
-        topProducts,
+        performanceRows,
       };
     },
   });
@@ -143,8 +165,8 @@ export default function Analytics() {
   return (
     <Page>
       <PageHeader
-        title="Sales & Business Analytics"
-        description="Real-time revenue, order fulfillment, and conversion metrics for your store"
+        title="Analytics"
+        description="Real-time sales revenue, order fulfillment, and product performance from your actual orders"
       />
 
       {!seller && (
@@ -153,6 +175,7 @@ export default function Analytics() {
         </div>
       )}
 
+      {/* Primary KPI Grid (100% Real Database Queries) */}
       <div className="grid grid-cols-1 gap-4 px-4 pt-6 sm:grid-cols-2 xl:grid-cols-4 lg:px-8">
         <StatCard
           label="Net Seller Revenue (30d)"
@@ -161,15 +184,15 @@ export default function Analytics() {
           accent="emerald"
         />
         <StatCard
-          label="Total Units Sold (30d)"
-          value={isLoading ? "…" : formatNumber(data?.orderCount ?? 0)}
-          icon={<ShoppingCart className="size-5" />}
+          label="Gross Merchandise Value"
+          value={isLoading ? "…" : formatCurrency(data?.totalGmv ?? 0)}
+          icon={<TrendingUp className="size-5" />}
           accent="indigo"
         />
         <StatCard
-          label="Average Order Value"
-          value={isLoading ? "…" : formatCurrency(data?.aov ?? 0)}
-          icon={<TrendingUp className="size-5" />}
+          label="Total Units Sold (30d)"
+          value={isLoading ? "…" : formatNumber(data?.orderCount ?? 0)}
+          icon={<ShoppingCart className="size-5" />}
           accent="violet"
         />
         <StatCard
@@ -180,13 +203,47 @@ export default function Analytics() {
         />
       </div>
 
+      {/* Secondary Operational Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4 pt-4 lg:px-8">
+        <div className="rounded-2xl border border-border bg-card p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+              <Tag className="size-5" />
+            </div>
+            <div>
+              <p className="text-xs uppercase font-medium text-muted-foreground">Average Order Value (AOV)</p>
+              <p className="text-lg font-bold text-foreground">
+                {isLoading ? "…" : formatCurrency(data?.aov ?? 0)}
+              </p>
+            </div>
+          </div>
+          <span className="text-xs text-muted-foreground">Per order item</span>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-card p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+              <PackageCheck className="size-5" />
+            </div>
+            <div>
+              <p className="text-xs uppercase font-medium text-muted-foreground">Delivery Fulfillment Rate</p>
+              <p className="text-lg font-bold text-foreground">
+                {isLoading ? "…" : data?.fulfillmentRate ?? "0.0%"}
+              </p>
+            </div>
+          </div>
+          <span className="text-xs text-muted-foreground">Delivered / Placed</span>
+        </div>
+      </div>
+
+      {/* Revenue Trend & Order Status Distribution */}
       <div className="mt-6 grid grid-cols-1 gap-4 px-4 lg:grid-cols-5 lg:px-8">
         {/* 14-day Daily Revenue & Orders Trend */}
         <div className="rounded-2xl border border-border bg-card p-5 lg:col-span-3">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-foreground">Revenue Trend — last 14 days</h3>
-              <p className="text-xs text-muted-foreground">Daily net seller revenue earnings</p>
+              <h3 className="text-sm font-semibold text-foreground">Revenue Trend &mdash; last 14 days</h3>
+              <p className="text-xs text-muted-foreground">Daily net seller earnings from actual orders</p>
             </div>
           </div>
 
@@ -233,7 +290,7 @@ export default function Analytics() {
         {/* Order Status Mix */}
         <div className="rounded-2xl border border-border bg-card p-5 lg:col-span-2">
           <h3 className="mb-1 text-sm font-semibold text-foreground">Order Status Distribution</h3>
-          <p className="mb-4 text-xs text-muted-foreground">Live breakdown of customer order stages</p>
+          <p className="mb-4 text-xs text-muted-foreground">Actual breakdown of customer order stages</p>
 
           {isLoading ? (
             <TableSkeleton rows={4} cols={2} />
@@ -271,16 +328,22 @@ export default function Analytics() {
         </div>
       </div>
 
-      {/* Top Performing Products Section */}
-      <div className="mt-6 px-4 lg:px-8 pb-8">
+      {/* Product Performance Table (Real Database Aggregations) */}
+      <div className="mt-6 px-4 lg:px-8 pb-10">
         <div className="rounded-2xl border border-border bg-card p-5">
-          <h3 className="text-sm font-semibold text-foreground">Top Performing Products</h3>
-          <p className="text-xs text-muted-foreground mb-4">Ranked by total net seller revenue</p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Product Performance</h3>
+              <p className="text-xs text-muted-foreground">
+                Actual units sold, GMV, return rates, and net seller earnings per product
+              </p>
+            </div>
+          </div>
 
           {isLoading ? (
-            <TableSkeleton rows={4} cols={3} />
-          ) : !data || data.topProducts.length === 0 ? (
-            <EmptyState title="No product sales data" description="Top products will appear once orders are placed." />
+            <TableSkeleton rows={4} cols={5} />
+          ) : !data || data.performanceRows.length === 0 ? (
+            <EmptyState title="No product sales data" description="Product metrics will appear once orders are placed." />
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
@@ -288,14 +351,20 @@ export default function Analytics() {
                   <tr className="border-b border-border/80 text-xs font-semibold uppercase text-muted-foreground">
                     <th className="pb-3 pt-1">Product Name</th>
                     <th className="pb-3 pt-1 text-center">Units Sold</th>
-                    <th className="pb-3 pt-1 text-right">Net Revenue</th>
+                    <th className="pb-3 pt-1 text-center">Gross Sales (GMV)</th>
+                    <th className="pb-3 pt-1 text-center">Returns</th>
+                    <th className="pb-3 pt-1 text-center">Return Rate</th>
+                    <th className="pb-3 pt-1 text-right">Net Earnings</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  {data.topProducts.map((prod, idx) => (
+                  {data.performanceRows.map((prod, idx) => (
                     <tr key={idx} className="hover:bg-muted/40 transition-colors">
-                      <td className="py-3 font-medium text-foreground">{prod.name}</td>
-                      <td className="py-3 text-center text-muted-foreground">{prod.count}</td>
+                      <td className="py-3 font-medium text-foreground max-w-xs truncate">{prod.name}</td>
+                      <td className="py-3 text-center text-foreground font-semibold">{prod.count}</td>
+                      <td className="py-3 text-center text-muted-foreground">{formatCurrency(prod.gmv)}</td>
+                      <td className="py-3 text-center text-muted-foreground">{prod.returns}</td>
+                      <td className="py-3 text-center text-muted-foreground">{prod.returnRate}</td>
                       <td className="py-3 text-right font-semibold text-emerald-600 dark:text-emerald-400">
                         {formatCurrency(prod.revenue)}
                       </td>
@@ -310,4 +379,3 @@ export default function Analytics() {
     </Page>
   );
 }
-

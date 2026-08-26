@@ -17,11 +17,11 @@ import Header from "./Header";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/products", label: "Catalog & Offers", icon: Package },
   { to: "/orders", label: "Orders", icon: ShoppingCart },
+  { to: "/products", label: "Products", icon: Package },
   { to: "/returns", label: "Returns", icon: RotateCcw },
   { to: "/payouts", label: "Payouts", icon: Wallet },
-  { to: "/analytics", label: "Try-on Analytics", icon: BarChart3 },
+  { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 

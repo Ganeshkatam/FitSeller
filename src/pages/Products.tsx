@@ -119,11 +119,11 @@ export default function Products() {
   return (
     <Page>
       <PageHeader
-        title="Catalog & Offers"
+        title="Products & Offers"
         description={
           seller
-            ? `Selling as ${seller.business_name}`
-            : "Browse the fitMirror catalog and manage your selling offers"
+            ? `Active apparel listings and pricing for ${seller.business_name}`
+            : "Browse catalog and manage your apparel offers"
         }
         action={
           <Button onClick={() => setCreateOpen(true)} disabled={!seller}>
