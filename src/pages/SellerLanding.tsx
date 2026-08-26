@@ -1,4 +1,4 @@
-import { useState, useMemo, type FormEvent } from "react";
+import { useState, useMemo, useEffect, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Shirt,
@@ -29,7 +29,9 @@ import {
   Scissors,
   Building2,
   Factory,
-  Globe,
+  ChevronLeft,
+  ChevronRight,
+  LogIn,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/Field";
@@ -61,7 +63,7 @@ function GoogleIcon({ className = "size-4.5" }: { className?: string }) {
 const FAQS = [
   {
     q: "How fast can I start selling on FitSeller?",
-    a: "You can register your merchant account in under 2 minutes. Once your email is verified, you can immediately add products, configure size variants and custom pricing, and start receiving customer orders right away.",
+    a: "You can register your store account in under 2 minutes. Once your email is verified, you can immediately add products, configure size variants and custom pricing, and start receiving customer orders right away.",
   },
   {
     q: "When and how do I receive my earnings?",
@@ -80,7 +82,7 @@ const FAQS = [
     a: "Yes. Our catalog management system supports complete size matrices (XS, S, M, L, XL, XXL, 3XL), multi-color variants, custom SKU mapping, and individual stock quantity tracking per size.",
   },
   {
-    q: "How does the virtual 3D try-on benefit me as a merchant?",
+    q: "How does the virtual 3D try-on benefit apparel sales?",
     a: "Buyers on the fitMirror app visualize how garments drape on their exact 3D avatar before buying. This builds buyer confidence, dramatically increases checkout conversion, and reduces sizing-related returns by up to 68%.",
   },
 ];
@@ -158,7 +160,46 @@ const COMPARISON_ROWS = [
   {
     feature: "Return Dispute Protection",
     fitseller: "Fair Automated Inspection Shield",
-    legacy: "Heavy Penalties on Merchants",
+    legacy: "Heavy Penalties on Brands",
+  },
+];
+
+const ANNOUNCEMENTS = [
+  {
+    id: 1,
+    tag: "0% Setup Fee",
+    accent: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+    text: "Zero catalog listing charges & transparent 8% commission vs 35% on traditional marketplaces.",
+    linkText: "Calculate Margin",
+    linkUrl: "#calculator",
+    icon: IndianRupee,
+  },
+  {
+    id: 2,
+    tag: "Daily IMPS Clearing",
+    accent: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
+    text: "Guaranteed nightly 11:30 PM direct bank deposits for all delivered customer orders.",
+    linkText: "View Settlement Flow",
+    linkUrl: "#interactive-tour",
+    icon: CreditCard,
+  },
+  {
+    id: 3,
+    tag: "Pan-India Logistics",
+    accent: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+    text: "1-Click automated BlueDart, Delhivery & Xpressbees doorstep courier collection across 28,000+ pincodes.",
+    linkText: "Explore Dispatch",
+    linkUrl: "#superpowers",
+    icon: Truck,
+  },
+  {
+    id: 4,
+    tag: "3D Fit Technology",
+    accent: "bg-pink-500/20 text-pink-300 border-pink-500/30",
+    text: "fitMirror virtual try-on avatars reduce customer sizing uncertainty and cut return rates by 68%.",
+    linkText: "See 3D Demo",
+    linkUrl: "#interactive-tour",
+    icon: Shirt,
   },
 ];
 
@@ -168,6 +209,19 @@ export default function SellerLanding() {
   const navigate = useNavigate();
   const [fastEmail, setFastEmail] = useState("");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Announcement Banner State
+  const [activeBannerIdx, setActiveBannerIdx] = useState(0);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [bannerPaused, setBannerPaused] = useState(false);
+
+  useEffect(() => {
+    if (bannerDismissed || bannerPaused) return;
+    const timer = setInterval(() => {
+      setActiveBannerIdx((prev) => (prev + 1) % ANNOUNCEMENTS.length);
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [bannerDismissed, bannerPaused]);
 
   // Header Interactive State
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -218,36 +272,106 @@ export default function SellerLanding() {
     [demoStocks]
   );
 
+  const currentBanner = ANNOUNCEMENTS[activeBannerIdx];
+  const BannerIcon = currentBanner.icon;
+
   return (
     <div className="min-h-screen w-full bg-background text-foreground selection:bg-indigo-500/20 font-sans">
       {/* ============================================================ */}
-      {/* 1. FULL-WIDTH TOP MICRO TRUST STRIP */}
+      {/* 1. DYNAMIC LUXURY ANNOUNCEMENT BANNER CAROUSEL */}
       {/* ============================================================ */}
-      <div className="w-full border-b border-border/40 bg-zinc-950 text-zinc-300 text-[11px] font-medium py-2 px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
-        <div className="w-full flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-zinc-400">
-              <Globe className="size-3.5 text-indigo-400" />
-              <span>Pan-India Fashion Commerce &bull; 28,000+ Pin Codes Served</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-400 border border-emerald-500/20">
-              <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Logistics & Escrow Payouts Operational</span>
-            </span>
-          </div>
+      {!bannerDismissed && (
+        <div
+          onMouseEnter={() => setBannerPaused(true)}
+          onMouseLeave={() => setBannerPaused(false)}
+          className="relative w-full border-b border-indigo-500/30 bg-gradient-to-r from-slate-950 via-indigo-950/90 to-purple-950 text-white text-xs font-medium py-2.5 px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 transition-all overflow-hidden"
+        >
+          {/* Subtle light shimmer overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
 
-          <div className="flex items-center gap-5 text-zinc-400">
-            <span className="hidden md:inline-flex items-center gap-1.5">
-              <ShieldCheck className="size-3.5 text-indigo-400" />
-              <span>RBI-Compliant Escrow Banking</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 text-zinc-200 font-semibold">
-              <IndianRupee className="size-3.5 text-emerald-400" />
-              <span>Flat 8% Commission &bull; ₹0 Setup Fee</span>
-            </span>
+          <div className="w-full flex items-center justify-between gap-4">
+            {/* Left Tag Indicator */}
+            <div className="hidden md:flex items-center gap-2 shrink-0">
+              <span className="flex size-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-indigo-300">
+                LIVE OPERATIONS
+              </span>
+            </div>
+
+            {/* Center Carousel Active Message */}
+            <div className="flex-1 flex items-center justify-center gap-2.5 sm:gap-3 text-center truncate">
+              <span
+                className={`hidden sm:inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider border ${currentBanner.accent} shrink-0`}
+              >
+                <BannerIcon className="size-3" />
+                <span>{currentBanner.tag}</span>
+              </span>
+
+              <span className="text-zinc-200 text-xs truncate">
+                {currentBanner.text}
+              </span>
+
+              <a
+                href={currentBanner.linkUrl}
+                className="hidden lg:inline-flex items-center gap-1 text-xs font-bold text-white underline underline-offset-4 hover:text-indigo-300 transition-colors shrink-0 ml-1"
+              >
+                <span>{currentBanner.linkText}</span>
+                <ArrowRight className="size-3" />
+              </a>
+            </div>
+
+            {/* Right Controls & Dismiss */}
+            <div className="flex items-center gap-2 shrink-0">
+              {/* Pagination Dots */}
+              <div className="hidden sm:flex items-center gap-1 mr-1">
+                {ANNOUNCEMENTS.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveBannerIdx(idx)}
+                    className={`size-1.5 rounded-full transition-all ${
+                      activeBannerIdx === idx ? "w-3 bg-white" : "bg-white/30 hover:bg-white/60"
+                    }`}
+                    aria-label={`Go to announcement ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* Prev Button */}
+              <button
+                onClick={() =>
+                  setActiveBannerIdx(
+                    (prev) => (prev - 1 + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length
+                  )
+                }
+                className="size-6 flex items-center justify-center rounded-md bg-white/10 hover:bg-white/20 text-white transition"
+                aria-label="Previous announcement"
+              >
+                <ChevronLeft className="size-3.5" />
+              </button>
+
+              {/* Next Button */}
+              <button
+                onClick={() =>
+                  setActiveBannerIdx((prev) => (prev + 1) % ANNOUNCEMENTS.length)
+                }
+                className="size-6 flex items-center justify-center rounded-md bg-white/10 hover:bg-white/20 text-white transition"
+                aria-label="Next announcement"
+              >
+                <ChevronRight className="size-3.5" />
+              </button>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setBannerDismissed(true)}
+                className="size-6 flex items-center justify-center rounded-md bg-white/10 hover:bg-rose-500/30 text-white/80 hover:text-white transition ml-1"
+                aria-label="Dismiss announcement"
+              >
+                <X className="size-3.5" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* ============================================================ */}
       {/* 2. FULL-WIDTH LUXURY FLOATING HEADER */}
@@ -277,7 +401,7 @@ export default function SellerLanding() {
 
           {/* Desktop Navigation Links with Mega-Flyouts */}
           <nav className="hidden lg:flex items-center gap-2 xl:gap-3 text-xs font-semibold text-muted-foreground">
-            {/* Merchant Types Mega-Menu Trigger */}
+            {/* Brand Solutions Mega-Menu Trigger */}
             <div
               className="relative"
               onMouseEnter={() => setActiveDropdown("solutions")}
@@ -290,7 +414,7 @@ export default function SellerLanding() {
                     : "hover:text-foreground hover:bg-accent/60"
                 }`}
               >
-                <span>Merchant Types</span>
+                <span>Brand Solutions</span>
                 <ChevronDown
                   className={`size-3.5 transition-transform duration-200 ${
                     activeDropdown === "solutions" ? "rotate-180 text-indigo-600" : ""
@@ -500,14 +624,17 @@ export default function SellerLanding() {
           </nav>
 
           {/* Header Right Actions */}
-          <div className="flex items-center gap-3.5 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               asChild
-              className="hidden sm:inline-flex text-xs font-semibold rounded-xl text-foreground hover:bg-accent px-4"
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold rounded-xl border-border/90 bg-card/80 hover:bg-accent hover:border-border text-foreground px-4.5 h-10 shadow-sm transition-all"
             >
-              <Link to="/auth/sign-in">Merchant Sign In</Link>
+              <Link to="/auth/sign-in">
+                <LogIn className="size-3.5 text-indigo-600 dark:text-indigo-400" />
+                <span>Sign In</span>
+              </Link>
             </Button>
 
             <Button
@@ -586,7 +713,7 @@ export default function SellerLanding() {
                 className="w-full justify-center rounded-xl text-xs font-semibold h-11"
                 asChild
               >
-                <Link to="/auth/sign-in">Merchant Sign In</Link>
+                <Link to="/auth/sign-in">Sign In</Link>
               </Button>
 
               <Button
@@ -604,32 +731,32 @@ export default function SellerLanding() {
       {/* 3. FULL VIEWPORT IMMERSIVE HERO SECTION */}
       {/* ============================================================ */}
       <section className="relative w-full overflow-hidden min-h-[calc(100vh-5rem)] flex items-center py-12 lg:py-0 border-b border-border/50">
-        {/* Ambient background glows */}
-        <div className="absolute top-1/4 left-1/3 -translate-x-1/2 size-[700px] rounded-full bg-indigo-500/10 blur-[150px] pointer-events-none -z-10" />
-        <div className="absolute top-1/2 right-1/4 size-[550px] rounded-full bg-purple-500/10 blur-[140px] pointer-events-none -z-10" />
+        {/* Ambient background glow orbs */}
+        <div className="absolute top-1/4 left-1/4 -translate-x-1/2 size-[650px] rounded-full bg-indigo-500/10 blur-[160px] pointer-events-none -z-10" />
+        <div className="absolute bottom-1/4 right-1/4 size-[550px] rounded-full bg-purple-500/10 blur-[150px] pointer-events-none -z-10" />
 
-        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 lg:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 xl:gap-16 items-center">
-            {/* Hero Left Content */}
+        <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 lg:py-14">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 xl:gap-16 items-center">
+            {/* Hero Left: Editorial Positioning & Onboarding */}
             <div className="lg:col-span-6 xl:col-span-6 space-y-7 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
                 <Sparkles className="size-4" />
-                <span>Premier Apparel Merchant Operating System</span>
+                <span>Apparel Commerce OS &bull; 0% Listing Fee &bull; fitMirror Connected</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[4rem] font-extrabold tracking-tight text-foreground leading-[1.06]">
-                Scale your fashion brand across{" "}
+              <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-[3.85rem] font-extrabold tracking-tight text-foreground leading-[1.08]">
+                The high-margin operating system for{" "}
                 <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  millions of apparel shoppers.
+                  modern fashion brands.
                 </span>
               </h1>
 
-              <p className="max-w-2xl mx-auto lg:mx-0 text-base sm:text-lg lg:text-xl leading-relaxed text-muted-foreground">
-                0% upfront listing fees, unified multi-size variant tracking (XS&ndash;3XL), 1-click nationwide courier dispatch, and guaranteed daily IMPS bank settlements.
+              <p className="max-w-2xl mx-auto lg:mx-0 text-base sm:text-lg lg:text-xl leading-relaxed text-muted-foreground font-normal">
+                Scale your label with 0% upfront catalog fees, unified multi-size inventory (XS&ndash;3XL), 1-click nationwide courier collection, and daily IMPS bank settlements.
               </p>
 
-              {/* Fast Email Onboarding */}
-              <div className="pt-2 max-w-lg mx-auto lg:mx-0 space-y-3">
+              {/* Fast Onboarding Input Block */}
+              <div className="pt-2 max-w-lg mx-auto lg:mx-0 space-y-3.5">
                 <form onSubmit={handleFastSignUp} className="flex flex-col sm:flex-row gap-2.5">
                   <Input
                     type="email"
@@ -647,25 +774,26 @@ export default function SellerLanding() {
                   </Button>
                 </form>
 
+                {/* Trust Signal Badges */}
                 <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-xs text-muted-foreground pt-1">
-                  <span className="flex items-center gap-1.5 font-medium">
-                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> 0% Listing Fee
+                  <span className="flex items-center gap-1.5 font-semibold">
+                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> Flat 8% Commission
                   </span>
-                  <span className="flex items-center gap-1.5 font-medium">
-                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> Daily IMPS Bank Payouts
+                  <span className="flex items-center gap-1.5 font-semibold">
+                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> Daily IMPS Bank Clearing
                   </span>
-                  <span className="flex items-center gap-1.5 font-medium">
+                  <span className="flex items-center gap-1.5 font-semibold">
                     <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> 2-Min Setup
                   </span>
                 </div>
               </div>
 
               {/* Instant Google Action */}
-              <div className="pt-1 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+              <div className="pt-1 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="rounded-xl border-border bg-card/90 hover:bg-accent text-xs font-semibold h-10 px-4"
+                  className="rounded-xl border-border bg-card hover:bg-accent text-xs font-bold h-10 px-4.5 shadow-sm"
                   asChild
                 >
                   <Link to="/auth/sign-in">
@@ -673,11 +801,11 @@ export default function SellerLanding() {
                     <span>Quick Sign Up with Google</span>
                   </Link>
                 </Button>
-                <span className="text-xs text-muted-foreground">or connect an existing store account</span>
+                <span className="text-xs text-muted-foreground font-medium">or connect an existing store account</span>
               </div>
             </div>
 
-            {/* Hero Right Visual: High-Fashion Studio + Floating Live UI Cards */}
+            {/* Hero Right Visual: High-Fashion Studio + Layered Live UI Cards */}
             <div className="lg:col-span-6 xl:col-span-6 relative">
               <div className="relative mx-auto max-w-xl lg:max-w-none">
                 {/* Main Luxury Fashion Studio Image */}
@@ -685,48 +813,65 @@ export default function SellerLanding() {
                   <img
                     src="/images/landing/fashion-studio.jpg"
                     alt="Fashion designers reviewing luxury apparel collections"
-                    className="h-[460px] sm:h-[520px] lg:h-[560px] w-full object-cover object-top filter brightness-[0.96] contrast-[1.04]"
+                    className="h-[460px] sm:h-[520px] lg:h-[550px] w-full object-cover object-top filter brightness-[0.96] contrast-[1.04]"
                   />
-                  {/* Subtle inner gradient shadow */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                  {/* Subtle gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
-                  {/* On-image status bar */}
-                  <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between rounded-2xl border border-white/15 bg-black/65 p-4 backdrop-blur-md text-white">
-                    <div>
-                      <p className="text-sm font-bold">Active Collection &bull; SS 2026</p>
-                      <p className="text-xs text-white/70">Aura Linen Studio, Mumbai</p>
+                  {/* Bottom Image Showcase Overlay Card */}
+                  <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/20 bg-black/75 p-4.5 backdrop-blur-xl text-white space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-bold tracking-tight">Structured Khadi Linen Blazer</p>
+                        <p className="text-[11px] text-white/70">Aura Studio &bull; SKU #KB-9482-L</p>
+                      </div>
+                      <div className="flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/30">
+                        <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span>Live on fitMirror</span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-semibold text-emerald-400 border border-emerald-500/30">
-                      <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>Live on fitMirror</span>
+
+                    <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-2.5 text-center">
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-white/60">Retail Price</p>
+                        <p className="text-sm font-extrabold text-white">₹3,499</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-white/60">Platform Fee (8%)</p>
+                        <p className="text-sm font-extrabold text-indigo-300">-₹280</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase font-bold text-emerald-400">Net To Bank</p>
+                        <p className="text-sm font-extrabold text-emerald-400">₹3,219 (92%)</p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Floating Widget 1: Daily Settled Revenue */}
-                <div className="absolute -top-6 -left-6 sm:-left-8 rounded-2xl border border-border bg-card/95 p-4 sm:p-5 shadow-2xl backdrop-blur-2xl max-w-[230px] hidden sm:block animate-float">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+                <div className="absolute -top-6 -left-6 sm:-left-8 rounded-2xl border border-border bg-card/95 p-4 sm:p-5 shadow-2xl backdrop-blur-2xl max-w-[240px] hidden sm:block">
+                  <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
                     <IndianRupee className="size-4 text-emerald-600" />
-                    <span>Daily Net Payout</span>
+                    <span>Daily Bank Payout</span>
                   </div>
                   <p className="mt-1 text-2xl font-black text-foreground">₹1,84,320</p>
                   <p className="text-xs text-emerald-600 font-bold flex items-center gap-1 mt-1">
-                    <TrendingUp className="size-3.5" /> Transferred via IMPS
+                    <TrendingUp className="size-3.5" /> Cleared via IMPS
                   </p>
                 </div>
 
                 {/* Floating Widget 2: Courier Dispatch Status */}
-                <div className="absolute -bottom-6 -right-6 sm:-right-8 rounded-2xl border border-border bg-card/95 p-4 sm:p-5 shadow-2xl backdrop-blur-2xl max-w-[240px] hidden sm:block">
-                  <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground mb-1.5">
+                <div className="absolute -bottom-6 -right-6 sm:-right-8 rounded-2xl border border-border bg-card/95 p-4 sm:p-5 shadow-2xl backdrop-blur-2xl max-w-[250px] hidden sm:block">
+                  <div className="flex items-center justify-between text-xs font-bold text-muted-foreground mb-1.5">
                     <span className="flex items-center gap-1.5 text-foreground">
                       <Truck className="size-4 text-indigo-600" /> Courier Pickup
                     </span>
-                    <span className="text-[10px] rounded-md bg-indigo-500/10 text-indigo-600 px-2 py-0.5 font-extrabold">
+                    <span className="text-[10px] rounded-md bg-indigo-500/10 text-indigo-600 px-2 py-0.5 font-extrabold border border-indigo-500/20">
                       READY
                     </span>
                   </div>
-                  <p className="text-sm font-bold text-foreground">48 Parcels Picked Up</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">BlueDart &bull; Delhivery Air Express</p>
+                  <p className="text-sm font-bold text-foreground">48 Parcels Dispatched</p>
+                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">BlueDart &bull; Delhivery Air Express</p>
                 </div>
               </div>
             </div>
@@ -1045,7 +1190,7 @@ export default function SellerLanding() {
           <div className="text-center max-w-4xl mx-auto space-y-4 mb-16">
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
               <Zap className="size-3.5" />
-              <span>The Merchant Advantage</span>
+              <span>Core Brand Superpowers</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
               Engineered exclusively for fashion apparel commerce.
@@ -1283,7 +1428,7 @@ export default function SellerLanding() {
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="text-center max-w-4xl mx-auto space-y-4 mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-              Built for merchants, not predatory commissions.
+              Built for fashion labels, not predatory marketplace cuts.
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg">
               See why independent fashion labels, boutiques, and apparel designers are migrating their inventory to FitSeller.
@@ -1296,7 +1441,7 @@ export default function SellerLanding() {
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
                     <th className="px-8 py-5 font-bold">Platform Dimension</th>
-                    <th className="px-8 py-5 font-extrabold text-indigo-600 bg-indigo-500/5">FitSeller Merchant</th>
+                    <th className="px-8 py-5 font-extrabold text-indigo-600 bg-indigo-500/5">FitSeller Platform</th>
                     <th className="px-8 py-5 font-semibold">Legacy Marketplaces</th>
                   </tr>
                 </thead>
@@ -1337,7 +1482,7 @@ export default function SellerLanding() {
               <div className="flex size-14 items-center justify-center rounded-2xl bg-indigo-600 font-extrabold text-white text-xl shadow-lg shadow-indigo-600/30">
                 1
               </div>
-              <h3 className="text-2xl font-bold text-foreground">Register Merchant Profile</h3>
+              <h3 className="text-2xl font-bold text-foreground">Register Your Brand</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Provide your business email and brand name in under 2 minutes. Get instant access to your seller portal.
               </p>
@@ -1374,7 +1519,7 @@ export default function SellerLanding() {
           <div className="text-center max-w-4xl mx-auto space-y-4 mb-16">
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
               <Users className="size-3.5" />
-              <span>Merchant Voices</span>
+              <span>Brand Stories</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
               Loved by independent designers and fashion houses.
@@ -1468,7 +1613,7 @@ export default function SellerLanding() {
           </div>
 
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-            Join 1,400+ fashion merchants growing on FitSeller today.
+            Join 1,400+ fashion labels growing on FitSeller today.
           </h2>
 
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-zinc-300 leading-relaxed font-medium">
@@ -1518,12 +1663,12 @@ export default function SellerLanding() {
               <div className="flex size-9 items-center justify-center rounded-xl bg-indigo-600 text-white font-black text-base">
                 F
               </div>
-              <span className="text-lg font-black text-foreground tracking-tight">FitSeller Merchant Platform</span>
+              <span className="text-lg font-black text-foreground tracking-tight">FitSeller Partner Hub</span>
             </div>
 
             <div className="flex flex-wrap items-center gap-6 sm:gap-8 font-semibold">
               <Link to="/auth/sign-in" className="hover:text-foreground transition-colors">
-                Merchant Sign In
+                Sign In
               </Link>
               <Link to="/auth/sign-up" className="hover:text-foreground transition-colors">
                 Register Store
@@ -1538,7 +1683,7 @@ export default function SellerLanding() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium">
-            <p>&copy; {new Date().getFullYear()} FitSeller Inc. Engineered exclusively for Indian fashion merchants.</p>
+            <p>&copy; {new Date().getFullYear()} FitSeller Inc. Engineered exclusively for Indian fashion labels & designers.</p>
             <div className="flex items-center gap-2 text-emerald-600 font-semibold">
               <Lock className="size-3.5" />
               <span>TLS 256-bit Encrypted Commerce Engine</span>
