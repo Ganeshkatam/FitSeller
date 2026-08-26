@@ -1,307 +1,276 @@
 # FitSeller
 
-**FitSeller** is a seller-facing ecommerce dashboard for managing a fashion/ecommerce seller business. The current application is a client-rendered React + TypeScript dashboard backed directly by Supabase.
+FitSeller is a specialized, high-performance ecommerce platform and seller dashboard designed specifically for fashion, apparel, and clothing brands. Built with React 19, Vite, TypeScript, and Supabase, it provides end-to-end tooling for managing products, tracking customer orders, automated return workflows, nightly payout settlements, and sales analytics.
 
-> **Project status:** early-stage application. The repository currently contains the frontend application and Supabase client integration; database migrations/schema and automated CI are not included in the current repository tree.
+---
 
 ## Overview
 
-FitSeller provides an authenticated seller workspace for:
+FitSeller delivers an end-to-end operating system for fashion merchants:
 
-- Dashboard and seller performance metrics
-- Product management
-- Order management
-- Returns
-- Payouts
-- Analytics
-- Seller settings
-- Offer-related functionality
-- Try-on session metrics
+- **Public Seller Landing & Growth**: Interactive revenue calculator, platform capability showcase, feature roadmaps, and seller onboarding entry points.
+- **Authentication Suite**: Streamlined, secure authentication featuring email/password sign-in, Google OAuth, transactional email verification, and password recovery.
+- **Multi-Step Onboarding Wizard**: A strictly sequential 6-step registration flow backed by individual routes, persistent drafts, and database-enforced user verification.
+- **Merchant Operations Dashboard**: Real-time sales metrics, GMV tracking, inventory cataloging, order fulfillment, return management, and nightly bank settlements.
 
-The application uses Supabase Auth for identity and Supabase/Postgres for application data. React Query manages server-state fetching/caching, while React Router handles the authenticated application routes.
+---
 
-## Technology stack
+## Technology Stack
 
-| Area | Technology |
+| Layer | Technology |
 | --- | --- |
+| Frontend Framework | React 19 |
 | Language | TypeScript 5.8 |
-| UI | React 19 |
-| Build tool | Vite 6 |
+| Build Tool | Vite 6 |
 | Routing | React Router 7 |
-| Server state | TanStack React Query 5 |
-| Backend/data | Supabase JS 2 / PostgreSQL |
-| Authentication | Supabase Auth |
-| Charts | Recharts 2 |
+| Server State Management | TanStack React Query 5 |
+| Database & Authentication | Supabase JS 2 / PostgreSQL |
+| Charting & Visualization | Recharts 2 |
 | Styling | Tailwind CSS 4 |
-| UI primitives | Radix UI / shadcn-style components |
+| UI Primitives | Radix UI / Accessible component primitives |
 | Icons | Lucide React |
-| Notifications | Sonner |
-| Font | Geist variable font |
+| Notifications | Sonner / Toast |
+| Typography | Geist Variable Font |
 
-Dependency versions are defined in `package.json` and should be treated as the source of truth.
+---
 
-## Application architecture
+## Architecture and Data Integrity
 
 ```text
-Browser
+Browser Client (React 19 + Vite 6)
   │
-  ├── React 19 + Vite
-  │     ├── App routing
-  │     ├── Lazy-loaded pages
-  │     ├── Shared UI components
-  │     └── AuthContext
+  ├── React Router 7 (Nested & Guarded Routes)
+  │     ├── Public Landing: /, /landing, /welcome
+  │     ├── Auth Suite: /auth/sign-in, /auth/sign-up, /auth/reset-password, /auth/verify-email
+  │     ├── Onboarding: /onboarding/:slug (account, gst, business, shipping, pickup-address, bank)
+  │     └── Seller Workspace: /dashboard, /products, /orders, /returns, /payouts, /analytics, /settings
   │
-  ├── TanStack React Query
-  │     └── Server-state caching/fetching
+  ├── State & Context Layer
+  │     ├── AuthContext: User session, Supabase auth sync, refreshAuth()
+  │     ├── OnboardingContext: Sequential step validation, draft persistence (sessionStorage)
+  │     └── React Query: Server-state caching and invalidation
   │
-  └── Supabase JS
-        ├── Supabase Auth
-        └── PostgreSQL / RLS
+  └── Supabase Backend
+        ├── Supabase Auth (auth.users)
+        │     └── Trigger: handle_new_user() -> public.profiles
+        ├── public.profiles (ON DELETE CASCADE from auth.users)
+        ├── public.sellers (Strict BEFORE INSERT check: trg_check_seller_valid_user)
+        │     └── Trigger: handle_new_seller() -> public.wallets
+        ├── public.wallets (ON DELETE CASCADE from public.sellers)
+        └── PostgreSQL Row Level Security (RLS)
 ```
 
-The current `App.tsx` lazy-loads the Login, Dashboard, Products, Orders, Returns, Payouts, Analytics, and Settings pages and gates the application on the Supabase session.
+### Relational Integrity and Orphan Prevention
 
-## Repository structure
+A seller account cannot exist in isolation. The application enforces a strict hierarchical relational model at both the application and database levels:
+
+```text
+auth.users (id)
+      │
+      ▼  ON DELETE CASCADE
+public.profiles (id)
+      │
+      ▼  ON DELETE CASCADE (fk_sellers_profile)
+public.sellers (profile_id)
+      │
+      ▼  ON DELETE CASCADE (fk_wallets_seller)
+public.wallets (seller_id)
+```
+
+1. **Atomic Profile Creation**: When a user registers via email or Google OAuth, a PostgreSQL trigger (`handle_new_user`) atomically creates and populates `public.profiles`. Auth transactions abort if profile initialization fails.
+2. **Database Pre-Insert Guard (`trg_check_seller_valid_user`)**: A `BEFORE INSERT` trigger on `public.sellers` queries `auth.users` and `public.profiles`. If a valid user account does not exist, the insert is rejected with an exception.
+3. **No Silent Account Creation**: Neither sellers nor wallets are created automatically upon user sign-up. Seller records are created exclusively when the merchant completes onboarding.
+4. **Database Wallet Initialization**: When a seller record is created, the PostgreSQL trigger `on_seller_created` initializes the associated record in `public.wallets`.
+5. **Cascade Deletions**: Deleting a user cleanly cascades to delete profiles, sellers, wallets, and analytics events without leaving orphaned data.
+
+---
+
+## Application Routes
+
+### Public & Authentication Routes
+
+| Route | Description | Access |
+| --- | --- | --- |
+| `/` | Seller marketing landing page | Public |
+| `/landing`, `/welcome` | Landing page aliases | Public |
+| `/auth/sign-in` | Seller sign-in with email or Google | Guest only |
+| `/auth/sign-up` | New user registration (40/60 split, live password rules) | Guest only |
+| `/auth/forgot-password` | Password reset request | Guest only |
+| `/auth/reset-password` | Update password via recovery token | Mid-session / Recovery |
+| `/auth/verify-email` | Email confirmation screen | Mid-session |
+
+### 6-Step Seller Onboarding Wizard
+
+Each step of onboarding resides on its own semantic URL without step numbers. A strict sequential barrier prevents users from jumping ahead until previous steps are completed:
+
+| Route | Step | Key Fields & Validations | Page Component |
+| --- | --- | --- | --- |
+| `/onboarding` | Entry | Redirects to `/onboarding/account` | Layout coordinator |
+| `/onboarding/account` | Step 1 | User account authentication, email, mobile, full name | `Step1AccountPage.tsx` |
+| `/onboarding/gst` | Step 2 | 15-character GSTIN, auto PAN extraction, exemption toggle | `Step2GstPage.tsx` |
+| `/onboarding/business` | Step 3 | Seller display name, clothing brand name, primary apparel category | `Step3BusinessPage.tsx` |
+| `/onboarding/shipping` | Step 4 | Doorstep pickup vs self-ship, preferred couriers, dispatch window | `Step4ShippingPage.tsx` |
+| `/onboarding/pickup-address` | Step 5 | Warehouse address, 6-digit PIN code auto-fill for city/state | `Step5PickupAddressPage.tsx` |
+| `/onboarding/bank` | Step 6 | Account holder name, account matching check, 11-digit IFSC code | `Step6BankPage.tsx` |
+
+**Progression Rules:**
+- Attempting to access any subsequent route directly without completing previous steps automatically redirects the user to their earliest incomplete step.
+- The interactive stepper disables and locks future steps until the current step is completed.
+- Draft inputs are automatically persisted in `sessionStorage` to preserve progress across refreshes and browser navigation.
+
+### Authenticated Seller Workspace
+
+Protected by `RequireAuth`. Visitors without an active session are directed to `/auth/sign-in`. Users with an authenticated profile who have not completed onboarding are directed to `/onboarding/account`.
+
+| Route | Description | Access |
+| --- | --- | --- |
+| `/dashboard` | Executive overview, sales metrics, and performance charts | Authenticated Seller |
+| `/products` | Catalog listing, stock levels, variants, and offer management | Authenticated Seller |
+| `/orders` | Order processing, dispatch status, tracking numbers | Authenticated Seller |
+| `/returns` | Return authorizations, inspection status, reverse logistics | Authenticated Seller |
+| `/payouts` | Daily settlement history, bank deposits, statement exports | Authenticated Seller |
+| `/analytics` | Conversion rates, top apparel categories, revenue trends | Authenticated Seller |
+| `/settings` | Store profile, brand details, shipping, and notification preferences | Authenticated Seller |
+
+---
+
+## Project Structure
 
 ```text
 .
-├── .env.example
-├── .gitignore
-├── components.json
 ├── index.html
 ├── package.json
 ├── package-lock.json
-├── LICENSE
+├── tailwind.config.ts
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+├── vite.config.ts
 ├── README.md
 └── src/
     ├── App.tsx
     ├── main.tsx
     ├── index.css
     ├── components/
-    │   ├── dashboard/
     │   ├── layout/
+    │   │   ├── AppHeader.tsx
+    │   │   ├── AppLayout.tsx
+    │   │   └── AppSidebar.tsx
+    │   ├── onboarding/
+    │   │   ├── OnboardingHeader.tsx
+    │   │   ├── OnboardingLayout.tsx
+    │   │   ├── OnboardingNavigation.tsx
+    │   │   ├── OnboardingStepper.tsx
+    │   │   ├── OnboardingSuccess.tsx
+    │   │   ├── OnboardingTypes.ts
+    │   │   ├── Step1Account.tsx
+    │   │   ├── Step2Gst.tsx
+    │   │   ├── Step3Business.tsx
+    │   │   ├── Step4Shipping.tsx
+    │   │   ├── Step5PickupAddress.tsx
+    │   │   └── Step6Bank.tsx
     │   └── ui/
+    │       ├── Badge.tsx
+    │       ├── button.tsx
+    │       ├── Field.tsx
+    │       ├── modal.tsx
+    │       ├── States.tsx
+    │       ├── table.tsx
+    │       └── Toast.tsx
     ├── contexts/
-    │   └── AuthContext.tsx
+    │   ├── AuthContext.tsx
+    │   └── OnboardingContext.tsx
     ├── lib/
     │   ├── offers.ts
     │   ├── supabase.ts
     │   └── utils.ts
-    └── pages/
-        ├── Analytics.tsx
-        ├── Dashboard.tsx
-        ├── Login.tsx
-        ├── Orders.tsx
-        ├── Payouts.tsx
-        ├── Products.tsx
-        ├── Returns.tsx
-        └── Settings.tsx
+    ├── pages/
+    │   ├── Analytics.tsx
+    │   ├── Dashboard.tsx
+    │   ├── GlobalError.tsx
+    │   ├── Orders.tsx
+    │   ├── Payouts.tsx
+    │   ├── Products.tsx
+    │   ├── Returns.tsx
+    │   ├── SellerLanding.tsx
+    │   ├── Settings.tsx
+    │   ├── auth/
+    │   │   ├── ForgotPassword.tsx
+    │   │   ├── ResetPassword.tsx
+    │   │   ├── SignIn.tsx
+    │   │   ├── SignUp.tsx
+    │   │   └── VerifyEmail.tsx
+    │   └── onboarding/
+    │       ├── Step1AccountPage.tsx
+    │       ├── Step2GstPage.tsx
+    │       ├── Step3BusinessPage.tsx
+    │       ├── Step4ShippingPage.tsx
+    │       ├── Step5PickupAddressPage.tsx
+    │       └── Step6BankPage.tsx
+    └── types/
+        ├── database.ts
+        └── index.ts
 ```
 
-## Features and data flows
+---
 
-### Authentication
+## Getting Started
 
-`AuthContext` maintains the Supabase session, exposes sign-in/sign-up/sign-out operations, and loads the authenticated user's profile and seller context. The Supabase client is configured with persistent sessions and automatic token refresh.
+### Prerequisites
 
-Seller lookup currently attempts `profile_id` first and then falls back to `business_email`. The stable long-term ownership relationship should be `profile_id`; email matching should not be relied upon as an authorization mechanism.
+- Node.js 20 or higher
+- npm 10 or higher
+- A Supabase project with PostgreSQL enabled
 
-### Dashboard
+### Environment Setup
 
-The dashboard currently queries seller-scoped `order_items` for earnings and sales metrics, `product_offers` for active offers, and `order_items` for returns. It also queries `tryon_sessions` for try-on counts. The earnings chart aggregates the previous 14 days in the client.
-
-Current dashboard concepts include:
-
-- Net seller earnings
-- Units sold
-- Active offers
-- Try-on sessions
-- 14-day earnings trend
-- Best sellers by earnings
-- Recent sales
-- Monthly earnings
-- Returns
-- GMV
-
-## Routes
-
-| Route | Screen | Access |
-| --- | --- | --- |
-| `/` | Dashboard | Authenticated |
-| `/products` | Products | Authenticated |
-| `/orders` | Orders | Authenticated |
-| `/returns` | Returns | Authenticated |
-| `/payouts` | Payouts | Authenticated |
-| `/analytics` | Analytics | Authenticated |
-| `/settings` | Settings | Authenticated |
-
-Unauthenticated users are directed to the login experience; unknown authenticated routes redirect to `/`.
-
-## Local development
-
-### Requirements
-
-- Node.js 20+
-- npm
-- A Supabase project
-- Supabase Auth configured for email/password authentication
-
-### Environment
-
-Copy `.env.example` to `.env` and configure:
+Create a `.env` file in the project root:
 
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-Do **not** put a Supabase service-role key in any `VITE_*` variable. Vite exposes `VITE_*` values to browser code.
+Do not expose Supabase service-role keys in `.env`. Vite bundles environment variables prefixed with `VITE_` into client-side code.
 
-### Install
+### Installation
 
 ```bash
 npm install
 ```
 
-### Start development server
+### Running Locally
 
 ```bash
 npm run dev
 ```
 
-### Typecheck
+The development server starts by default at `http://localhost:5173`.
+
+### Type Checking & Production Build
 
 ```bash
+# Type check TypeScript files without emitting
 npm run typecheck
-```
 
-### Production build
-
-```bash
+# Full production build (tsc verification followed by Vite bundle generation)
 npm run build
-```
 
-The build currently runs `tsc --noEmit` before `vite build`.
-
-### Preview production build
-
-```bash
+# Preview production build locally
 npm run preview
 ```
 
-## Supabase security model
+---
 
-The browser talks directly to Supabase, so PostgreSQL Row Level Security is the actual tenant-security boundary. Client-side `.eq("seller_id", sellerId)` filters are useful for query correctness and performance but **are not authorization**.
+## Security and Permissions
 
-Production deployments should ensure:
+1. **Row Level Security (RLS)**: PostgreSQL RLS policies enforce tenant boundaries. Queries are scoped to `auth.uid() = profile_id` on the database level.
+2. **User-First Verification**: Seller profile creation requires an existing, authenticated user profile verified by PostgreSQL pre-insert triggers.
+3. **Encrypted Credentials**: Password hashing, token management, and OAuth flows are delegated to Supabase Auth. Sensitive merchant bank details are encrypted and restricted to payout processing.
+4. **Client Hardening**: No administrative service-role keys are exposed to the browser. All client mutations pass through RLS with strict constraints.
 
-1. RLS is enabled on every browser-accessible application table.
-2. Seller-owned rows are restricted to the authenticated user's seller/profile relationship.
-3. Policies do not trust a `seller_id` supplied by the browser.
-4. Service-role credentials never reach frontend code.
-5. Sensitive columns are excluded from normal client queries.
-6. Foreign keys enforce seller/profile ownership relationships where appropriate.
-7. Indexes support common RLS predicates and seller-scoped queries.
-8. Reporting functions/views do not bypass tenant isolation.
-
-### Important current security consideration
-
-The dashboard's try-on count currently queries `tryon_sessions` without an explicit seller filter. If `tryon_sessions` is multi-tenant data, its RLS policy must independently prevent cross-seller visibility. Prefer making the query explicitly seller-scoped as well.
-
-## Data and reporting considerations
-
-The dashboard currently performs some aggregation in the browser after fetching `order_items`. This is acceptable for a small prototype but should not become the production reporting strategy.
-
-At scale, prefer:
-
-- SQL aggregate queries
-- Indexed views
-- Supabase RPC functions for controlled reporting operations
-- Materialized/pre-aggregated reporting tables for expensive analytics
-- Explicit date-range constraints
-- Pagination for transactional lists
-
-This prevents large historical datasets from being transferred to every browser just to calculate totals.
-
-## Error handling
-
-The current frontend contains several Supabase queries where the response `error` should be handled explicitly rather than relying only on empty/null data states. Production data-access functions should return typed success/error results or throw structured errors that React Query can expose through predictable UI states.
-
-Recommended error contract:
-
-```text
-Data access layer
-  ├── success → typed domain data
-  └── failure → typed/structured error
-                    ├── code
-                    ├── message
-                    └── safe user-facing context
-```
-
-Never expose database internals, credentials, SQL statements, or stack traces to end users.
-
-## Performance
-
-The application already uses route-level code splitting through React `lazy`/`Suspense` and server-state caching through TanStack React Query.
-
-For continued performance improvements:
-
-- Keep queries seller-scoped and date-bounded.
-- Select only required columns instead of `select("*")` where possible.
-- Add database indexes matching common filters/order clauses.
-- Paginate large orders/products tables.
-- Move heavy aggregation to PostgreSQL.
-- Use appropriate React Query `staleTime`/cache policies per resource.
-- Avoid duplicate requests across dashboard widgets.
-- Keep chart datasets bounded to the requested reporting window.
-
-## Testing and CI
-
-The current `package.json` exposes development, build, preview, and typecheck scripts, but does not currently define a dedicated unit-test or end-to-end-test script.
-
-Before production release, add automated coverage for at least:
-
-- Authentication state transitions
-- Seller/tenant isolation
-- RLS policies
-- Dashboard aggregation boundaries
-- Product CRUD validation
-- Order status transitions
-- Return workflows
-- Payout calculations
-- Permission/role boundaries
-- Empty, loading, and error states
-
-CI should run typechecking, tests, and production builds on every pull request.
-
-## Deployment checklist
-
-- [ ] Configure production Supabase project
-- [ ] Apply and verify database schema/migrations
-- [ ] Enable and test RLS for all exposed tables
-- [ ] Verify seller-to-profile ownership constraints
-- [ ] Configure production `VITE_SUPABASE_URL`
-- [ ] Configure production `VITE_SUPABASE_ANON_KEY`
-- [ ] Confirm no service-role secrets are exposed to Vite
-- [ ] Run `npm run typecheck`
-- [ ] Run automated tests
-- [ ] Run `npm run build`
-- [ ] Verify authentication redirects
-- [ ] Verify cross-seller access is denied
-- [ ] Verify empty/loading/error states
-- [ ] Verify production database indexes and query plans
-- [ ] Configure application monitoring
-
-## Contributing
-
-1. Create a focused branch.
-2. Keep TypeScript strict and preserve existing type safety.
-3. Keep database access seller-scoped.
-4. Treat RLS as part of every data-model change.
-5. Run typechecking and the production build before submitting a PR.
-6. Add regression tests for security-sensitive or business-critical changes.
-7. Prefer small, reviewable commits.
+---
 
 ## License
 
-MIT License. See [LICENSE](./LICENSE).
+This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
