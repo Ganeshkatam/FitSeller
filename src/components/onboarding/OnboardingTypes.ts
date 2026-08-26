@@ -82,12 +82,12 @@ export interface StepItem {
 }
 
 export const ONBOARDING_STEPS: StepItem[] = [
-  { id: 1, slug: "account", title: "Seller Account", shortTitle: "Account", subtitle: "Basic Credentials", icon: UserCheck },
-  { id: 2, slug: "gst", title: "GST Details", shortTitle: "GST", subtitle: "Tax & PAN Details", icon: FileCheck },
-  { id: 3, slug: "business", title: "Business Details", shortTitle: "Business", subtitle: "Brand & Categories", icon: Building2 },
-  { id: 4, slug: "shipping", title: "Shipping Preferences", shortTitle: "Shipping", subtitle: "Courier & Timelines", icon: Truck },
-  { id: 5, slug: "pickup-address", title: "Pickup Address", shortTitle: "Address", subtitle: "Warehouse Location", icon: MapPin },
-  { id: 6, slug: "bank", title: "Bank Details", shortTitle: "Bank", subtitle: "Daily Payout Account", icon: CreditCard },
+  { id: 1, slug: "account", title: "Account", shortTitle: "Account", subtitle: "Credentials", icon: UserCheck },
+  { id: 2, slug: "gst", title: "GST & Tax", shortTitle: "GST", subtitle: "Tax & PAN", icon: FileCheck },
+  { id: 3, slug: "business", title: "Business", shortTitle: "Business", subtitle: "Brand", icon: Building2 },
+  { id: 4, slug: "shipping", title: "Shipping", shortTitle: "Shipping", subtitle: "Fulfillment", icon: Truck },
+  { id: 5, slug: "pickup-address", title: "Pickup", shortTitle: "Pickup", subtitle: "Warehouse", icon: MapPin },
+  { id: 6, slug: "bank", title: "Bank", shortTitle: "Bank", subtitle: "Payouts", icon: CreditCard },
 ];
 
 export const APPAREL_CATEGORIES = [

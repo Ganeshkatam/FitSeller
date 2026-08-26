@@ -20,10 +20,10 @@ export function Step3Business({ data, onChange }: Step3Props) {
     <div className="space-y-4 animate-fadeIn">
       <div className="space-y-0.5">
         <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
-          Business &amp; Brand Details
+          Business details
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground">
-          Tell fashion shoppers about your clothing label and main categories.
+          Set your public brand name and primary clothing catalog.
         </p>
       </div>
 

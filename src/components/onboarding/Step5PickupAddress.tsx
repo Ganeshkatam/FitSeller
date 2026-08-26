@@ -36,10 +36,10 @@ export function Step5PickupAddress({ data, onChange }: Step5Props) {
     <div className="space-y-4 animate-fadeIn">
       <div className="space-y-0.5">
         <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
-          Pickup Address
+          Pickup address
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground">
-          Where courier partners will arrive to collect packaged clothing orders.
+          Specify where our courier partners will collect orders.
         </p>
       </div>
 

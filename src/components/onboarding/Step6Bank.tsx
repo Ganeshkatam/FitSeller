@@ -14,10 +14,10 @@ export function Step6Bank({ data, onChange }: Step6Props) {
     <div className="space-y-4 animate-fadeIn">
       <div className="space-y-0.5">
         <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
-          Bank Details for Daily Deposits
+          Bank &amp; payouts
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground">
-          Earnings from delivered clothing orders will be deposited into this verified bank account.
+          Configure your bank account for sales earnings deposits.
         </p>
       </div>
 

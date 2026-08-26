@@ -38,22 +38,10 @@ export function OnboardingNavigation({
       <Button
         type="submit"
         loading={loading}
-        className="font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-9.5 px-5 shadow-md shadow-indigo-600/30 text-xs sm:text-sm"
+        className="font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-9.5 px-5 shadow-sm shadow-indigo-600/30 text-xs sm:text-sm"
       >
         <span>
-          {currentStep === 6
-            ? "Complete Seller Registration"
-            : currentStep === 1
-            ? "Proceed to GST Verification"
-            : currentStep === 2
-            ? "Continue to Business Details"
-            : currentStep === 3
-            ? "Continue to Shipping Preferences"
-            : currentStep === 4
-            ? "Continue to Pickup Address"
-            : currentStep === 5
-            ? "Continue to Bank Details"
-            : "Next"}
+          {currentStep === 6 ? "Activate seller account" : "Save & continue"}
         </span>
         <ArrowRight className="size-4 ml-1.5" />
       </Button>

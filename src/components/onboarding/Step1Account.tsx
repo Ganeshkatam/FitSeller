@@ -178,10 +178,10 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
       <div className="space-y-4 animate-fadeIn">
         <div className="space-y-0.5">
           <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
-            Seller Account Creation
+            Account credentials
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Your normal user account is authenticated and ready to be linked to your seller registration.
+            Confirm your authenticated merchant user account.
           </p>
         </div>
 

@@ -21,10 +21,10 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
     <div className="space-y-4 animate-fadeIn">
       <div className="space-y-0.5">
         <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
-          Shipping Preferences
+          Shipping preferences
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground">
-          Choose how customer clothing orders are picked up and dispatched.
+          Choose your order fulfillment and dispatch schedule.
         </p>
       </div>
 
