@@ -16,7 +16,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import Header from "./Header";
 
 const nav = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/products", label: "Catalog & Offers", icon: Package },
   { to: "/orders", label: "Orders", icon: ShoppingCart },
   { to: "/returns", label: "Returns", icon: RotateCcw },

@@ -182,7 +182,7 @@ export default function VerifyEmail() {
                 <Button
                   size="lg"
                   className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 font-semibold shadow-md shadow-indigo-600/20"
-                  onClick={() => navigate("/", { replace: true })}
+                  onClick={() => navigate("/dashboard", { replace: true })}
                 >
                   <span>Go to dashboard</span>
                   <ArrowRight className="size-4" />

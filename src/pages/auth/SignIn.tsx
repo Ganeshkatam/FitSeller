@@ -46,7 +46,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
-  const from = (location.state as { from?: string } | null)?.from ?? "/";
+  const from = (location.state as { from?: string } | null)?.from ?? "/dashboard";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

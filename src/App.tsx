@@ -10,6 +10,7 @@ const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const VerifyEmail = lazy(() => import("./pages/auth/VerifyEmail"));
 const GlobalError = lazy(() => import("./pages/GlobalError"));
+const SellerLanding = lazy(() => import("./pages/SellerLanding"));
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Products = lazy(() => import("./pages/Products"));
@@ -80,9 +81,24 @@ function GuestOnly({ children }: { children: ReactNode }) {
     "/auth/verify-email",
   ].includes(location.pathname);
   if (session && seller && !allowWithSession) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
   return <>{children}</>;
+}
+
+function RootEntry() {
+  const { session, seller, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+  if (session && seller) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return <Suspended><SellerLanding /></Suspended>;
 }
 
 export default function App() {
@@ -101,6 +117,11 @@ export default function App() {
       {/* ---- Standalone Global Error Route (accessible by any use case) ---- */}
       <Route path="/error" element={<Suspended><GlobalError /></Suspended>} />
 
+      {/* ---- Public Seller Landing Page ---- */}
+      <Route path="/" element={<RootEntry />} />
+      <Route path="/landing" element={<Suspended><SellerLanding /></Suspended>} />
+      <Route path="/welcome" element={<Suspended><SellerLanding /></Suspended>} />
+
       {/* ---- Auth routes (each with individual distinct layout) ---- */}
       <Route path="/auth/sign-in" element={<GuestOnly><Suspended><SignIn /></Suspended></GuestOnly>} />
       <Route path="/auth/sign-up" element={<GuestOnly><Suspended><SignUp /></Suspended></GuestOnly>} />
@@ -116,7 +137,7 @@ export default function App() {
           </RequireAuth>
         }
       >
-        <Route path="/" element={<Suspended><Dashboard /></Suspended>} />
+        <Route path="/dashboard" element={<Suspended><Dashboard /></Suspended>} />
         <Route path="/products" element={<Suspended><Products /></Suspended>} />
         <Route path="/orders" element={<Suspended><Orders /></Suspended>} />
         <Route path="/returns" element={<Suspended><Returns /></Suspended>} />
@@ -135,5 +156,5 @@ export default function App() {
 
 function RootRedirect() {
   const { session, seller } = useAuth();
-  return <Navigate to={session && seller ? "/" : "/auth/sign-in"} replace />;
+  return <Navigate to={session && seller ? "/dashboard" : "/"} replace />;
 }
