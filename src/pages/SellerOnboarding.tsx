@@ -22,7 +22,7 @@ import { Step5PickupAddress } from "@/components/onboarding/Step5PickupAddress";
 import { Step6Bank } from "@/components/onboarding/Step6Bank";
 
 export default function SellerOnboarding() {
-  const { user, seller, profile } = useAuth();
+  const { user, seller, profile, refreshAuth } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -159,14 +159,26 @@ export default function SellerOnboarding() {
   async function finishOnboarding() {
     setLoading(true);
     try {
+      const businessName =
+        formData.businessName.trim() || formData.tradeName.trim() || "Seller";
+
       if (seller?.id) {
         await supabase
           .from("sellers")
           .update({
-            business_name: formData.businessName.trim() || formData.tradeName.trim(),
+            business_name: businessName,
             updated_at: new Date().toISOString(),
           })
           .eq("id", seller.id);
+      } else if (user?.id) {
+        await supabase
+          .from("sellers")
+          .insert({
+            profile_id: user.id,
+            business_email: user.email || formData.email.trim(),
+            business_name: businessName,
+            status: "active",
+          });
       }
 
       if (user?.id) {
@@ -175,16 +187,21 @@ export default function SellerOnboarding() {
           .update({
             full_name: formData.fullName.trim(),
             phone: formData.phone.trim(),
+            role: "seller",
+            updated_at: new Date().toISOString(),
           })
           .eq("id", user.id);
       }
+
+      await refreshAuth();
 
       setCompleted(true);
       toast("success", "Seller account configuration completed successfully!");
       setTimeout(() => {
         navigate("/dashboard", { replace: true });
-      }, 2000);
+      }, 1500);
     } catch {
+      await refreshAuth();
       toast("success", "Seller configuration saved!");
       navigate("/dashboard", { replace: true });
     } finally {

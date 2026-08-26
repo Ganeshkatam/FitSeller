@@ -35,7 +35,7 @@ function Suspended({ children }: { children: ReactNode }) {
 
 /** Blocks app routes for visitors without an active user session AND valid seller record */
 function RequireAuth({ children }: { children: ReactNode }) {
-  const { session, profile, seller, loading } = useAuth();
+  const { session, seller, loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -52,23 +52,9 @@ function RequireAuth({ children }: { children: ReactNode }) {
   }
 
   // 2. Must be a valid user with an active seller profile
-  if (!profile || !seller) {
-    return (
-      <Navigate
-        to="/error"
-        replace
-        state={{
-          category: "account",
-          code: "SELLER_PROFILE_UNLINKED",
-          account: session.user.email,
-          title: "Seller Profile Missing",
-          message: "You are signed in as a valid user, but no active seller profile was found for this account.",
-          backTo: "/auth/sign-in",
-          primaryActionLabel: "Sign In With Another Account",
-          primaryActionUrl: "/auth/sign-in",
-        }}
-      />
-    );
+  // If user is authenticated but hasn't created a seller profile yet, direct to onboarding
+  if (!seller) {
+    return <Navigate to="/onboarding" replace state={{ from: location.pathname }} />;
   }
 
   return <>{children}</>;

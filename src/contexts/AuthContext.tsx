@@ -21,6 +21,7 @@ interface AuthState {
   signUp: (email: string, password: string, fullName: string, phone: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  refreshAuth: () => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
   updatePassword: (password: string) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
@@ -81,104 +82,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function loadSellerContext(userId: string, email: string) {
     try {
       const cleanEmail = email.trim().toLowerCase();
-      const userMeta = session?.user?.user_metadata;
 
-      // 1. Ensure Profile exists
-      const { data: existingProfile } = await supabase
+      // 1. Fetch user Profile (created and managed at database level via handle_new_user trigger)
+      const { data: profileData } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", userId)
         .maybeSingle();
 
-      let profileData = existingProfile;
-      if (!profileData) {
-        const rawName =
-          userMeta?.full_name ??
-          userMeta?.name ??
-          cleanEmail.split("@")[0] ??
-          "Seller";
-        const { data: newProfile } = await supabase
-          .from("profiles")
-          .upsert(
-            {
-              id: userId,
-              email: cleanEmail,
-              full_name: rawName,
-              display_name: rawName,
-              avatar_url: userMeta?.avatar_url ?? userMeta?.picture ?? null,
-              role: "seller",
-            },
-            { onConflict: "id" }
-          )
-          .select()
-          .maybeSingle();
-        profileData = newProfile ?? null;
-      }
-      setProfile(profileData);
+      setProfile(profileData ?? null);
 
-      // 2. Check if a Seller record exists
-      const { data: existingSeller } = await supabase
+      // 2. Fetch Seller record if one exists (never silently auto-created)
+      const { data: sellerRecord } = await supabase
         .from("sellers")
         .select("*")
         .or(`profile_id.eq.${userId},business_email.eq.${cleanEmail}`)
         .maybeSingle();
 
-      let sellerRecord = existingSeller;
-
-      // 3. When no seller account exists, CREATE A NEW SELLER ACCOUNT AUTOMATICALLY
-      if (!sellerRecord) {
-        const rawName =
-          profileData?.full_name ??
-          userMeta?.full_name ??
-          userMeta?.name ??
-          cleanEmail.split("@")[0] ??
-          "Seller";
-        const businessName =
-          rawName.charAt(0).toUpperCase() + rawName.slice(1);
-
-        const { data: createdSeller, error: createSellerErr } = await supabase
-          .from("sellers")
-          .insert({
-            profile_id: userId,
-            business_email: cleanEmail,
-            business_name: businessName,
-            status: "active",
-          })
-          .select()
-          .maybeSingle();
-
-        if (!createSellerErr && createdSeller) {
-          sellerRecord = createdSeller;
-
-          // Also auto-initialize merchant wallet
-          try {
-            await supabase.from("wallets").insert({
-              seller_id: createdSeller.id,
-              available_balance: 0,
-              pending_balance: 0,
-              on_hold_balance: 0,
-              currency: "INR",
-            });
-          } catch {
-            // Ignore if wallets table is not present
-          }
-        }
-      } else if (!sellerRecord.profile_id && userId) {
-        // Link profile_id if not yet linked
+      // Link profile_id if legacy record found by email without profile_id
+      if (sellerRecord && !sellerRecord.profile_id && userId) {
         const { data: linkedSeller } = await supabase
           .from("sellers")
           .update({ profile_id: userId })
           .eq("id", sellerRecord.id)
           .select()
           .maybeSingle();
-        if (linkedSeller) sellerRecord = linkedSeller;
+        setSeller(linkedSeller ?? sellerRecord);
+      } else {
+        setSeller(sellerRecord ?? null);
       }
 
-      setSeller(sellerRecord);
       setAuthError(null);
     } catch {
       setProfile(null);
       setSeller(null);
+    }
+  }
+
+  async function refreshAuth() {
+    if (session?.user) {
+      await loadSellerContext(session.user.id, session.user.email ?? "");
     }
   }
 
@@ -276,6 +219,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signUp,
         signInWithGoogle,
         signOut,
+        refreshAuth,
         requestPasswordReset,
         updatePassword,
         resendVerification,
