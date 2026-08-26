@@ -9,6 +9,7 @@ import {
   Shirt,
   ShieldCheck,
   LifeBuoy,
+  AlertCircle,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
@@ -34,6 +35,7 @@ export default function ResetPassword() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -49,33 +51,16 @@ export default function ResetPassword() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    setError(null);
 
     if (password.length < 8) {
-      return navigate("/error", {
-        state: {
-          category: "auth",
-          code: "password_short",
-          title: "Password Too Short",
-          message: "Your new password must be at least 8 characters in length.",
-          backTo: "/auth/reset-password",
-          primaryActionLabel: "Re-enter Password",
-          primaryActionUrl: "/auth/reset-password",
-        },
-      });
+      setError("Your new password must be at least 8 characters in length.");
+      return;
     }
 
     if (password !== confirm) {
-      return navigate("/error", {
-        state: {
-          category: "auth",
-          code: "password_mismatch",
-          title: "Passwords Do Not Match",
-          message: "The entered passwords do not match. Please try setting your password again.",
-          backTo: "/auth/reset-password",
-          primaryActionLabel: "Re-enter Password",
-          primaryActionUrl: "/auth/reset-password",
-        },
-      });
+      setError("The entered passwords do not match. Please try setting your password again.");
+      return;
     }
 
     setLoading(true);
@@ -87,20 +72,12 @@ export default function ResetPassword() {
         navigate("/auth/sign-in", { replace: true });
       }, 2500);
     } catch (err) {
-      navigate("/error", {
-        state: {
-          category: "auth",
-          code: "reset_update_failed",
-          title: "Password Update Incomplete",
-          message: getHumanErrorMessage(
-            err,
-            "Failed to update your password. Your security token may have expired."
-          ),
-          backTo: "/auth/reset-password",
-          primaryActionLabel: "Request New Link",
-          primaryActionUrl: "/auth/forgot-password",
-        },
-      });
+      setError(
+        getHumanErrorMessage(
+          err,
+          "Failed to update your password. Your security token may have expired."
+        )
+      );
     } finally {
       setLoading(false);
     }
@@ -184,6 +161,13 @@ export default function ResetPassword() {
                   Choose a strong, unique password for your seller account.
                 </p>
               </div>
+
+              {error && (
+                <div className="flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-xs sm:text-sm text-destructive font-medium">
+                  <AlertCircle className="mt-0.5 size-4 shrink-0 text-destructive" />
+                  <div className="flex-1 leading-snug">{error}</div>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>

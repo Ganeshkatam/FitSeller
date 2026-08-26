@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   MailCheck,
   ExternalLink,
@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   CheckCircle2,
   Lock,
+  AlertCircle,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -18,35 +19,25 @@ import { getHumanErrorMessage } from "@/lib/utils";
 
 export default function ForgotPassword() {
   const { requestPasswordReset } = useAuth();
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    setError(null);
     setLoading(true);
     try {
       await requestPasswordReset(email.trim());
       setSent(true);
     } catch (err) {
-      navigate("/error", {
-        state: {
-          category: "auth",
-          code: "reset_failed",
-          account: email.trim(),
-          title: "Unable to Send Reset Link",
-          message: getHumanErrorMessage(
-            err,
-            "We could not send a reset email. Please verify your business email and try again."
-          ),
-          backTo: "/auth/forgot-password",
-          primaryActionLabel: "Try Again",
-          primaryActionUrl: "/auth/forgot-password",
-          secondaryActionLabel: "Sign In",
-          secondaryActionUrl: "/auth/sign-in",
-        },
-      });
+      setError(
+        getHumanErrorMessage(
+          err,
+          "We could not send a reset email. Please verify your business email and try again."
+        )
+      );
     } finally {
       setLoading(false);
     }
@@ -172,6 +163,13 @@ export default function ForgotPassword() {
                   </div>
                 </div>
               </div>
+
+              {error && (
+                <div className="flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-xs sm:text-sm text-destructive font-medium">
+                  <AlertCircle className="mt-0.5 size-4 shrink-0 text-destructive" />
+                  <div className="flex-1 leading-snug">{error}</div>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>

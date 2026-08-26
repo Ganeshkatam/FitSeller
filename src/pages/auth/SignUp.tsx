@@ -58,39 +58,25 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [dismissAlert, setDismissAlert] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  const activeError = localError || authError;
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     clearAuthError();
+    setLocalError(null);
 
     if (!PASSWORD_RULES.every((r) => r.test(password))) {
-      return navigate("/error", {
-        state: {
-          category: "auth",
-          code: "password_policy_unmet",
-          account: email.trim(),
-          title: "Password Requirements Not Met",
-          message: "Your password must be at least 8 characters long and include an uppercase letter and a number.",
-          backTo: "/auth/sign-up",
-          primaryActionLabel: "Review Password",
-          primaryActionUrl: "/auth/sign-up",
-        },
-      });
+      setLocalError("Your password must be at least 8 characters long and include an uppercase letter and a number.");
+      setDismissAlert(false);
+      return;
     }
 
     if (password !== confirm) {
-      return navigate("/error", {
-        state: {
-          category: "auth",
-          code: "password_mismatch",
-          account: email.trim(),
-          title: "Passwords Do Not Match",
-          message: "The entered confirmation password does not match. Please re-enter your password.",
-          backTo: "/auth/sign-up",
-          primaryActionLabel: "Re-enter Password",
-          primaryActionUrl: "/auth/sign-up",
-        },
-      });
+      setLocalError("The entered passwords do not match. Please re-enter your confirmation password.");
+      setDismissAlert(false);
+      return;
     }
 
     setLoading(true);
@@ -98,25 +84,10 @@ export default function SignUp() {
       await signUp(email.trim(), password);
       navigate("/auth/verify-email", { state: { email: email.trim() } });
     } catch (err) {
-      const raw = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
-      let code = "signup_failed";
-      if (raw.includes("already registered") || raw.includes("already exists")) {
-        code = "already_registered";
-      } else if (raw.includes("network") || raw.includes("connection")) {
-        code = "network_error";
-      }
-
-      navigate("/error", {
-        state: {
-          category: "auth",
-          code,
-          account: email.trim(),
-          message: getHumanErrorMessage(err, "Unable to create your seller account. Please try again."),
-          backTo: "/auth/sign-up",
-          primaryActionLabel: code === "already_registered" ? "Sign In Instead" : "Try Again",
-          primaryActionUrl: code === "already_registered" ? "/auth/sign-in" : "/auth/sign-up",
-        },
-      });
+      setLocalError(
+        getHumanErrorMessage(err, "Unable to create your seller account. Please try again.")
+      );
+      setDismissAlert(false);
     } finally {
       setLoading(false);
     }
@@ -124,21 +95,15 @@ export default function SignUp() {
 
   async function handleGoogleSignUp() {
     clearAuthError();
+    setLocalError(null);
     setGoogleLoading(true);
     try {
       await signInWithGoogle();
     } catch (err) {
-      navigate("/error", {
-        state: {
-          category: "auth",
-          code: "google_oauth_failed",
-          account: email.trim() || undefined,
-          message: getHumanErrorMessage(err, "Unable to complete Google sign-up."),
-          backTo: "/auth/sign-up",
-          primaryActionLabel: "Retry Authorization",
-          primaryActionUrl: "/auth/sign-up",
-        },
-      });
+      setLocalError(
+        getHumanErrorMessage(err, "Unable to complete Google sign-up. Please try again.")
+      );
+      setDismissAlert(false);
       setGoogleLoading(false);
     }
   }
@@ -271,14 +236,15 @@ export default function SignUp() {
             </p>
           </div>
 
-          {/* Incoming Error Alert Banner */}
-          {authError && !dismissAlert && (
+          {/* Active Error Alert Banner */}
+          {activeError && !dismissAlert && (
             <div className="flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-xs sm:text-sm text-destructive font-medium">
               <AlertCircle className="mt-0.5 size-4.5 shrink-0 text-destructive" />
-              <div className="flex-1 leading-snug">{getHumanErrorMessage(authError)}</div>
+              <div className="flex-1 leading-snug">{getHumanErrorMessage(activeError)}</div>
               <button
                 type="button"
                 onClick={() => {
+                  setLocalError(null);
                   setDismissAlert(true);
                   clearAuthError();
                 }}

@@ -12,6 +12,7 @@ import {
   Clock,
   Shirt,
   Sparkles,
+  AlertCircle,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
@@ -38,6 +39,7 @@ export default function VerifyEmail() {
   const [sending, setSending] = useState(false);
   const [resent, setResent] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   // Cooldown countdown timer
   useEffect(() => {
@@ -73,27 +75,19 @@ export default function VerifyEmail() {
   async function handleResend(e: FormEvent) {
     e.preventDefault();
     if (!email.trim() || resendCooldown > 0) return;
+    setError(null);
     setSending(true);
     try {
       await resendVerification(email.trim());
       setResent(true);
       setResendCooldown(60);
     } catch (err) {
-      navigate("/error", {
-        state: {
-          category: "auth",
-          code: "resend_verification_failed",
-          account: email.trim(),
-          title: "Verification Email Dispatch Failed",
-          message: getHumanErrorMessage(
-            err,
-            "Unable to dispatch verification email. Please verify the email address."
-          ),
-          backTo: "/auth/verify-email",
-          primaryActionLabel: "Try Again",
-          primaryActionUrl: "/auth/verify-email",
-        },
-      });
+      setError(
+        getHumanErrorMessage(
+          err,
+          "Unable to dispatch verification email. Please verify the email address."
+        )
+      );
     } finally {
       setSending(false);
     }
@@ -245,6 +239,13 @@ export default function VerifyEmail() {
                   </div>
                   <ExternalLink className="size-3.5" />
                 </a>
+              )}
+
+              {error && (
+                <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-xs text-destructive font-medium flex items-center gap-2">
+                  <AlertCircle className="size-4 shrink-0 text-destructive" />
+                  <span>{error}</span>
+                </div>
               )}
 
               {resent && (

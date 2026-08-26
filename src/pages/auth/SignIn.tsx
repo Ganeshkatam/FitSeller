@@ -54,6 +54,7 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [dismissAlert, setDismissAlert] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
 
   const incomingError =
     (location.state as { error?: string; message?: string } | null)?.error ||
@@ -62,37 +63,21 @@ export default function SignIn() {
     params.get("message") ||
     authError;
 
+  const activeError = localError || incomingError;
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     clearAuthError();
+    setLocalError(null);
     setLoading(true);
     try {
       await signIn(email.trim(), password);
       navigate(from, { replace: true });
     } catch (err) {
-      const raw = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
-      let code = "auth_failed";
-      if (raw.includes("password") || raw.includes("credential")) {
-        code = "wrong_password";
-      } else if (raw.includes("verify") || raw.includes("unconfirmed")) {
-        code = "unverified_email";
-      } else if (raw.includes("network") || raw.includes("fetch") || raw.includes("timeout")) {
-        code = "network_error";
-      }
-
-      navigate("/error", {
-        state: {
-          category: "auth",
-          code,
-          account: email.trim(),
-          message: getHumanErrorMessage(err, "Incorrect email or password for this seller account."),
-          backTo: "/auth/sign-in",
-          primaryActionLabel: "Try Again",
-          primaryActionUrl: "/auth/sign-in",
-          secondaryActionLabel: "Reset Password",
-          secondaryActionUrl: `/auth/forgot-password?email=${encodeURIComponent(email.trim())}`,
-        },
-      });
+      setLocalError(
+        getHumanErrorMessage(err, "Incorrect email or password for this seller account.")
+      );
+      setDismissAlert(false);
     } finally {
       setLoading(false);
     }
@@ -100,21 +85,15 @@ export default function SignIn() {
 
   async function handleGoogleSignIn() {
     clearAuthError();
+    setLocalError(null);
     setGoogleLoading(true);
     try {
       await signInWithGoogle();
     } catch (err) {
-      navigate("/error", {
-        state: {
-          category: "auth",
-          code: "google_oauth_failed",
-          account: email.trim() || undefined,
-          message: getHumanErrorMessage(err, "Unable to complete Google authentication."),
-          backTo: "/auth/sign-in",
-          primaryActionLabel: "Retry Sign In",
-          primaryActionUrl: "/auth/sign-in",
-        },
-      });
+      setLocalError(
+        getHumanErrorMessage(err, "Unable to complete Google authentication. Please try again.")
+      );
+      setDismissAlert(false);
       setGoogleLoading(false);
     }
   }
@@ -236,14 +215,15 @@ export default function SignIn() {
             </p>
           </div>
 
-          {/* Incoming Error Alert Banner */}
-          {incomingError && !dismissAlert && (
+          {/* Active Error Alert Banner */}
+          {activeError && !dismissAlert && (
             <div className="flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-xs sm:text-sm text-destructive font-medium">
               <AlertCircle className="mt-0.5 size-4.5 shrink-0 text-destructive" />
-              <div className="flex-1 leading-snug">{getHumanErrorMessage(incomingError)}</div>
+              <div className="flex-1 leading-snug">{getHumanErrorMessage(activeError)}</div>
               <button
                 type="button"
                 onClick={() => {
+                  setLocalError(null);
                   setDismissAlert(true);
                   clearAuthError();
                 }}
