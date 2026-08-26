@@ -12,6 +12,7 @@ import {
   Truck,
   Sparkles,
   Lock,
+  ArrowRight,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -75,7 +76,7 @@ export default function SignIn() {
       navigate(from, { replace: true });
     } catch (err) {
       setLocalError(
-        getHumanErrorMessage(err, "Incorrect email or password for this seller account.")
+        getHumanErrorMessage(err, "Incorrect email or password. Please try again.")
       );
       setDismissAlert(false);
     } finally {
@@ -91,7 +92,7 @@ export default function SignIn() {
       await signInWithGoogle();
     } catch (err) {
       setLocalError(
-        getHumanErrorMessage(err, "Unable to complete Google authentication. Please try again.")
+        getHumanErrorMessage(err, "Unable to sign in with Google. Please try again.")
       );
       setDismissAlert(false);
       setGoogleLoading(false);
@@ -100,20 +101,20 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground grid grid-cols-1 lg:grid-cols-12 selection:bg-indigo-500/20">
-      {/* LEFT COLUMN: Operations & Logistics Command Hero (7 Cols) */}
+      {/* LEFT COLUMN: Editorial Visual Split (7 Cols) */}
       <div className="relative hidden lg:flex lg:col-span-7 flex-col justify-between overflow-hidden bg-zinc-950 p-10 xl:p-14 text-white">
-        {/* Background photo with deep contrast scrim */}
+        {/* Background photo */}
         <div className="absolute inset-0 z-0">
           <img
             src="/images/auth/sign-in.jpg"
-            alt="Fulfillment and operations"
-            className="h-full w-full object-cover object-center filter brightness-[0.45] contrast-110 scale-105 transition-transform duration-1000 ease-out"
+            alt="Clothing store operations and packaging"
+            className="h-full w-full object-cover object-center filter brightness-[0.42] contrast-110 scale-105 transition-transform duration-1000 ease-out"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/40" />
           <div className="absolute inset-0 bg-radial from-transparent via-transparent to-black/70" />
         </div>
 
-        {/* Top Branding */}
+        {/* Top Header */}
         <div className="relative z-10 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-indigo-600 shadow-lg shadow-indigo-600/40 border border-indigo-400/20">
@@ -121,71 +122,71 @@ export default function SignIn() {
             </div>
             <div>
               <span className="font-bold tracking-tight text-white text-xl">FitSeller</span>
-              <span className="block text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
-                Merchant Operations Hub
+              <span className="block text-[10px] font-bold uppercase tracking-wider text-indigo-300">
+                Seller Dashboard
               </span>
             </div>
           </Link>
 
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-3.5 py-1 text-xs font-medium text-zinc-300">
             <div className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Platform Status: Operational</span>
+            <span>Store Network: Active</span>
           </div>
         </div>
 
-        {/* Center Operations Value Prop */}
+        {/* Center Hero Card */}
         <div className="relative z-10 max-w-xl my-auto py-12 space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 backdrop-blur-md px-3.5 py-1 text-xs font-semibold text-indigo-300">
             <Sparkles className="size-3.5" />
-            <span>Operations & Dispatch Control</span>
+            <span>Seller Command Center</span>
           </div>
 
           <h1 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-white leading-tight">
-            Manage your store, track inventory, and accelerate fashion sales.
+            Manage your clothes, track orders, and receive daily bank payouts.
           </h1>
 
           <p className="text-sm xl:text-base leading-relaxed text-zinc-300">
-            Real-time sales tracking, lightning-fast order dispatch, and automated wallet settlement for modern apparel sellers.
+            Check today&apos;s customer orders, schedule doorstep courier pickups, and view your daily earnings in real time.
           </p>
 
-          {/* Operational highlight cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-            <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-3.5 flex items-start gap-3">
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400">
-                <Truck className="size-4" />
+          {/* Operational Highlight Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+            <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-4 flex items-start gap-3.5">
+              <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-indigo-500/20 text-indigo-400">
+                <Truck className="size-4.5" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">99.8% On-Time Dispatch</p>
-                <p className="text-[11px] text-zinc-400">Automated courier integration</p>
+                <p className="text-xs font-bold text-white">Doorstep Courier Pickup</p>
+                <p className="text-[11px] text-zinc-400 mt-0.5">BlueDart &amp; Delhivery Express</p>
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-3.5 flex items-start gap-3">
-              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
-                <TrendingUp className="size-4" />
+            <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-4 flex items-start gap-3.5">
+              <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400">
+                <TrendingUp className="size-4.5" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white">Same-Day Settlement</p>
-                <p className="text-[11px] text-zinc-400">Direct INR bank payouts</p>
+                <p className="text-xs font-bold text-white">Daily Bank Payouts</p>
+                <p className="text-[11px] text-zinc-400 mt-0.5">Sent tonight at 11:30 PM</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Feature Badges */}
-        <div className="relative z-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs text-zinc-400">
+        <div className="relative z-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs text-zinc-400 font-medium">
           <div className="flex items-center gap-2">
-            <ShieldCheck className="size-4 text-indigo-400" />
-            <span>256-bit Encrypted Portal</span>
+            <ShieldCheck className="size-4 text-emerald-400" />
+            <span>Direct Bank Deposits</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle2 className="size-4 text-emerald-400" />
-            <span>Real Seller Metrics (No Faking)</span>
+            <span>Flat 8% Fee Only When Sold</span>
           </div>
         </div>
       </div>
 
-      {/* RIGHT COLUMN: Sign In Card Container (5 Cols) */}
+      {/* RIGHT COLUMN: Sign In Form Container (5 Cols) */}
       <div className="col-span-1 lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 xl:p-14 bg-card/60 backdrop-blur-xl border-l border-border/40">
         {/* Mobile Header */}
         <div className="flex lg:hidden items-center justify-between mb-8">
@@ -198,9 +199,10 @@ export default function SignIn() {
 
           <Link
             to="/auth/sign-up"
-            className="text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+            className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
           >
-            Create store &rarr;
+            <span>Create store</span>
+            <ArrowRight className="size-3" />
           </Link>
         </div>
 
@@ -211,7 +213,7 @@ export default function SignIn() {
               Sign in to your store
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              Access your merchant catalog, live orders, and earnings.
+              Access your clothing catalog, live orders, and payouts.
             </p>
           </div>
 
@@ -243,7 +245,7 @@ export default function SignIn() {
             loading={googleLoading}
             disabled={loading || googleLoading}
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-2.5 font-medium border-border hover:bg-muted/50 transition-colors shadow-sm"
+            className="w-full flex items-center justify-center gap-2.5 font-bold border-border hover:bg-muted/50 transition-colors shadow-sm rounded-xl h-12 text-sm"
           >
             <GoogleIcon className="size-4.5 shrink-0" />
             <span>Continue with Google</span>
@@ -260,17 +262,17 @@ export default function SignIn() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Registered Business Email</Label>
+              <Label htmlFor="email">Your Business Email</Label>
               <Input
                 id="email"
                 type="email"
                 required
                 autoComplete="email"
-                placeholder="seller@example.com"
+                placeholder="store@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
-                className="mt-1"
+                className="mt-1.5 h-11 rounded-xl"
               />
             </div>
 
@@ -279,12 +281,12 @@ export default function SignIn() {
                 <Label htmlFor="password">Password</Label>
                 <Link
                   to="/auth/forgot-password"
-                  className="text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:underline"
+                  className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 hover:underline"
                 >
                   Forgot password?
                 </Link>
               </div>
-              <div className="relative mt-1">
+              <div className="relative mt-1.5">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -294,7 +296,7 @@ export default function SignIn() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
-                  className="pr-10"
+                  className="pr-10 h-11 rounded-xl"
                 />
                 <button
                   type="button"
@@ -312,21 +314,21 @@ export default function SignIn() {
               size="lg"
               loading={loading}
               disabled={googleLoading}
-              className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20"
+              className="w-full font-bold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20 rounded-xl h-11 text-sm text-white"
             >
               Sign In to Dashboard
             </Button>
           </form>
 
           {/* Footer Navigation */}
-          <div className="rounded-xl border border-border/60 bg-muted/20 p-4 text-center text-xs text-muted-foreground space-y-1">
+          <div className="rounded-2xl border border-border/60 bg-muted/20 p-4 text-center text-xs text-muted-foreground space-y-1">
             <p>
               New to FitSeller?{" "}
               <Link
                 to="/auth/sign-up"
-                className="font-semibold text-indigo-600 hover:text-indigo-700 hover:underline"
+                className="font-bold text-indigo-600 hover:text-indigo-700 hover:underline"
               >
-                Register your store
+                Register your store for free &rarr;
               </Link>
             </p>
           </div>
@@ -336,11 +338,11 @@ export default function SignIn() {
         <div className="flex items-center justify-between border-t border-border/40 pt-6 text-[11px] text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <Lock className="size-3 text-emerald-600" />
-            <span>Secure Merchant Gateway</span>
+            <span>Safe & Secure Platform</span>
           </div>
           <a
-            href="mailto:sellers@fitmirror.shop"
-            className="hover:text-foreground transition-colors"
+            href="mailto:support@fitmirror.in"
+            className="hover:text-foreground transition-colors font-medium"
           >
             Need Help?
           </a>

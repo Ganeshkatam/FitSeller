@@ -6,7 +6,7 @@ import {
   Shirt,
   LifeBuoy,
   KeyRound,
-  Shield,
+  ShieldCheck,
   ArrowLeft,
   CheckCircle2,
   Lock,
@@ -35,7 +35,7 @@ export default function ForgotPassword() {
       setError(
         getHumanErrorMessage(
           err,
-          "We could not send a reset email. Please verify your business email and try again."
+          "We could not send the password reset email. Please double-check your email address and try again."
         )
       );
     } finally {
@@ -55,8 +55,15 @@ export default function ForgotPassword() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col justify-between selection:bg-indigo-500/20 relative overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 size-96 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+      {/* Background with deep scrim */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/images/auth/forgot-password.jpg"
+          alt="Password recovery"
+          className="h-full w-full object-cover object-center filter brightness-[0.35] contrast-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/60" />
+      </div>
 
       {/* Top Navbar */}
       <header className="border-b border-border/60 bg-card/60 backdrop-blur-md sticky top-0 z-50">
@@ -67,19 +74,19 @@ export default function ForgotPassword() {
             </div>
             <div className="flex items-center gap-2">
               <span className="font-bold tracking-tight text-foreground text-lg">FitSeller</span>
-              <span className="rounded-md bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground border border-border">
-                SECURITY VAULT
+              <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                ACCOUNT HELP
               </span>
             </div>
           </Link>
 
           <div className="flex items-center gap-3">
             <a
-              href="mailto:sellers@fitmirror.shop?subject=Account%20Recovery%20Assistance"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+              href="mailto:support@fitmirror.in?subject=Password%20Reset%20Help"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card/80 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
             >
               <LifeBuoy className="size-3.5 text-indigo-500" />
-              <span>Recovery Desk</span>
+              <span>Contact Support</span>
             </a>
           </div>
         </div>
@@ -87,17 +94,16 @@ export default function ForgotPassword() {
 
       {/* Centered Recovery Chamber */}
       <main className="mx-auto w-full max-w-md px-4 py-12 sm:py-16 my-auto relative z-10">
-        <div className="rounded-2xl border border-border bg-card/80 backdrop-blur-xl p-6 sm:p-8 shadow-xl shadow-zinc-950/5 dark:shadow-black/20 space-y-6">
+        <div className="rounded-3xl border border-border/80 bg-card/90 backdrop-blur-2xl p-7 sm:p-9 shadow-2xl space-y-6">
           {sent ? (
             <div className="space-y-5 text-center">
-              <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+              <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                 <MailCheck className="size-7" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold tracking-tight text-foreground">Check your inbox</h2>
-                <p className="mt-1.5 text-sm text-muted-foreground">
-                  If a merchant account exists for <strong className="text-foreground">{email}</strong>, you'll
-                  receive a secure password reset link shortly.
+                <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  If an account exists for <strong className="text-foreground">{email}</strong>, we have sent a secure password reset link.
                 </p>
               </div>
 
@@ -106,60 +112,60 @@ export default function ForgotPassword() {
                   href={webmail.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-xl border border-indigo-500/30 bg-indigo-500/5 p-3 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/10 transition-colors text-left"
+                  className="flex items-center justify-between rounded-xl border border-indigo-500/30 bg-indigo-500/10 p-3.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20 transition-colors text-left"
                 >
-                  <span>Launch {webmail.name}</span>
+                  <span>Open {webmail.name}</span>
                   <ExternalLink className="size-3.5" />
                 </a>
               )}
 
               <div className="space-y-2.5 pt-2">
-                <Button variant="default" size="lg" className="w-full bg-indigo-600 hover:bg-indigo-700" asChild>
-                  <Link to="/auth/sign-in">Return to sign in</Link>
+                <Button variant="default" size="lg" className="w-full bg-indigo-600 hover:bg-indigo-700 font-bold rounded-xl h-11 text-white" asChild>
+                  <Link to="/auth/sign-in">Return to Sign In</Link>
                 </Button>
 
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full text-xs"
+                  className="w-full text-xs font-semibold rounded-xl h-10"
                   onClick={() => setSent(false)}
                 >
-                  Send to a different email
+                  Try a different email
                 </Button>
               </div>
             </div>
           ) : (
             <div className="space-y-6">
-              <div className="text-center">
-                <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+              <div className="text-center space-y-1.5">
+                <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
                   <KeyRound className="size-6" />
                 </div>
                 <h2 className="text-2xl font-bold tracking-tight text-foreground">
-                  Forgot your password?
+                  Reset your password
                 </h2>
-                <p className="mt-1.5 text-sm text-muted-foreground">
-                  Enter your registered business email and we'll send you a secure one-time recovery link.
+                <p className="text-xs sm:text-sm text-muted-foreground">
+                  Enter your business email and we will send you a link to reset your password.
                 </p>
               </div>
 
-              {/* Step info card */}
-              <div className="rounded-xl border border-border/80 bg-muted/30 p-3.5 text-xs text-muted-foreground space-y-2">
-                <p className="font-semibold text-foreground flex items-center gap-1.5">
-                  <Shield className="size-3.5 text-indigo-500" />
-                  Password Recovery Procedure:
+              {/* Simple Step Guide */}
+              <div className="rounded-2xl border border-border/80 bg-muted/30 p-4 text-xs text-muted-foreground space-y-2">
+                <p className="font-bold text-foreground flex items-center gap-1.5">
+                  <ShieldCheck className="size-4 text-indigo-500" />
+                  How password reset works:
                 </p>
                 <div className="space-y-1.5 pl-5">
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="size-3 text-emerald-500 shrink-0" />
-                    <span>Enter your registered seller email below</span>
+                    <CheckCircle2 className="size-3.5 text-emerald-500 shrink-0" />
+                    <span>Enter your registered email address below</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="size-3 text-emerald-500 shrink-0" />
-                    <span>Click the authenticated link inside your email</span>
+                    <CheckCircle2 className="size-3.5 text-emerald-500 shrink-0" />
+                    <span>Click the reset link sent to your inbox</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="size-3 text-emerald-500 shrink-0" />
-                    <span>Set a strong new password in our security vault</span>
+                    <CheckCircle2 className="size-3.5 text-emerald-500 shrink-0" />
+                    <span>Choose a strong new password</span>
                   </div>
                 </div>
               </div>
@@ -173,17 +179,17 @@ export default function ForgotPassword() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <Label htmlFor="email">Registered Email</Label>
+                  <Label htmlFor="email">Your Business Email</Label>
                   <Input
                     id="email"
                     type="email"
                     required
                     autoComplete="email"
-                    placeholder="seller@example.com"
+                    placeholder="store@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
-                    className="mt-1"
+                    className="mt-1.5 h-11 rounded-xl"
                   />
                 </div>
 
@@ -191,19 +197,19 @@ export default function ForgotPassword() {
                   type="submit"
                   size="lg"
                   loading={loading}
-                  className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20"
+                  className="w-full font-bold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20 rounded-xl h-11 text-sm text-white"
                 >
-                  Send Recovery Link
+                  Send Reset Link
                 </Button>
               </form>
 
-              <div className="border-t border-border/60 pt-4 text-center">
+              <div className="text-center pt-1">
                 <Link
                   to="/auth/sign-in"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 hover:text-indigo-700 hover:underline"
                 >
                   <ArrowLeft className="size-3.5" />
-                  <span>Back to sign in</span>
+                  <span>Back to Sign In</span>
                 </Link>
               </div>
             </div>
@@ -212,20 +218,13 @@ export default function ForgotPassword() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-border/40 py-5 text-center text-xs text-muted-foreground relative z-10">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-4 sm:px-6">
-          <div className="flex items-center gap-1.5">
+      <footer className="border-t border-border/60 bg-card/60 backdrop-blur-md py-4 text-center text-xs text-muted-foreground relative z-10">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-1.5 text-[11px]">
             <Lock className="size-3 text-emerald-600" />
-            <span>Encrypted Credential Recovery</span>
+            <span>Safe &amp; Secure Account Recovery</span>
           </div>
-          <div className="flex items-center gap-4">
-            <Link to="/auth/sign-in" className="hover:text-foreground transition-colors">
-              Sign in
-            </Link>
-            <Link to="/auth/sign-up" className="hover:text-foreground transition-colors">
-              Register store
-            </Link>
-          </div>
+          <span className="text-[11px]">&copy; {new Date().getFullYear()} FitSeller</span>
         </div>
       </footer>
     </div>

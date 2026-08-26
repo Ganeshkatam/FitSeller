@@ -12,6 +12,8 @@ import {
   Tag,
   Store,
   Layers,
+  ArrowRight,
+  ShieldCheck,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -68,13 +70,13 @@ export default function SignUp() {
     setLocalError(null);
 
     if (!PASSWORD_RULES.every((r) => r.test(password))) {
-      setLocalError("Your password must be at least 8 characters long and include an uppercase letter and a number.");
+      setLocalError("Please make sure your password has at least 8 characters, an uppercase letter, and a number.");
       setDismissAlert(false);
       return;
     }
 
     if (password !== confirm) {
-      setLocalError("The entered passwords do not match. Please re-enter your confirmation password.");
+      setLocalError("Passwords do not match. Please retype your password.");
       setDismissAlert(false);
       return;
     }
@@ -85,7 +87,7 @@ export default function SignUp() {
       navigate("/auth/verify-email", { state: { email: email.trim() } });
     } catch (err) {
       setLocalError(
-        getHumanErrorMessage(err, "Unable to create your seller account. Please try again.")
+        getHumanErrorMessage(err, "Unable to create your store account. Please try again.")
       );
       setDismissAlert(false);
     } finally {
@@ -101,7 +103,7 @@ export default function SignUp() {
       await signInWithGoogle();
     } catch (err) {
       setLocalError(
-        getHumanErrorMessage(err, "Unable to complete Google sign-up. Please try again.")
+        getHumanErrorMessage(err, "Unable to sign up with Google. Please try again.")
       );
       setDismissAlert(false);
       setGoogleLoading(false);
@@ -110,20 +112,20 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground grid grid-cols-1 lg:grid-cols-12 selection:bg-indigo-500/20">
-      {/* LEFT COLUMN: Store Onboarding Studio Canvas (7 Cols) */}
+      {/* LEFT COLUMN: Store Launch Roadmap Canvas (7 Cols) */}
       <div className="relative hidden lg:flex lg:col-span-7 flex-col justify-between overflow-hidden bg-zinc-950 p-10 xl:p-14 text-white">
         {/* Background photo */}
         <div className="absolute inset-0 z-0">
           <img
             src="/images/auth/sign-up.jpg"
-            alt="Store Growth and Catalog"
-            className="h-full w-full object-cover object-center filter brightness-[0.45] contrast-110 scale-105 transition-transform duration-1000 ease-out"
+            alt="Clothing store creation and brand showcase"
+            className="h-full w-full object-cover object-center filter brightness-[0.42] contrast-110 scale-105 transition-transform duration-1000 ease-out"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/40" />
           <div className="absolute inset-0 bg-radial from-transparent via-transparent to-black/70" />
         </div>
 
-        {/* Top Branding */}
+        {/* Top Header */}
         <div className="relative z-10 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-indigo-600 shadow-lg shadow-indigo-600/40 border border-indigo-400/20">
@@ -131,15 +133,15 @@ export default function SignUp() {
             </div>
             <div>
               <span className="font-bold tracking-tight text-white text-xl">FitSeller</span>
-              <span className="block text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
-                Merchant Onboarding Studio
+              <span className="block text-[10px] font-bold uppercase tracking-wider text-indigo-300">
+                New Store Setup
               </span>
             </div>
           </Link>
 
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-3.5 py-1 text-xs font-medium text-zinc-300">
             <Sparkles className="size-3.5 text-indigo-400" />
-            <span>Instant Store Provisioning</span>
+            <span>Takes 2 Minutes</span>
           </div>
         </div>
 
@@ -147,61 +149,61 @@ export default function SignUp() {
         <div className="relative z-10 max-w-xl my-auto py-10 space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 backdrop-blur-md px-3.5 py-1 text-xs font-semibold text-indigo-300">
             <Zap className="size-3.5" />
-            <span>0% Platform Listing Fee</span>
+            <span>0% Upfront Setup Cost</span>
           </div>
 
           <h1 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-white leading-tight">
-            Launch your store and reach verified fashion shoppers nationwide.
+            Start selling your clothing collection online today.
           </h1>
 
           <p className="text-sm xl:text-base leading-relaxed text-zinc-300">
-            Join thousands of apparel brands growing their sales with automated inventory sync, transparent analytics, and guaranteed payouts.
+            Join thousands of independent clothing designers and brands growing with doorstep shipping, daily bank payouts, and 3D virtual try-ons.
           </p>
 
-          {/* 3-Step Merchant Roadmap */}
+          {/* 3-Step Store Launch Path */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-3">
             <p className="text-xs font-bold uppercase tracking-wider text-indigo-300">
-              Your 3-Step Store Launch Path
+              How You Launch in 3 Simple Steps
             </p>
 
-            <div className="grid grid-cols-3 gap-2 text-xs pt-1">
-              <div className="rounded-xl border border-indigo-500/40 bg-indigo-500/20 p-2.5 space-y-1">
-                <span className="font-bold text-white block">1. Register</span>
-                <span className="text-[10px] text-indigo-200 block">Create credentials</span>
+            <div className="grid grid-cols-3 gap-2.5 text-xs pt-1">
+              <div className="rounded-xl border border-indigo-500/40 bg-indigo-500/20 p-3 space-y-1">
+                <span className="font-bold text-white block">1. Sign Up</span>
+                <span className="text-[11px] text-indigo-200 block">Add GST &amp; Bank A/c</span>
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-1">
-                <span className="font-bold text-white block">2. Verify</span>
-                <span className="text-[10px] text-zinc-400 block">Activate store</span>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3 space-y-1">
+                <span className="font-bold text-white block">2. Add Clothes</span>
+                <span className="text-[11px] text-zinc-400 block">All sizes in 1 listing</span>
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-1">
-                <span className="font-bold text-white block">3. Go Live</span>
-                <span className="text-[10px] text-zinc-400 block">Publish offers</span>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3 space-y-1">
+                <span className="font-bold text-white block">3. Start Selling</span>
+                <span className="text-[11px] text-zinc-400 block">Doorstep pickups</span>
               </div>
             </div>
           </div>
 
-          {/* Value Prop Highlights */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex items-center gap-2.5 text-xs text-zinc-300">
+          {/* Benefit Highlights */}
+          <div className="grid grid-cols-2 gap-3.5">
+            <div className="flex items-center gap-2.5 text-xs text-zinc-300 font-medium">
               <Store className="size-4 text-emerald-400" />
-              <span>Dedicated Merchant Portal</span>
+              <span>Free Store Setup</span>
             </div>
-            <div className="flex items-center gap-2.5 text-xs text-zinc-300">
+            <div className="flex items-center gap-2.5 text-xs text-zinc-300 font-medium">
               <Tag className="size-4 text-indigo-400" />
-              <span>Custom Pricing & Discounts</span>
+              <span>Flat 8% Fee Only When Sold</span>
             </div>
           </div>
         </div>
 
         {/* Bottom Feature Badges */}
-        <div className="relative z-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs text-zinc-400">
+        <div className="relative z-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs text-zinc-400 font-medium">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="size-4 text-emerald-400" />
-            <span>Automatic Profile & Wallet Creation</span>
+            <ShieldCheck className="size-4 text-emerald-400" />
+            <span>Automatic Daily Bank Settlement</span>
           </div>
           <div className="flex items-center gap-2">
             <Layers className="size-4 text-indigo-400" />
-            <span>Real Multi-Variant Inventory</span>
+            <span>Multi-Size Inventory (XS–3XL)</span>
           </div>
         </div>
       </div>
@@ -219,9 +221,10 @@ export default function SignUp() {
 
           <Link
             to="/auth/sign-in"
-            className="text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+            className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
           >
-            Sign in &rarr;
+            <span>Sign in</span>
+            <ArrowRight className="size-3" />
           </Link>
         </div>
 
@@ -232,7 +235,7 @@ export default function SignUp() {
               Register your store
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              Get instant access to inventory listing and order management.
+              Start selling your clothing collection online in 2 minutes.
             </p>
           </div>
 
@@ -264,7 +267,7 @@ export default function SignUp() {
             loading={googleLoading}
             disabled={loading || googleLoading}
             onClick={handleGoogleSignUp}
-            className="w-full flex items-center justify-center gap-2.5 font-medium border-border hover:bg-muted/50 transition-colors shadow-sm"
+            className="w-full flex items-center justify-center gap-2.5 font-bold border-border hover:bg-muted/50 transition-colors shadow-sm rounded-xl h-12 text-sm"
           >
             <GoogleIcon className="size-4.5 shrink-0" />
             <span>Sign up with Google</span>
@@ -281,23 +284,23 @@ export default function SignUp() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Business Email Address</Label>
+              <Label htmlFor="email">Your Business Email</Label>
               <Input
                 id="email"
                 type="email"
                 required
                 autoComplete="email"
-                placeholder="seller@example.com"
+                placeholder="store@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
-                className="mt-1"
+                className="mt-1.5 h-11 rounded-xl"
               />
             </div>
 
             <div>
               <Label htmlFor="password">Create Password</Label>
-              <div className="relative mt-1">
+              <div className="relative mt-1.5">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -307,7 +310,7 @@ export default function SignUp() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
-                  className="pr-10"
+                  className="pr-10 h-11 rounded-xl"
                 />
                 <button
                   type="button"
@@ -351,7 +354,7 @@ export default function SignUp() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 disabled={loading}
-                className="mt-1"
+                className="mt-1.5 h-11 rounded-xl"
               />
             </div>
 
@@ -360,21 +363,21 @@ export default function SignUp() {
               size="lg"
               loading={loading}
               disabled={googleLoading}
-              className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20"
+              className="w-full font-bold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20 rounded-xl h-11 text-sm text-white"
             >
-              Create Merchant Account
+              Create Your Free Store
             </Button>
           </form>
 
           {/* Footer Navigation */}
-          <div className="rounded-xl border border-border/60 bg-muted/20 p-4 text-center text-xs text-muted-foreground space-y-1">
+          <div className="rounded-2xl border border-border/60 bg-muted/20 p-4 text-center text-xs text-muted-foreground space-y-1">
             <p>
-              Already registered?{" "}
+              Already have a store?{" "}
               <Link
                 to="/auth/sign-in"
-                className="font-semibold text-indigo-600 hover:text-indigo-700 hover:underline"
+                className="font-bold text-indigo-600 hover:text-indigo-700 hover:underline"
               >
-                Sign in to your store
+                Sign in to your account &rarr;
               </Link>
             </p>
           </div>
@@ -382,9 +385,9 @@ export default function SignUp() {
 
         {/* Security Reassurance Footer */}
         <div className="flex items-center justify-between border-t border-border/40 pt-6 text-[11px] text-muted-foreground">
-          <span>By signing up, you accept FitSeller Merchant Terms.</span>
-          <Link to="/auth/sign-in" className="hover:text-foreground transition-colors">
-            Login
+          <span>By signing up, you agree to our Store Policies.</span>
+          <Link to="/auth/sign-in" className="hover:text-foreground transition-colors font-medium">
+            Sign In
           </Link>
         </div>
       </div>
