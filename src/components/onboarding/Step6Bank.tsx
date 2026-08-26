@@ -101,7 +101,7 @@ export function Step6Bank({ data, onChange }: Step6Props) {
       <Card className="rounded-xl border-emerald-500/20 bg-emerald-500/5 shadow-none">
         <CardContent className="p-3 flex items-center gap-2.5 text-xs text-emerald-700 dark:text-emerald-400">
           <ShieldCheck className="size-4 shrink-0" />
-          <span>Bank account details are securely encrypted and used solely for sales payout settlements.</span>
+          <span>Your bank details are used only for seller payout processing.</span>
         </CardContent>
       </Card>
     </div>

@@ -48,18 +48,44 @@ interface OnboardingContextType {
 
 const OnboardingContext = createContext<OnboardingContextType | null>(null);
 
+// Sensitive fields that MUST NEVER be stored in browser storage (sessionStorage/localStorage)
+const SENSITIVE_FIELDS: (keyof OnboardingData)[] = [
+  "accountNumber",
+  "confirmAccountNumber",
+  "ifscCode",
+  "gstNumber",
+  "panNumber",
+  "password",
+  "confirmPassword",
+  "addressLine1",
+  "addressLine2",
+  "pickupContactPhone",
+];
+
+function sanitizeDraftForStorage(data: OnboardingData): Partial<OnboardingData> {
+  const safeData: Partial<OnboardingData> = { ...data };
+  for (const field of SENSITIVE_FIELDS) {
+    delete safeData[field];
+  }
+  return safeData;
+}
+
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const { user, seller, profile, refreshAuth } = useAuth();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [completed, setCompleted] = useState(false);
 
-  // Initialize from sessionStorage if available, else defaults
+  // Initialize non-sensitive progress from sessionStorage if available
   const [formData, setFormData] = useState<OnboardingData>(() => {
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
-        return { ...DEFAULT_ONBOARDING_DATA, ...JSON.parse(saved) };
+        const parsed = JSON.parse(saved);
+        for (const field of SENSITIVE_FIELDS) {
+          delete parsed[field];
+        }
+        return { ...DEFAULT_ONBOARDING_DATA, ...parsed };
       }
     } catch {
       // Ignore sessionStorage read errors
@@ -67,10 +93,11 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     return DEFAULT_ONBOARDING_DATA;
   });
 
-  // Keep draft persisted in sessionStorage
+  // Persist ONLY non-sensitive draft progress in sessionStorage
   useEffect(() => {
     try {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+      const safeData = sanitizeDraftForStorage(formData);
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(safeData));
     } catch {
       // Ignore quota/storage errors
     }
@@ -126,9 +153,25 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       return false;
     }
 
+    // 2. Pre-activation compliance validation: All 6 steps must be valid
+    if (
+      validateStep1(formData, true) ||
+      validateStep2(formData) ||
+      validateStep3(formData) ||
+      validateStep4(formData) ||
+      validateStep5(formData) ||
+      validateStep6(formData)
+    ) {
+      toast(
+        "error",
+        "Please ensure all required onboarding steps are completed before activating your seller account."
+      );
+      return false;
+    }
+
     setLoading(true);
     try {
-      // 2. Verify normal user profile exists in database
+      // 3. Verify normal user profile exists in database
       const { data: userProfile, error: profileErr } = await supabase
         .from("profiles")
         .select("id")
