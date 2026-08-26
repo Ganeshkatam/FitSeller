@@ -60,6 +60,11 @@ export default function Dashboard() {
           .in("status", ["return_requested", "returned"]),
       ]);
 
+      if (itemsAll.error) throw itemsAll.error;
+      if (itemsMonth.error) throw itemsMonth.error;
+      if (offers.error) throw offers.error;
+      if (returns.error) throw returns.error;
+
       const sum = (rows: Record<string, number>[] | null, key: string) =>
         (rows ?? []).reduce((acc, r) => acc + Number(r[key] ?? 0), 0);
 
@@ -90,12 +95,15 @@ export default function Dashboard() {
       const since = new Date();
       since.setDate(since.getDate() - 13);
       since.setHours(0, 0, 0, 0);
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("order_items")
         .select("created_at,seller_amount")
         .eq("seller_id", sellerId!)
         .gte("created_at", since.toISOString())
         .order("created_at");
+
+      if (error) throw error;
+
       const byDay = new Map<string, number>();
       for (let i = 0; i < 14; i++) {
         const d = new Date(since);
@@ -118,12 +126,14 @@ export default function Dashboard() {
     queryKey: ["dashboard-recent-items", sellerId],
     enabled: !!sellerId,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("order_items")
         .select("*")
         .eq("seller_id", sellerId!)
         .order("created_at", { ascending: false })
         .limit(6);
+
+      if (error) throw error;
       return (data ?? []) as OrderItem[];
     },
   });

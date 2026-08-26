@@ -169,50 +169,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAuthError(null);
     const cleanEmail = email.trim().toLowerCase();
 
-    // 1. Try standard password login
-    const { data: authData, error: authErr } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: cleanEmail,
       password,
     });
 
-    if (!authErr && authData.user) {
-      // Login succeeded; loadSellerContext will auto-provision profile/seller if missing
-      return;
+    if (error) throw error;
+
+    if (data.session) {
+      setSession(data.session);
     }
-
-    // 2. If login failed due to invalid credentials, check if we should auto-create the account
-    const errMsg = authErr?.message?.toLowerCase() ?? "";
-    if (errMsg.includes("invalid login credentials") || errMsg.includes("invalid credentials")) {
-      const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
-        email: cleanEmail,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-        },
-      });
-
-      if (!signUpErr && signUpData.user) {
-        // Account was created successfully!
-        if (signUpData.session) {
-          setSession(signUpData.session);
-          return;
-        }
-        // If email confirmation is required:
-        throw new Error("We've created your account! Please check your email to verify and complete sign in.");
-      }
-
-      const signUpMsg = signUpErr?.message?.toLowerCase() ?? "";
-      if (signUpMsg.includes("already registered") || signUpMsg.includes("already exists") || signUpMsg.includes("user already exist")) {
-        // Account exists, meaning the password was incorrect
-        throw new Error("Incorrect password for this account. Please try again or reset your password.");
-      }
-
-      if (signUpErr) {
-        throw signUpErr;
-      }
-    }
-
-    if (authErr) throw authErr;
   }
 
   async function signUp(email: string, password: string) {
@@ -235,17 +201,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function requestPasswordReset(email: string) {
     const cleanEmail = email.trim().toLowerCase();
-
-    // Verify account exists before initiating password reset
-    const { data: sellerData } = await supabase
-      .from("sellers")
-      .select("id")
-      .eq("business_email", cleanEmail)
-      .maybeSingle();
-
-    if (!sellerData) {
-      throw new Error("No seller account found with this email address.");
-    }
 
     const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
       redirectTo: `${window.location.origin}/auth/reset-password`,
