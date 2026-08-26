@@ -1234,8 +1234,8 @@ export default function SellerLanding() {
 
                 <div className="rounded-2xl border border-border bg-muted/10 p-5">
                   <div className="flex items-center justify-between text-xs font-bold text-muted-foreground mb-4">
-                    <span>14-Day Sales Velocity (Real Database Provenance)</span>
-                    <span className="text-emerald-600">Zero Fabricated Data Guarantee</span>
+                    <span>14-Day Sales & Order Velocity</span>
+                    <span className="text-emerald-600">Updated in Real Time</span>
                   </div>
                   <div className="h-32 flex items-end gap-2.5 pt-4">
                     {[45, 60, 52, 78, 92, 65, 84, 110, 95, 120, 105, 135, 140, 165].map((val, idx) => (
@@ -1548,7 +1548,7 @@ export default function SellerLanding() {
               <ShieldCheck className="size-4 text-emerald-400" /> RBI Compliant IMPS Settlement
             </span>
             <span className="flex items-center gap-2">
-              <Lock className="size-4 text-emerald-400" /> TLS 256-Bit Encrypted
+              <Lock className="size-4 text-emerald-400" /> Bank-Grade Security
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle2 className="size-4 text-emerald-400" /> 0% Upfront Setup Cost
@@ -1590,7 +1590,7 @@ export default function SellerLanding() {
                 <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">1-Click Shipping Dispatch</a></li>
                 <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Multi-Size Matrix (XS–3XL)</a></li>
                 <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Daily IMPS Settlement Wallet</a></li>
-                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Verified SQL Analytics</a></li>
+                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Real-Time Sales Reports</a></li>
               </ul>
             </div>
 
@@ -1615,7 +1615,7 @@ export default function SellerLanding() {
             </div>
             <div className="flex items-center gap-2 text-emerald-600 font-semibold">
               <Lock className="size-3.5" />
-              <span>TLS 256-bit Encrypted Commerce Engine</span>
+              <span>Safe & Encrypted Platform</span>
             </div>
           </div>
         </div>
@@ -1623,3 +1623,4 @@ export default function SellerLanding() {
     </div>
   );
 }
+
