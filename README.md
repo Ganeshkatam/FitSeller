@@ -1,6 +1,37 @@
 # FitSeller
 
-FitSeller is a seller-facing ecommerce dashboard for managing a fashion/ecommerce seller business. The current application is a client-rendered React + TypeScript dashboard backed directly by Supabase.
+**FitSeller** is a seller-facing ecommerce dashboard for managing a fashion/ecommerce seller business. The current application is a client-rendered React + TypeScript dashboard backed directly by Supabase.
+
+## Repository
+
+| Property | Value |
+| --- | --- |
+| Repository | `Ganeshkatam/FitSeller` |
+| GitHub URL | https://github.com/Ganeshkatam/FitSeller |
+| Default branch | `main` |
+| Visibility | Public |
+| Repository type | Application repository |
+| Primary language | TypeScript |
+| License | MIT License |
+| Fork | No |
+| Archived | No |
+| Disabled | No |
+| GitHub Issues | Enabled |
+| GitHub Projects | Enabled |
+| GitHub Wiki | Enabled |
+| Pull Requests | Enabled |
+| Discussions | Disabled |
+| GitHub Pages | Disabled |
+| Downloads | Disabled |
+| Forking | Allowed |
+| Releases | Supported by repository configuration |
+| Open issues | 0 |
+| Stars | 0 |
+| Forks | 0 |
+| Watchers | 0 |
+| Created | 2026-08-26 |
+
+The repository is currently public and its default branch is `main`. fileciteturn13file0L2-L2
 
 > **Project status:** early-stage application. The repository currently contains the frontend application and Supabase client integration; database migrations/schema and automated CI are not included in the current repository tree.
 
@@ -72,23 +103,15 @@ The current `App.tsx` lazy-loads the Login, Dashboard, Products, Orders, Returns
 ├── package.json
 ├── package-lock.json
 ├── LICENSE
+├── README.md
 └── src/
     ├── App.tsx
     ├── main.tsx
     ├── index.css
     ├── components/
     │   ├── dashboard/
-    │   │   └── StatCard.tsx
     │   ├── layout/
-    │   │   ├── AppLayout.tsx
-    │   │   ├── Header.tsx
-    │   │   └── Page.tsx
     │   └── ui/
-    │       ├── Badge.tsx
-    │       ├── Field.tsx
-    │       ├── States.tsx
-    │       ├── Toast.tsx
-    │       └── shared UI primitives
     ├── contexts/
     │   └── AuthContext.tsx
     ├── lib/
@@ -314,4 +337,4 @@ CI should run typechecking, tests, and production builds on every pull request.
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](./LICENSE) for details.
+MIT License. See [LICENSE](./LICENSE).
