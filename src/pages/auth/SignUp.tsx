@@ -7,13 +7,11 @@ import {
   X,
   Shirt,
   CheckCircle2,
-  Sparkles,
-  Zap,
-  Tag,
-  ShoppingBag,
-  Layers,
   ArrowRight,
   ShieldCheck,
+  Tag,
+  Truck,
+  IndianRupee,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -111,143 +109,55 @@ export default function SignUp() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-background text-foreground grid grid-cols-1 lg:grid-cols-12 selection:bg-indigo-500/20">
-      {/* LEFT COLUMN: Seller Registration Roadmap (7 Cols) */}
-      <div className="relative hidden lg:flex lg:col-span-7 flex-col justify-between overflow-hidden bg-zinc-950 p-10 xl:p-14 text-white">
-        {/* Background photo */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="/images/auth/sign-up.jpg"
-            alt="Seller onboarding and apparel catalog"
-            className="h-full w-full object-cover object-center filter brightness-[0.42] contrast-110 scale-105 transition-transform duration-1000 ease-out"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/40" />
-          <div className="absolute inset-0 bg-radial from-transparent via-transparent to-black/70" />
-        </div>
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between selection:bg-indigo-500/20 relative overflow-hidden">
+      {/* Editorial Fashion Background */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/images/auth/sign-up.jpg"
+          alt="Fashion design studio"
+          className="h-full w-full object-cover object-center filter brightness-[0.32] contrast-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/85 to-background/70" />
+      </div>
 
-        {/* Top Header */}
-        <div className="relative z-10 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-xl bg-indigo-600 shadow-lg shadow-indigo-600/40 border border-indigo-400/20">
-              <Shirt className="size-5.5 text-white" />
+      {/* Top Navbar */}
+      <header className="border-b border-border/60 bg-card/60 backdrop-blur-md sticky top-0 z-50">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-indigo-600 shadow-md shadow-indigo-600/30 text-white">
+              <Shirt className="size-5" />
             </div>
-            <div>
-              <span className="font-bold tracking-tight text-white text-xl">FitSeller</span>
-              <span className="block text-[10px] font-bold uppercase tracking-wider text-indigo-300">
-                Seller Registration
+            <div className="flex items-center gap-2">
+              <span className="font-bold tracking-tight text-foreground text-lg">FitSeller</span>
+              <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                START SELLING
               </span>
             </div>
           </Link>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-3.5 py-1 text-xs font-medium text-zinc-300">
-            <Sparkles className="size-3.5 text-indigo-400" />
-            <span>Takes 2 Minutes</span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-muted-foreground hidden sm:inline">Already registered?</span>
+            <Link
+              to="/auth/sign-in"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card/80 px-3.5 py-1.5 text-xs font-bold text-foreground hover:bg-muted/50 transition-colors"
+            >
+              <span>Sign In</span>
+              <ArrowRight className="size-3.5" />
+            </Link>
           </div>
         </div>
+      </header>
 
-        {/* Center Onboarding Value Prop & Roadmap */}
-        <div className="relative z-10 max-w-xl my-auto py-10 space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 backdrop-blur-md px-3.5 py-1 text-xs font-semibold text-indigo-300">
-            <Zap className="size-3.5" />
-            <span>0% Upfront Registration Fee</span>
-          </div>
-
-          <h1 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-white leading-tight">
-            Start selling your clothing collection across India.
-          </h1>
-
-          <p className="text-sm xl:text-base leading-relaxed text-zinc-300">
-            Join thousands of independent clothing designers and sellers growing with doorstep courier pickup, daily bank payouts, and 3D virtual try-ons.
-          </p>
-
-          {/* 6-Step Seller Setup Path */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-3">
-            <p className="text-xs font-bold uppercase tracking-wider text-indigo-300">
-              6-Step Seller Setup Roadmap
-            </p>
-
-            <div className="grid grid-cols-3 gap-2 text-xs pt-1">
-              <div className="rounded-xl border border-indigo-500/40 bg-indigo-500/20 p-2.5 space-y-0.5">
-                <span className="font-bold text-white block text-[11px]">1. Account</span>
-                <span className="text-[10px] text-indigo-200 block">User credentials</span>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
-                <span className="font-bold text-white block text-[11px]">2. GST</span>
-                <span className="text-[10px] text-zinc-400 block">Tax / PAN verify</span>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
-                <span className="font-bold text-white block text-[11px]">3. Business</span>
-                <span className="text-[10px] text-zinc-400 block">Brand &amp; category</span>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
-                <span className="font-bold text-white block text-[11px]">4. Shipping</span>
-                <span className="text-[10px] text-zinc-400 block">Courier choices</span>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
-                <span className="font-bold text-white block text-[11px]">5. Pickup</span>
-                <span className="text-[10px] text-zinc-400 block">Warehouse address</span>
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
-                <span className="font-bold text-white block text-[11px]">6. Bank</span>
-                <span className="text-[10px] text-zinc-400 block">Daily payouts</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit Highlights */}
-          <div className="grid grid-cols-2 gap-3.5">
-            <div className="flex items-center gap-2.5 text-xs text-zinc-300 font-medium">
-              <ShoppingBag className="size-4 text-emerald-400" />
-              <span>Free Seller Account</span>
-            </div>
-            <div className="flex items-center gap-2.5 text-xs text-zinc-300 font-medium">
-              <Tag className="size-4 text-indigo-400" />
-              <span>Flat 8% Fee Only When Sold</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Feature Badges */}
-        <div className="relative z-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs text-zinc-400 font-medium">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="size-4 text-emerald-400" />
-            <span>Automatic Daily Bank Settlement</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Layers className="size-4 text-indigo-400" />
-            <span>Multi-Size Inventory (XS–3XL)</span>
-          </div>
-        </div>
-      </div>
-
-      {/* RIGHT COLUMN: Sign Up Form Container (5 Cols) */}
-      <div className="col-span-1 lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 xl:p-14 bg-card/60 backdrop-blur-xl border-l border-border/40">
-        {/* Mobile Header */}
-        <div className="flex lg:hidden items-center justify-between mb-8">
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-600/30">
-              <Shirt className="size-5" />
-            </div>
-            <span className="font-bold tracking-tight text-foreground text-lg">FitSeller</span>
-          </Link>
-
-          <Link
-            to="/auth/sign-in"
-            className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
-          >
-            <span>Sign in</span>
-            <ArrowRight className="size-3" />
-          </Link>
-        </div>
-
-        {/* Centered Form Body */}
-        <div className="my-auto max-w-md w-full mx-auto space-y-6">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Register as a seller
-            </h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              Start selling your clothing collection online in 2 minutes.
+      {/* Centered Registration Chamber */}
+      <main className="mx-auto w-full max-w-lg px-4 py-10 sm:py-14 my-auto relative z-10">
+        <div className="rounded-3xl border border-border/80 bg-card/95 backdrop-blur-2xl p-7 sm:p-10 shadow-2xl space-y-6">
+          {/* Header */}
+          <div className="text-center space-y-1.5">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+              Create Your Seller Account
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Start selling your clothes to shoppers across India with doorstep pickups.
             </p>
           </div>
 
@@ -293,10 +203,10 @@ export default function SignUp() {
             </span>
           </div>
 
-          {/* Form */}
+          {/* Registration Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Your Business Email</Label>
+              <Label htmlFor="email">Business Email Address</Label>
               <Input
                 id="email"
                 type="email"
@@ -377,32 +287,38 @@ export default function SignUp() {
               disabled={googleLoading}
               className="w-full font-bold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20 rounded-xl h-11 text-sm text-white"
             >
-              Create Seller Account
+              Create Free Seller Account
             </Button>
           </form>
 
-          {/* Footer Navigation */}
-          <div className="rounded-2xl border border-border/60 bg-muted/20 p-4 text-center text-xs text-muted-foreground space-y-1">
-            <p>
-              Already registered as a seller?{" "}
-              <Link
-                to="/auth/sign-in"
-                className="font-bold text-indigo-600 hover:text-indigo-700 hover:underline"
-              >
-                Sign in to your account &rarr;
-              </Link>
-            </p>
+          {/* Quick Value Highlights */}
+          <div className="grid grid-cols-3 gap-2 border-t border-border/60 pt-4 text-center text-[11px] text-muted-foreground">
+            <div className="flex flex-col items-center gap-1">
+              <Tag className="size-3.5 text-indigo-500" />
+              <span>₹0 Setup Fee</span>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <Truck className="size-3.5 text-indigo-500" />
+              <span>Doorstep Pickup</span>
+            </div>
+            <div className="flex flex-col items-center gap-1">
+              <IndianRupee className="size-3.5 text-emerald-500" />
+              <span>Daily Bank Deposits</span>
+            </div>
           </div>
         </div>
+      </main>
 
-        {/* Security Reassurance Footer */}
-        <div className="flex items-center justify-between border-t border-border/40 pt-6 text-[11px] text-muted-foreground">
-          <span>By signing up, you agree to our Seller Policies.</span>
-          <Link to="/auth/sign-in" className="hover:text-foreground transition-colors font-medium">
-            Sign In
-          </Link>
+      {/* Footer */}
+      <footer className="border-t border-border/60 bg-card/60 backdrop-blur-md py-4 text-center text-xs text-muted-foreground relative z-10">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-1.5 text-[11px]">
+            <ShieldCheck className="size-3.5 text-emerald-600" />
+            <span>Safe &amp; Encrypted Seller Registration</span>
+          </div>
+          <span className="text-[11px]">&copy; {new Date().getFullYear()} FitSeller</span>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }
