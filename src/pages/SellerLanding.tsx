@@ -92,7 +92,7 @@ const TESTIMONIALS = [
     name: "Rhea Deshmukh",
     role: "Founder",
     brand: "Aura Linen Wear, Mumbai",
-    tag: "Linen & Casual Pret",
+    tag: "Linen & Everyday Wear",
     growth: "+340% Annual Sales",
     avatar: "RD",
     quote:
@@ -124,7 +124,7 @@ const COMPARISON_ROWS = [
   {
     feature: "Listing & Setup Cost",
     fitseller: "Free / ₹0 to list unlimited clothes",
-    legacy: "Monthly fees or charges per SKU",
+    legacy: "Monthly fees or charges per item",
   },
   {
     feature: "Platform Commission",
@@ -420,7 +420,7 @@ export default function SellerLanding() {
                       <div>
                         <p className="text-xs font-bold text-foreground">Designer Boutiques</p>
                         <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
-                          Zero listing fees and premium placement for pret and custom designer wear.
+                          Zero listing fees and premium placement for everyday collections and custom designer wear.
                         </p>
                       </div>
                     </a>
@@ -434,7 +434,7 @@ export default function SellerLanding() {
                         <Sparkles className="size-4.5" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-foreground">D2C Fashion Labels</p>
+                        <p className="text-xs font-bold text-foreground">Online Fashion Brands</p>
                         <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
                           Virtual try-on preview for customers and fast nationwide shipping.
                         </p>
@@ -1322,7 +1322,7 @@ export default function SellerLanding() {
                   />
                   <div className="flex justify-between text-xs text-muted-foreground mt-1.5 font-medium">
                     <span>₹499 (Everyday)</span>
-                    <span>₹3,500 (Pret)</span>
+                    <span>₹3,500 (Premium Wear)</span>
                     <span>₹8,999 (Designer Wear)</span>
                   </div>
                 </div>
