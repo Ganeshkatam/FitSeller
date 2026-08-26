@@ -21,7 +21,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
   async function handleSignOut() {
     await signOut();
-    navigate("/", { replace: true });
+    navigate("/auth/sign-in", { replace: true });
   }
 
   return (
