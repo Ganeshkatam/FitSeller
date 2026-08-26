@@ -4,7 +4,7 @@ import { Search, Truck } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import { Page, PageHeader } from "../components/layout/Page";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/Badge";
 import { Input } from "../components/ui/Field";
 import { EmptyState, TableSkeleton } from "../components/ui/States";
@@ -252,3 +252,4 @@ function ShipModal({
     </div>
   );
 }
+

@@ -4,7 +4,7 @@ import { Store as StoreIcon, ShieldCheck } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import { Page, PageHeader } from "../components/layout/Page";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Input, Label, Textarea } from "../components/ui/Field";
 import { Badge } from "../components/ui/Badge";
 import { EmptyState } from "../components/ui/States";
@@ -164,3 +164,4 @@ export default function Settings() {
     </Page>
   );
 }
+

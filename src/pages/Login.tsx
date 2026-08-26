@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Shirt } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Input, Label } from "../components/ui/Field";
 
 export default function Login() {
@@ -112,3 +112,4 @@ export default function Login() {
     </div>
   );
 }
+

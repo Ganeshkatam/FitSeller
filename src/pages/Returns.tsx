@@ -4,7 +4,7 @@ import { Check, X } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import { Page, PageHeader } from "../components/layout/Page";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/Badge";
 import { EmptyState, TableSkeleton } from "../components/ui/States";
 import { useToast } from "../components/ui/Toast";
@@ -163,3 +163,4 @@ export default function Returns() {
     </Page>
   );
 }
+

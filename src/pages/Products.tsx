@@ -4,9 +4,17 @@ import { Plus, Search, Pencil, Trash2, Package, Tag } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import { Page, PageHeader } from "../components/layout/Page";
-import { Button } from "../components/ui/Button";
+import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/Badge";
 import { Input, Label, Select, Textarea } from "../components/ui/Field";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../components/ui/dialog";
 import { EmptyState, TableSkeleton } from "../components/ui/States";
 import { useToast } from "../components/ui/Toast";
 import { formatPaise, paiseToRupees } from "../lib/utils";
@@ -607,18 +615,27 @@ function CreateProductModal({
   );
 }
 
-function ModalFrame({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
+function ModalFrame({
+  title,
+  description,
+  onClose,
+  children,
+}: {
+  title: string;
+  description?: string;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-4">
-          <h2 className="text-base font-semibold text-white">{title}</h2>
-          <button onClick={onClose} className="text-sm text-zinc-500 hover:text-white">✕</button>
-        </div>
-        <div className="flex-1 space-y-5 overflow-y-auto p-5">{children}</div>
-      </div>
-    </div>
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="flex max-h-[90vh] flex-col overflow-hidden p-0 sm:max-w-2xl">
+        <DialogHeader className="border-b border-border px-5 py-4">
+          <DialogTitle>{title}</DialogTitle>
+          {description && <DialogDescription>{description}</DialogDescription>}
+        </DialogHeader>
+        <div className="flex-1 space-y-5 overflow-y-auto px-5 py-5">{children}</div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -634,9 +651,10 @@ function ModalFooter({
   saveLabel: string;
 }) {
   return (
-    <div className="sticky bottom-0 -mx-5 -mb-5 mt-2 flex justify-end gap-2 border-t border-zinc-800 bg-zinc-900 px-5 py-4">
+    <DialogFooter className="sticky bottom-0 -mx-5 -mb-5 mt-2 border-t border-border bg-card px-5 py-4 sm:justify-end">
       <Button variant="secondary" onClick={onClose}>Cancel</Button>
       <Button onClick={onSave} loading={saving}>{saveLabel}</Button>
-    </div>
+    </DialogFooter>
   );
 }
+

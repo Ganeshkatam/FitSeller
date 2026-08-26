@@ -5,25 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatCurrency(value: number | string | null | undefined) {
-  const n = Number(value ?? 0);
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: n % 1 === 0 ? 0 : 2,
-  }).format(n);
-}
-
-/** Amounts stored in paise (bigint) */
-export function formatPaise(paise: number | string | null | undefined) {
-  return formatCurrency(Number(paise ?? 0) / 100);
-}
-
-export function paiseToRupees(paise: number | string | null | undefined): string {
-  const n = Number(paise ?? 0) / 100;
-  return n % 1 === 0 ? String(n) : n.toFixed(2);
-}
-
 export function formatNumber(value: number | string | null | undefined) {
   return new Intl.NumberFormat("en-IN").format(Number(value ?? 0));
 }
@@ -45,6 +26,25 @@ export function formatDateTime(value: string | null | undefined) {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+export function formatCurrency(value: number | string | null | undefined) {
+  const n = Number(value ?? 0);
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: n % 1 === 0 ? 0 : 2,
+  }).format(n);
+}
+
+/** Amounts stored in paise (bigint) */
+export function formatPaise(paise: number | string | null | undefined) {
+  return formatCurrency(Number(paise ?? 0) / 100);
+}
+
+export function paiseToRupees(paise: number | string | null | undefined): string {
+  const n = Number(paise ?? 0) / 100;
+  return n % 1 === 0 ? String(n) : n.toFixed(2);
 }
 
 export function timeAgo(value: string | null | undefined) {
