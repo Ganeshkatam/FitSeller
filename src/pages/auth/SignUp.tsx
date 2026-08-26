@@ -10,7 +10,7 @@ import {
   Sparkles,
   Zap,
   Tag,
-  Store,
+  ShoppingBag,
   Layers,
   ArrowRight,
   ShieldCheck,
@@ -87,7 +87,7 @@ export default function SignUp() {
       navigate("/auth/verify-email", { state: { email: email.trim() } });
     } catch (err) {
       setLocalError(
-        getHumanErrorMessage(err, "Unable to create your store account. Please try again.")
+        getHumanErrorMessage(err, "Unable to create your seller account. Please try again.")
       );
       setDismissAlert(false);
     } finally {
@@ -112,13 +112,13 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground grid grid-cols-1 lg:grid-cols-12 selection:bg-indigo-500/20">
-      {/* LEFT COLUMN: Store Launch Roadmap Canvas (7 Cols) */}
+      {/* LEFT COLUMN: Seller Registration Roadmap (7 Cols) */}
       <div className="relative hidden lg:flex lg:col-span-7 flex-col justify-between overflow-hidden bg-zinc-950 p-10 xl:p-14 text-white">
         {/* Background photo */}
         <div className="absolute inset-0 z-0">
           <img
             src="/images/auth/sign-up.jpg"
-            alt="Clothing store creation and brand showcase"
+            alt="Seller onboarding and apparel catalog"
             className="h-full w-full object-cover object-center filter brightness-[0.42] contrast-110 scale-105 transition-transform duration-1000 ease-out"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/40" />
@@ -134,7 +134,7 @@ export default function SignUp() {
             <div>
               <span className="font-bold tracking-tight text-white text-xl">FitSeller</span>
               <span className="block text-[10px] font-bold uppercase tracking-wider text-indigo-300">
-                New Store Setup
+                Seller Registration
               </span>
             </div>
           </Link>
@@ -149,21 +149,21 @@ export default function SignUp() {
         <div className="relative z-10 max-w-xl my-auto py-10 space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 backdrop-blur-md px-3.5 py-1 text-xs font-semibold text-indigo-300">
             <Zap className="size-3.5" />
-            <span>0% Upfront Setup Cost</span>
+            <span>0% Upfront Registration Fee</span>
           </div>
 
           <h1 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-white leading-tight">
-            Start selling your clothing collection online today.
+            Start selling your clothing collection across India.
           </h1>
 
           <p className="text-sm xl:text-base leading-relaxed text-zinc-300">
-            Join thousands of independent clothing designers and brands growing with doorstep shipping, daily bank payouts, and 3D virtual try-ons.
+            Join thousands of independent clothing designers and sellers growing with doorstep courier pickup, daily bank payouts, and 3D virtual try-ons.
           </p>
 
-          {/* 3-Step Store Launch Path */}
+          {/* 3-Step Seller Launch Path */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-3">
             <p className="text-xs font-bold uppercase tracking-wider text-indigo-300">
-              How You Launch in 3 Simple Steps
+              How You Start Selling in 3 Simple Steps
             </p>
 
             <div className="grid grid-cols-3 gap-2.5 text-xs pt-1">
@@ -185,8 +185,8 @@ export default function SignUp() {
           {/* Benefit Highlights */}
           <div className="grid grid-cols-2 gap-3.5">
             <div className="flex items-center gap-2.5 text-xs text-zinc-300 font-medium">
-              <Store className="size-4 text-emerald-400" />
-              <span>Free Store Setup</span>
+              <ShoppingBag className="size-4 text-emerald-400" />
+              <span>Free Seller Account</span>
             </div>
             <div className="flex items-center gap-2.5 text-xs text-zinc-300 font-medium">
               <Tag className="size-4 text-indigo-400" />
@@ -232,7 +232,7 @@ export default function SignUp() {
         <div className="my-auto max-w-md w-full mx-auto space-y-6">
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Register your store
+              Register as a seller
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground">
               Start selling your clothing collection online in 2 minutes.
@@ -290,7 +290,7 @@ export default function SignUp() {
                 type="email"
                 required
                 autoComplete="email"
-                placeholder="store@example.com"
+                placeholder="seller@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
@@ -365,14 +365,14 @@ export default function SignUp() {
               disabled={googleLoading}
               className="w-full font-bold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20 rounded-xl h-11 text-sm text-white"
             >
-              Create Your Free Store
+              Create Seller Account
             </Button>
           </form>
 
           {/* Footer Navigation */}
           <div className="rounded-2xl border border-border/60 bg-muted/20 p-4 text-center text-xs text-muted-foreground space-y-1">
             <p>
-              Already have a store?{" "}
+              Already registered as a seller?{" "}
               <Link
                 to="/auth/sign-in"
                 className="font-bold text-indigo-600 hover:text-indigo-700 hover:underline"
@@ -385,7 +385,7 @@ export default function SignUp() {
 
         {/* Security Reassurance Footer */}
         <div className="flex items-center justify-between border-t border-border/40 pt-6 text-[11px] text-muted-foreground">
-          <span>By signing up, you agree to our Store Policies.</span>
+          <span>By signing up, you agree to our Seller Policies.</span>
           <Link to="/auth/sign-in" className="hover:text-foreground transition-colors font-medium">
             Sign In
           </Link>

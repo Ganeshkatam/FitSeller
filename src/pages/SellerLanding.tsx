@@ -29,7 +29,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LogIn,
-  Store,
+  ShoppingBag,
   Compass,
   FileCheck,
 } from "lucide-react";
@@ -116,7 +116,7 @@ const TESTIMONIALS = [
     growth: "99.4% On-time Delivery",
     avatar: "MK",
     quote:
-      "Setting up our store took less than an hour. The 8% flat fee is completely transparent, and customer support always picks up the phone.",
+      "Getting started on FitSeller took less than an afternoon. The 8% flat fee is completely transparent, and customer support always picks up the phone.",
   },
 ];
 
@@ -714,7 +714,7 @@ export default function SellerLanding() {
                       </div>
                       <div className="flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/30">
                         <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>Live on Store</span>
+                        <span>Live on fitMirror</span>
                       </div>
                     </div>
 
@@ -827,7 +827,7 @@ export default function SellerLanding() {
             <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm hover:border-indigo-500/40 transition-all flex flex-col justify-between">
               <div className="space-y-3.5">
                 <div className="flex size-12 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600">
-                  <Store className="size-6" />
+                  <ShoppingBag className="size-6" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground">Millions of Fashion Shoppers</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -1159,7 +1159,7 @@ export default function SellerLanding() {
                 </div>
 
                 <div className="rounded-xl bg-muted/30 p-4 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-2">
-                  <span>Stock levels update in real time on the customer store as soon as you change them.</span>
+                  <span>Stock levels update in real time for shoppers as soon as you change them.</span>
                   <span className="font-semibold text-emerald-600">Never oversell out-of-stock sizes</span>
                 </div>
               </div>
@@ -1521,7 +1521,7 @@ export default function SellerLanding() {
           </h2>
 
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-zinc-300 leading-relaxed font-medium">
-            Register your store in under 2 minutes. Free setup, doorstep courier pickup, and daily bank payouts.
+            Create your seller account in under 2 minutes. Free setup, doorstep courier pickup, and daily bank payouts.
           </p>
 
           <div className="max-w-md mx-auto pt-2">
@@ -1570,7 +1570,7 @@ export default function SellerLanding() {
                 <li><a href="#how-it-works" className="hover:text-foreground transition-colors">How It Works</a></li>
                 <li><a href="#calculator" className="hover:text-foreground transition-colors">Pricing & Fees</a></li>
                 <li><a href="#why-sell" className="hover:text-foreground transition-colors">Doorstep Courier Pickup</a></li>
-                <li><Link to="/auth/sign-up" className="hover:text-foreground transition-colors">Register Your Store</Link></li>
+                <li><Link to="/auth/sign-up" className="hover:text-foreground transition-colors">Start Selling</Link></li>
               </ul>
             </div>
 

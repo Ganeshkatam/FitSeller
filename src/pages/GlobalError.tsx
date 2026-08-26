@@ -146,8 +146,8 @@ export default function GlobalError() {
           "You do not possess the required seller permissions to view or edit this resource.",
         defaultSteps: [
           "Verify that you are logged into the correct seller account",
-          "Ensure your store role allows administrative or inventory actions",
-          "Request elevated permissions from your store administrator",
+          "Ensure your account role allows administrative or inventory actions",
+          "Request elevated permissions from your account administrator",
         ],
         defaultPrimaryAction: { label: "Return to Dashboard", url: "/" },
         defaultSecondaryAction: { label: "Switch Account", url: "/auth/sign-in" },
@@ -179,12 +179,12 @@ export default function GlobalError() {
         defaultSubtitle:
           "An issue occurred while processing your seller wallet balance or bank transfer.",
         defaultSteps: [
-          "Verify your bank account details and IFSC code under store settings",
+          "Verify your bank account details and IFSC code under seller settings",
           "Check that your available wallet balance meets minimum withdrawal limits",
           "Review recent transactions for pending settlement holds",
         ],
         defaultPrimaryAction: { label: "View Payouts & Wallet", url: "/payouts" },
-        defaultSecondaryAction: { label: "Store Settings", url: "/settings" },
+        defaultSecondaryAction: { label: "Seller Settings", url: "/settings" },
       },
       product: {
         icon: Tag,

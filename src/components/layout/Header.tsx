@@ -64,7 +64,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => navigate("/settings")}>
-            <UserRound className="size-4" /> Store settings
+            <UserRound className="size-4" /> Seller settings
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

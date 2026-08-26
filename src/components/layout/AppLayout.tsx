@@ -9,7 +9,7 @@ import {
   BarChart3,
   Settings as SettingsIcon,
   X,
-  Store as StoreIcon,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { useAuth } from "../../contexts/AuthContext";
@@ -104,7 +104,7 @@ export function AppLayout() {
                 {seller?.business_name ?? "My Seller Account"}
               </p>
               <p className="flex items-center gap-1 text-xs capitalize text-muted-foreground">
-                <StoreIcon className="size-3" />
+                <ShieldCheck className="size-3 text-indigo-500" />
                 {seller?.status ?? "pending"} seller
               </p>
             </div>

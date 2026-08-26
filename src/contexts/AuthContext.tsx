@@ -134,7 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           cleanEmail.split("@")[0] ??
           "Seller";
         const businessName =
-          rawName.charAt(0).toUpperCase() + rawName.slice(1) + " Store";
+          rawName.charAt(0).toUpperCase() + rawName.slice(1);
 
         const { data: createdSeller, error: createSellerErr } = await supabase
           .from("sellers")

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Store as StoreIcon, ShieldCheck } from "lucide-react";
+import { User as UserIcon, ShieldCheck } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import { Page, PageHeader } from "../components/layout/Page";
@@ -79,7 +79,7 @@ export default function Settings() {
           {/* Seller identity */}
           <section className="rounded-2xl border border-border bg-card/60 p-5">
             <h2 className="mb-4 flex items-center gap-2 text-sm font-semibold text-foreground">
-              <StoreIcon className="size-4 text-indigo-600" /> Seller profile
+              <UserIcon className="size-4 text-indigo-600" /> Seller profile
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">

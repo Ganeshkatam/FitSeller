@@ -141,14 +141,14 @@ export default function VerifyEmail() {
             <div className="flex items-center gap-2">
               <span className="font-bold tracking-tight text-foreground text-lg">FitSeller</span>
               <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-                STORE ACTIVATION
+                ACCOUNT ACTIVATION
               </span>
             </div>
           </Link>
 
           <div className="flex items-center gap-3">
             <a
-              href="mailto:support@fitmirror.in?subject=Store%20Activation%20Help"
+              href="mailto:support@fitmirror.in?subject=Account%20Activation%20Help"
               className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card/80 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
             >
               <LifeBuoy className="size-3.5 text-indigo-500" />
@@ -163,7 +163,7 @@ export default function VerifyEmail() {
         <div className="rounded-3xl border border-border/80 bg-card/90 backdrop-blur-2xl p-7 sm:p-9 shadow-2xl space-y-6">
           {phase === "checking" ? (
             <div className="py-8 text-center space-y-3">
-              <Spinner label="Checking store activation status…" />
+              <Spinner label="Checking seller account status…" />
             </div>
           ) : phase === "verified" ? (
             <div className="space-y-6 text-center">
@@ -173,13 +173,13 @@ export default function VerifyEmail() {
                 </div>
                 <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 mb-2">
                   <ShieldCheck className="size-3.5" />
-                  <span>Store Ready</span>
+                  <span>Account Ready</span>
                 </div>
                 <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                   Email Verified
                 </h1>
                 <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground">
-                  Your store account for <strong className="text-foreground">{verifiedEmail}</strong> is now active.
+                  Your seller account for <strong className="text-foreground">{verifiedEmail}</strong> is now active.
                 </p>
               </div>
 
@@ -271,7 +271,7 @@ export default function VerifyEmail() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="store@example.com"
+                    placeholder="seller@example.com"
                     disabled={sending || resendCooldown > 0}
                     className="mt-1.5 h-11 rounded-xl"
                   />
@@ -324,7 +324,7 @@ export default function VerifyEmail() {
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-1.5 text-[11px]">
             <Lock className="size-3 text-emerald-600" />
-            <span>Safe &amp; Secure Store Registration</span>
+            <span>Safe &amp; Secure Seller Registration</span>
           </div>
           <span className="text-[11px]">&copy; {new Date().getFullYear()} FitSeller</span>
         </div>

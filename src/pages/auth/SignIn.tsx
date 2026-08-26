@@ -107,7 +107,7 @@ export default function SignIn() {
         <div className="absolute inset-0 z-0">
           <img
             src="/images/auth/sign-in.jpg"
-            alt="Clothing store operations and packaging"
+            alt="Clothing brand operations and packaging"
             className="h-full w-full object-cover object-center filter brightness-[0.42] contrast-110 scale-105 transition-transform duration-1000 ease-out"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/40" />
@@ -130,7 +130,7 @@ export default function SignIn() {
 
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-3.5 py-1 text-xs font-medium text-zinc-300">
             <div className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Store Network: Active</span>
+            <span>Platform Status: Operational</span>
           </div>
         </div>
 
@@ -201,7 +201,7 @@ export default function SignIn() {
             to="/auth/sign-up"
             className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
           >
-            <span>Create store</span>
+            <span>Sign up</span>
             <ArrowRight className="size-3" />
           </Link>
         </div>
@@ -210,7 +210,7 @@ export default function SignIn() {
         <div className="my-auto max-w-md w-full mx-auto space-y-6">
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Sign in to your store
+              Sign in to your account
             </h2>
             <p className="mt-1.5 text-sm text-muted-foreground">
               Access your clothing catalog, live orders, and payouts.
@@ -268,7 +268,7 @@ export default function SignIn() {
                 type="email"
                 required
                 autoComplete="email"
-                placeholder="store@example.com"
+                placeholder="brand@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
@@ -328,7 +328,7 @@ export default function SignIn() {
                 to="/auth/sign-up"
                 className="font-bold text-indigo-600 hover:text-indigo-700 hover:underline"
               >
-                Register your store for free &rarr;
+                Create a seller account for free &rarr;
               </Link>
             </p>
           </div>

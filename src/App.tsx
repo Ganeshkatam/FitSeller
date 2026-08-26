@@ -58,7 +58,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
           category: "account",
           code: "SELLER_PROFILE_UNLINKED",
           account: session.user.email,
-          title: "Merchant Store Profile Missing",
+          title: "Seller Profile Missing",
           message: "You are signed in, but no active seller profile was found for this account.",
           backTo: "/auth/sign-in",
           primaryActionLabel: "Sign In With Another Account",
