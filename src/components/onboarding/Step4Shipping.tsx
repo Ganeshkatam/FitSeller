@@ -1,13 +1,13 @@
 import { Truck, Building2 } from "lucide-react";
 import { Label } from "@/components/ui/Field";
-import type { OnboardingData } from "./OnboardingTypes";
+import type { Step4ShippingData } from "./OnboardingTypes";
 
-interface StepProps {
-  data: OnboardingData;
-  onChange: <K extends keyof OnboardingData>(field: K, value: OnboardingData[K]) => void;
+interface Step4Props {
+  data: Step4ShippingData;
+  onChange: (field: any, value: any) => void;
 }
 
-export function Step4Shipping({ data, onChange }: StepProps) {
+export function Step4Shipping({ data, onChange }: Step4Props) {
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="space-y-1">
@@ -100,6 +100,32 @@ export function Step4Shipping({ data, onChange }: StepProps) {
           </select>
         </div>
       </div>
+
+      <div className="rounded-2xl border border-border/80 bg-card p-4 flex items-center justify-between text-xs">
+        <div className="space-y-0.5">
+          <p className="font-bold text-foreground">Provide Free Nationwide Shipping</p>
+          <p className="text-muted-foreground">
+            Sellers offering free shipping convert 3.2x more fashion shoppers.
+          </p>
+        </div>
+        <input
+          type="checkbox"
+          checked={data.offersFreeShipping}
+          onChange={(e) => onChange("offersFreeShipping", e.target.checked)}
+          className="size-5 rounded border-border text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+        />
+      </div>
     </div>
   );
+}
+
+export const STEP4_INITIAL: Step4ShippingData = {
+  shippingMode: "fitseller_pickup",
+  courierPartner: "both",
+  dispatchTimeHours: "24",
+  offersFreeShipping: true,
+};
+
+export function validateStep4(_data: Step4ShippingData): string | null {
+  return null; // Step 4 options always default to valid selections
 }

@@ -1,13 +1,13 @@
 import { ShieldCheck } from "lucide-react";
 import { Input, Label } from "@/components/ui/Field";
-import type { OnboardingData } from "./OnboardingTypes";
+import type { Step6BankData } from "./OnboardingTypes";
 
-interface StepProps {
-  data: OnboardingData;
-  onChange: <K extends keyof OnboardingData>(field: K, value: OnboardingData[K]) => void;
+interface Step6Props {
+  data: Step6BankData;
+  onChange: (field: any, value: any) => void;
 }
 
-export function Step6Bank({ data, onChange }: StepProps) {
+export function Step6Bank({ data, onChange }: Step6Props) {
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="space-y-1">
@@ -95,4 +95,23 @@ export function Step6Bank({ data, onChange }: StepProps) {
       </div>
     </div>
   );
+}
+
+export const STEP6_INITIAL: Step6BankData = {
+  accountNumber: "",
+  confirmAccountNumber: "",
+  ifscCode: "",
+  accountHolderName: "",
+  bankName: "",
+};
+
+export function validateStep6(data: Step6BankData): string | null {
+  if (
+    data.accountNumber &&
+    data.confirmAccountNumber &&
+    data.accountNumber !== data.confirmAccountNumber
+  ) {
+    return "Bank account numbers do not match.";
+  }
+  return null;
 }

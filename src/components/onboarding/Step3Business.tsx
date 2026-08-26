@@ -1,12 +1,12 @@
 import { Input, Label } from "@/components/ui/Field";
-import { APPAREL_CATEGORIES, type OnboardingData } from "./OnboardingTypes";
+import { APPAREL_CATEGORIES, type Step3BusinessData } from "./OnboardingTypes";
 
-interface StepProps {
-  data: OnboardingData;
-  onChange: <K extends keyof OnboardingData>(field: K, value: OnboardingData[K]) => void;
+interface Step3Props {
+  data: Step3BusinessData;
+  onChange: (field: any, value: any) => void;
 }
 
-export function Step3Business({ data, onChange }: StepProps) {
+export function Step3Business({ data, onChange }: Step3Props) {
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="space-y-1">
@@ -77,4 +77,18 @@ export function Step3Business({ data, onChange }: StepProps) {
       </div>
     </div>
   );
+}
+
+export const STEP3_INITIAL: Step3BusinessData = {
+  businessName: "",
+  brandName: "",
+  primaryCategory: "Men's Casual & Streetwear",
+  description: "",
+};
+
+export function validateStep3(data: Step3BusinessData): string | null {
+  if (!data.businessName.trim()) {
+    return "Please enter your registered business or brand name.";
+  }
+  return null;
 }

@@ -1,13 +1,31 @@
 import { Input, Label } from "@/components/ui/Field";
-import type { OnboardingData } from "./OnboardingTypes";
+import type { Step2GstData } from "./OnboardingTypes";
 
-interface StepProps {
-  data: OnboardingData;
-  onChange: <K extends keyof OnboardingData>(field: K, value: OnboardingData[K]) => void;
-  onGstChange: (gst: string) => void;
+interface Step2Props {
+  data: Step2GstData;
+  onChange: (field: any, value: any) => void;
 }
 
-export function Step2Gst({ data, onChange, onGstChange }: StepProps) {
+export function extractPanFromGst(gst: string): string {
+  const clean = gst.toUpperCase().trim();
+  if (clean.length === 15) {
+    return clean.substring(2, 12);
+  }
+  return "";
+}
+
+export function Step2Gst({ data, onChange }: Step2Props) {
+  function handleGstInput(value: string) {
+    const cleanGst = value.toUpperCase().trim();
+    onChange("gstNumber", cleanGst);
+    if (cleanGst.length === 15) {
+      const pan = extractPanFromGst(cleanGst);
+      if (pan) {
+        onChange("panNumber", pan);
+      }
+    }
+  }
+
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="space-y-1">
@@ -31,7 +49,7 @@ export function Step2Gst({ data, onChange, onGstChange }: StepProps) {
             maxLength={15}
             placeholder="e.g. 27AAAAA0000A1Z5"
             value={data.gstNumber}
-            onChange={(e) => onGstChange(e.target.value)}
+            onChange={(e) => handleGstInput(e.target.value)}
             className="mt-1.5 h-11 rounded-xl font-mono uppercase"
           />
         </div>
@@ -78,4 +96,22 @@ export function Step2Gst({ data, onChange, onGstChange }: StepProps) {
       </div>
     </div>
   );
+}
+
+export const STEP2_INITIAL: Step2GstData = {
+  gstNumber: "",
+  panNumber: "",
+  tradeName: "",
+  isGstExempt: false,
+};
+
+export function validateStep2(data: Step2GstData): string | null {
+  if (
+    !data.isGstExempt &&
+    data.gstNumber.trim().length > 0 &&
+    data.gstNumber.trim().length < 15
+  ) {
+    return "Please enter a valid 15-character GSTIN or check the exemption box.";
+  }
+  return null;
 }

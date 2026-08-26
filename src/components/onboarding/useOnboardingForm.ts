@@ -5,41 +5,20 @@ import { supabase } from "@/lib/supabase";
 import { useToast } from "@/components/ui/Toast";
 import type { OnboardingData } from "./OnboardingTypes";
 
+import { STEP1_INITIAL, validateStep1 } from "./Step1Account";
+import { STEP2_INITIAL, validateStep2 } from "./Step2Gst";
+import { STEP3_INITIAL, validateStep3 } from "./Step3Business";
+import { STEP4_INITIAL, validateStep4 } from "./Step4Shipping";
+import { STEP5_INITIAL, validateStep5 } from "./Step5PickupAddress";
+import { STEP6_INITIAL, validateStep6 } from "./Step6Bank";
+
 const INITIAL_ONBOARDING_DATA: OnboardingData = {
-  // Step 1: Account
-  email: "",
-  phone: "",
-  fullName: "",
-  // Step 2: GST
-  gstNumber: "",
-  panNumber: "",
-  tradeName: "",
-  isGstExempt: false,
-  // Step 3: Business Details
-  businessName: "",
-  brandName: "",
-  primaryCategory: "Men's Casual & Streetwear",
-  description: "",
-  // Step 4: Shipping Preferences
-  shippingMode: "fitseller_pickup",
-  courierPartner: "both",
-  dispatchTimeHours: "24",
-  offersFreeShipping: true,
-  // Step 5: Pickup Address
-  addressLine1: "",
-  addressLine2: "",
-  pincode: "",
-  city: "",
-  state: "",
-  landmark: "",
-  pickupContactName: "",
-  pickupContactPhone: "",
-  // Step 6: Bank Details
-  accountNumber: "",
-  confirmAccountNumber: "",
-  ifscCode: "",
-  accountHolderName: "",
-  bankName: "",
+  ...STEP1_INITIAL,
+  ...STEP2_INITIAL,
+  ...STEP3_INITIAL,
+  ...STEP4_INITIAL,
+  ...STEP5_INITIAL,
+  ...STEP6_INITIAL,
 };
 
 export function useOnboardingForm() {
@@ -50,6 +29,7 @@ export function useOnboardingForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [completed, setCompleted] = useState(false);
+
   const [formData, setFormData] = useState<OnboardingData>({
     ...INITIAL_ONBOARDING_DATA,
     email: user?.email || profile?.email || "",
@@ -91,46 +71,6 @@ export function useOnboardingForm() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   }
 
-  function handlePincodeChange(pincode: string) {
-    updateField("pincode", pincode);
-    if (pincode.length === 6) {
-      if (pincode.startsWith("11")) {
-        updateField("city", "New Delhi");
-        updateField("state", "Delhi");
-      } else if (pincode.startsWith("40")) {
-        updateField("city", "Mumbai");
-        updateField("state", "Maharashtra");
-      } else if (pincode.startsWith("56")) {
-        updateField("city", "Bangalore");
-        updateField("state", "Karnataka");
-      } else if (pincode.startsWith("60")) {
-        updateField("city", "Chennai");
-        updateField("state", "Tamil Nadu");
-      } else if (pincode.startsWith("70")) {
-        updateField("city", "Kolkata");
-        updateField("state", "West Bengal");
-      } else if (pincode.startsWith("50")) {
-        updateField("city", "Hyderabad");
-        updateField("state", "Telangana");
-      } else if (pincode.startsWith("38")) {
-        updateField("city", "Ahmedabad");
-        updateField("state", "Gujarat");
-      } else if (pincode.startsWith("30")) {
-        updateField("city", "Jaipur");
-        updateField("state", "Rajasthan");
-      }
-    }
-  }
-
-  function handleGstChange(gst: string) {
-    const cleanGst = gst.toUpperCase().trim();
-    updateField("gstNumber", cleanGst);
-    if (cleanGst.length === 15) {
-      const extractedPan = cleanGst.substring(2, 12);
-      updateField("panNumber", extractedPan);
-    }
-  }
-
   function handleNext(e?: FormEvent) {
     if (e) e.preventDefault();
 
@@ -144,42 +84,25 @@ export function useOnboardingForm() {
       return;
     }
 
+    // Delegate step validation to each step's dedicated validator
+    let error: string | null = null;
     if (currentStep === 1) {
-      if (!formData.fullName.trim()) {
-        toast("error", "Please enter your full name.");
-        return;
-      }
+      error = validateStep1(formData, !!user);
     } else if (currentStep === 2) {
-      if (
-        !formData.isGstExempt &&
-        formData.gstNumber.trim().length > 0 &&
-        formData.gstNumber.trim().length < 15
-      ) {
-        toast(
-          "error",
-          "Please enter a valid 15-character GSTIN or check the exemption box."
-        );
-        return;
-      }
+      error = validateStep2(formData);
     } else if (currentStep === 3) {
-      if (!formData.businessName.trim()) {
-        toast("error", "Please enter your registered business or brand name.");
-        return;
-      }
+      error = validateStep3(formData);
+    } else if (currentStep === 4) {
+      error = validateStep4(formData);
     } else if (currentStep === 5) {
-      if (!formData.addressLine1.trim() || !formData.pincode.trim()) {
-        toast("error", "Please enter your full pickup address and pincode.");
-        return;
-      }
+      error = validateStep5(formData);
     } else if (currentStep === 6) {
-      if (
-        formData.accountNumber &&
-        formData.confirmAccountNumber &&
-        formData.accountNumber !== formData.confirmAccountNumber
-      ) {
-        toast("error", "Bank account numbers do not match.");
-        return;
-      }
+      error = validateStep6(formData);
+    }
+
+    if (error) {
+      toast("error", error);
+      return;
     }
 
     if (currentStep < 6) {
@@ -289,8 +212,6 @@ export function useOnboardingForm() {
     completed,
     formData,
     updateField,
-    handlePincodeChange,
-    handleGstChange,
     handleNext,
     handleBack,
   };

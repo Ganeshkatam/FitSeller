@@ -1,29 +1,47 @@
 import type { LucideIcon } from "lucide-react";
-import { UserCheck, FileCheck, Building2, Truck, MapPin, CreditCard } from "lucide-react";
+import {
+  UserCheck,
+  FileCheck,
+  Building2,
+  Truck,
+  MapPin,
+  CreditCard,
+} from "lucide-react";
 
-export interface OnboardingData {
-  // Step 1: Account
+// ============================================================================
+// STEP-SPECIFIC DATA INTERFACES
+// ============================================================================
+
+export interface Step1AccountData {
   email: string;
   phone: string;
   fullName: string;
   password?: string;
   confirmPassword?: string;
-  // Step 2: GST
+}
+
+export interface Step2GstData {
   gstNumber: string;
   panNumber: string;
   tradeName: string;
   isGstExempt: boolean;
-  // Step 3: Business Details
+}
+
+export interface Step3BusinessData {
   businessName: string;
   brandName: string;
   primaryCategory: string;
   description: string;
-  // Step 4: Shipping Preferences
+}
+
+export interface Step4ShippingData {
   shippingMode: "fitseller_pickup" | "self_ship";
   courierPartner: "bluedart" | "delhivery" | "both";
   dispatchTimeHours: "24" | "48" | "72";
   offersFreeShipping: boolean;
-  // Step 5: Pickup Address
+}
+
+export interface Step5PickupAddressData {
   addressLine1: string;
   addressLine2: string;
   pincode: string;
@@ -32,13 +50,27 @@ export interface OnboardingData {
   landmark: string;
   pickupContactName: string;
   pickupContactPhone: string;
-  // Step 6: Bank Details
+}
+
+export interface Step6BankData {
   accountNumber: string;
   confirmAccountNumber: string;
   ifscCode: string;
   accountHolderName: string;
   bankName: string;
 }
+
+// Composite type for the overall onboarding form
+export type OnboardingData = Step1AccountData &
+  Step2GstData &
+  Step3BusinessData &
+  Step4ShippingData &
+  Step5PickupAddressData &
+  Step6BankData;
+
+// ============================================================================
+// STEPPER DEFINITION & CATEGORIES
+// ============================================================================
 
 export interface StepItem {
   id: number;

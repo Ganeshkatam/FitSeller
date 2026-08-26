@@ -1,13 +1,36 @@
 import { Input, Label } from "@/components/ui/Field";
-import type { OnboardingData } from "./OnboardingTypes";
+import type { Step5PickupAddressData } from "./OnboardingTypes";
 
-interface StepProps {
-  data: OnboardingData;
-  onChange: <K extends keyof OnboardingData>(field: K, value: OnboardingData[K]) => void;
-  onPincodeChange: (pincode: string) => void;
+interface Step5Props {
+  data: Step5PickupAddressData;
+  onChange: (field: any, value: any) => void;
 }
 
-export function Step5PickupAddress({ data, onChange, onPincodeChange }: StepProps) {
+export function lookupCityStateFromPincode(pincode: string): { city: string; state: string } | null {
+  if (pincode.length !== 6) return null;
+
+  if (pincode.startsWith("11")) return { city: "New Delhi", state: "Delhi" };
+  if (pincode.startsWith("40")) return { city: "Mumbai", state: "Maharashtra" };
+  if (pincode.startsWith("56")) return { city: "Bangalore", state: "Karnataka" };
+  if (pincode.startsWith("60")) return { city: "Chennai", state: "Tamil Nadu" };
+  if (pincode.startsWith("70")) return { city: "Kolkata", state: "West Bengal" };
+  if (pincode.startsWith("50")) return { city: "Hyderabad", state: "Telangana" };
+  if (pincode.startsWith("38")) return { city: "Ahmedabad", state: "Gujarat" };
+  if (pincode.startsWith("30")) return { city: "Jaipur", state: "Rajasthan" };
+
+  return null;
+}
+
+export function Step5PickupAddress({ data, onChange }: Step5Props) {
+  function handlePincodeInput(pincode: string) {
+    onChange("pincode", pincode);
+    const lookup = lookupCityStateFromPincode(pincode);
+    if (lookup) {
+      onChange("city", lookup.city);
+      onChange("state", lookup.state);
+    }
+  }
+
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="space-y-1">
@@ -57,7 +80,7 @@ export function Step5PickupAddress({ data, onChange, onPincodeChange }: StepProp
             maxLength={6}
             placeholder="e.g. 400050"
             value={data.pincode}
-            onChange={(e) => onPincodeChange(e.target.value)}
+            onChange={(e) => handlePincodeInput(e.target.value)}
             className="mt-1.5 h-11 rounded-xl font-mono"
           />
         </div>
@@ -101,11 +124,11 @@ export function Step5PickupAddress({ data, onChange, onPincodeChange }: StepProp
         </div>
 
         <div>
-          <Label htmlFor="contactPhone">Pickup Contact Mobile</Label>
+          <Label htmlFor="contactPhone">Pickup Contact Phone</Label>
           <Input
             id="contactPhone"
             type="tel"
-            placeholder="e.g. +91 98765 00000"
+            placeholder="e.g. +91 98765 43210"
             value={data.pickupContactPhone}
             onChange={(e) => onChange("pickupContactPhone", e.target.value)}
             className="mt-1.5 h-11 rounded-xl"
@@ -114,4 +137,22 @@ export function Step5PickupAddress({ data, onChange, onPincodeChange }: StepProp
       </div>
     </div>
   );
+}
+
+export const STEP5_INITIAL: Step5PickupAddressData = {
+  addressLine1: "",
+  addressLine2: "",
+  pincode: "",
+  city: "",
+  state: "",
+  landmark: "",
+  pickupContactName: "",
+  pickupContactPhone: "",
+};
+
+export function validateStep5(data: Step5PickupAddressData): string | null {
+  if (!data.addressLine1.trim() || !data.pincode.trim()) {
+    return "Please enter your full pickup address and pincode.";
+  }
+  return null;
 }

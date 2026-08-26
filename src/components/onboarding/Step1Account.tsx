@@ -42,7 +42,7 @@ function GoogleIcon({ className = "size-4" }: { className?: string }) {
 
 interface StepProps {
   data: OnboardingData;
-  onChange: <K extends keyof OnboardingData>(field: K, value: OnboardingData[K]) => void;
+  onChange: (field: any, value: any) => void;
   onAuthenticated?: () => void;
 }
 
@@ -582,3 +582,23 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
     </div>
   );
 }
+
+export const STEP1_INITIAL = {
+  email: "",
+  phone: "",
+  fullName: "",
+};
+
+export function validateStep1(
+  data: { fullName: string },
+  isAuthenticated: boolean
+): string | null {
+  if (!isAuthenticated) {
+    return "A normal user account is required first. Please create your user account or sign in.";
+  }
+  if (!data.fullName.trim()) {
+    return "Please enter your full name.";
+  }
+  return null;
+}
+
