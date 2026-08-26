@@ -11,7 +11,18 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const VerifyEmail = lazy(() => import("./pages/auth/VerifyEmail"));
 const GlobalError = lazy(() => import("./pages/GlobalError"));
 const SellerLanding = lazy(() => import("./pages/SellerLanding"));
-const SellerOnboarding = lazy(() => import("./pages/SellerOnboarding"));
+
+const OnboardingLayout = lazy(() =>
+  import("./components/onboarding/OnboardingLayout").then((m) => ({
+    default: m.OnboardingLayout,
+  }))
+);
+const Step1AccountPage = lazy(() => import("./pages/onboarding/Step1AccountPage"));
+const Step2GstPage = lazy(() => import("./pages/onboarding/Step2GstPage"));
+const Step3BusinessPage = lazy(() => import("./pages/onboarding/Step3BusinessPage"));
+const Step4ShippingPage = lazy(() => import("./pages/onboarding/Step4ShippingPage"));
+const Step5PickupAddressPage = lazy(() => import("./pages/onboarding/Step5PickupAddressPage"));
+const Step6BankPage = lazy(() => import("./pages/onboarding/Step6BankPage"));
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Products = lazy(() => import("./pages/Products"));
@@ -54,7 +65,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
   // 2. Must be a valid user with an active seller profile
   // If user is authenticated but hasn't created a seller profile yet, direct to onboarding
   if (!seller) {
-    return <Navigate to="/onboarding" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/onboarding/step-1" replace state={{ from: location.pathname }} />;
   }
 
   return <>{children}</>;
@@ -117,7 +128,65 @@ export default function App() {
       <Route path="/auth/forgot-password" element={<GuestOnly><Suspended><ForgotPassword /></Suspended></GuestOnly>} />
       <Route path="/auth/reset-password" element={<Suspended><ResetPassword /></Suspended>} />
       <Route path="/auth/verify-email" element={<Suspended><VerifyEmail /></Suspended>} />
-      <Route path="/onboarding" element={<Suspended><SellerOnboarding /></Suspended>} />
+      {/* ---- Individual Onboarding Routes ---- */}
+      <Route
+        path="/onboarding"
+        element={
+          <Suspended>
+            <OnboardingLayout />
+          </Suspended>
+        }
+      >
+        <Route index element={<Navigate to="/onboarding/step-1" replace />} />
+        <Route
+          path="step-1"
+          element={
+            <Suspended>
+              <Step1AccountPage />
+            </Suspended>
+          }
+        />
+        <Route
+          path="step-2"
+          element={
+            <Suspended>
+              <Step2GstPage />
+            </Suspended>
+          }
+        />
+        <Route
+          path="step-3"
+          element={
+            <Suspended>
+              <Step3BusinessPage />
+            </Suspended>
+          }
+        />
+        <Route
+          path="step-4"
+          element={
+            <Suspended>
+              <Step4ShippingPage />
+            </Suspended>
+          }
+        />
+        <Route
+          path="step-5"
+          element={
+            <Suspended>
+              <Step5PickupAddressPage />
+            </Suspended>
+          }
+        />
+        <Route
+          path="step-6"
+          element={
+            <Suspended>
+              <Step6BankPage />
+            </Suspended>
+          }
+        />
+      </Route>
 
       {/* ---- App routes (authenticated only) ---- */}
       <Route
