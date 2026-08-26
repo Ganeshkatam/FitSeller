@@ -30,12 +30,9 @@ export function Step2Gst({ data, onChange }: Step2Props) {
   }
 
   return (
-    <div className="space-y-6 animate-fadeIn">
-      <div className="space-y-1">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 uppercase tracking-wider">
-          <span>Step 2 of 6</span>
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+    <div className="space-y-4 animate-fadeIn">
+      <div className="space-y-0.5">
+        <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
           GST Verification
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground">
@@ -43,8 +40,8 @@ export function Step2Gst({ data, onChange }: Step2Props) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        <div className="sm:col-span-2 space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+        <div className="sm:col-span-2 space-y-1.5">
           <Label htmlFor="gstNumber" className="text-xs font-semibold text-foreground">
             GST Number (15 Characters)
           </Label>
@@ -55,11 +52,11 @@ export function Step2Gst({ data, onChange }: Step2Props) {
             placeholder="e.g. 27AAAAA0000A1Z5"
             value={data.gstNumber}
             onChange={(e) => handleGstInput(e.target.value)}
-            className="h-11 rounded-xl font-mono uppercase"
+            className="h-9.5 rounded-lg font-mono uppercase text-sm"
           />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="panNumber" className="text-xs font-semibold text-foreground">
             Business PAN Card
           </Label>
@@ -70,11 +67,11 @@ export function Step2Gst({ data, onChange }: Step2Props) {
             placeholder="e.g. AAAAA0000A"
             value={data.panNumber}
             onChange={(e) => onChange("panNumber", e.target.value.toUpperCase())}
-            className="h-11 rounded-xl font-mono uppercase"
+            className="h-9.5 rounded-lg font-mono uppercase text-sm"
           />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="tradeName" className="text-xs font-semibold text-foreground">
             Registered Legal Entity Name
           </Label>
@@ -84,18 +81,18 @@ export function Step2Gst({ data, onChange }: Step2Props) {
             placeholder="e.g. Sharma Apparels Pvt Ltd"
             value={data.tradeName}
             onChange={(e) => onChange("tradeName", e.target.value)}
-            className="h-11 rounded-xl"
+            className="h-9.5 rounded-lg text-sm"
           />
         </div>
       </div>
 
-      <Card className="rounded-2xl border-indigo-500/20 bg-indigo-500/5 shadow-none">
-        <CardContent className="p-4 flex items-center justify-between gap-4">
+      <Card className="rounded-xl border-indigo-500/20 bg-indigo-500/5 shadow-none">
+        <CardContent className="p-3 flex items-center justify-between gap-4">
           <div className="space-y-0.5">
-            <p className="font-bold text-foreground text-xs sm:text-sm">
+            <p className="font-semibold text-foreground text-xs sm:text-sm">
               Selling under GST exemption?
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-[11px] sm:text-xs text-muted-foreground">
               Applies to artisanal handloom weavers and regional craft producers under ₹20 Lakh turnover.
             </p>
           </div>
@@ -103,7 +100,7 @@ export function Step2Gst({ data, onChange }: Step2Props) {
             id="isGstExempt"
             checked={data.isGstExempt}
             onCheckedChange={(checked) => onChange("isGstExempt", !!checked)}
-            className="size-5 rounded-md border-border text-indigo-600 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 cursor-pointer"
+            className="size-4.5 rounded border-border text-indigo-600 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 cursor-pointer shrink-0"
           />
         </CardContent>
       </Card>

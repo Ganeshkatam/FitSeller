@@ -18,12 +18,9 @@ interface Step4Props {
 
 export function Step4Shipping({ data, onChange }: Step4Props) {
   return (
-    <div className="space-y-6 animate-fadeIn">
-      <div className="space-y-1">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 uppercase tracking-wider">
-          <span>Step 4 of 6</span>
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+    <div className="space-y-4 animate-fadeIn">
+      <div className="space-y-0.5">
+        <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
           Shipping Preferences
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground">
@@ -31,26 +28,26 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
         {/* Doorstep Pickup */}
         <div
           onClick={() => onChange("shippingMode", "fitseller_pickup")}
-          className={`rounded-2xl border p-5 cursor-pointer transition-all space-y-2 ${
+          className={`rounded-xl border p-3.5 cursor-pointer transition-all space-y-1.5 ${
             data.shippingMode === "fitseller_pickup"
-              ? "border-indigo-600 bg-indigo-500/10 shadow-lg shadow-indigo-500/10"
+              ? "border-indigo-600 bg-indigo-500/10 shadow-sm shadow-indigo-500/10"
               : "border-border/80 bg-card hover:border-border"
           }`}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Truck className="size-5 text-indigo-600" />
-              <span className="font-bold text-foreground text-sm">Doorstep Courier Pickup</span>
+              <Truck className="size-4.5 text-indigo-600" />
+              <span className="font-semibold text-foreground text-xs sm:text-sm">Doorstep Courier Pickup</span>
             </div>
-            <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-600 px-2 py-0.5 rounded-full">
+            <span className="text-[9px] font-bold bg-emerald-500/20 text-emerald-600 px-1.5 py-0.5 rounded-full">
               Recommended
             </span>
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
             BlueDart and Delhivery pick up orders directly from your address. 1-click prepaid shipping labels.
           </p>
         </div>
@@ -58,26 +55,26 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
         {/* Self-Ship */}
         <div
           onClick={() => onChange("shippingMode", "self_ship")}
-          className={`rounded-2xl border p-5 cursor-pointer transition-all space-y-2 ${
+          className={`rounded-xl border p-3.5 cursor-pointer transition-all space-y-1.5 ${
             data.shippingMode === "self_ship"
-              ? "border-indigo-600 bg-indigo-500/10 shadow-lg shadow-indigo-500/10"
+              ? "border-indigo-600 bg-indigo-500/10 shadow-sm shadow-indigo-500/10"
               : "border-border/80 bg-card hover:border-border"
           }`}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Building2 className="size-5 text-indigo-600" />
-              <span className="font-bold text-foreground text-sm">Self-Ship Dispatch</span>
+              <Building2 className="size-4.5 text-indigo-600" />
+              <span className="font-semibold text-foreground text-xs sm:text-sm">Self-Ship Dispatch</span>
             </div>
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
             Ship orders using your own preferred local logistics carrier and upload tracking numbers manually.
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        <div className="space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+        <div className="space-y-1.5">
           <Label htmlFor="dispatchTime" className="text-xs font-semibold text-foreground">
             Order Handling &amp; Dispatch Time
           </Label>
@@ -85,7 +82,7 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
             value={data.dispatchTimeHours}
             onValueChange={(val) => onChange("dispatchTimeHours", val)}
           >
-            <SelectTrigger id="dispatchTime" className="w-full h-11 rounded-xl text-sm">
+            <SelectTrigger id="dispatchTime" className="w-full h-9.5 rounded-lg text-sm">
               <SelectValue placeholder="Select handling window" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
@@ -96,7 +93,7 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
           </Select>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="courierPref" className="text-xs font-semibold text-foreground">
             Preferred Courier Network
           </Label>
@@ -104,7 +101,7 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
             value={data.courierPartner}
             onValueChange={(val) => onChange("courierPartner", val)}
           >
-            <SelectTrigger id="courierPref" className="w-full h-11 rounded-xl text-sm">
+            <SelectTrigger id="courierPref" className="w-full h-9.5 rounded-lg text-sm">
               <SelectValue placeholder="Select courier network" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
@@ -116,13 +113,13 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
         </div>
       </div>
 
-      <Card className="rounded-2xl border-border/80 bg-card shadow-none">
-        <CardContent className="p-4 flex items-center justify-between gap-4">
+      <Card className="rounded-xl border-border/80 bg-card shadow-none">
+        <CardContent className="p-3 flex items-center justify-between gap-4">
           <div className="space-y-0.5">
-            <p className="font-bold text-foreground text-xs sm:text-sm">
+            <p className="font-semibold text-foreground text-xs sm:text-sm">
               Provide Free Nationwide Shipping
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-[11px] sm:text-xs text-muted-foreground">
               Sellers offering free shipping convert 3.2x more fashion shoppers.
             </p>
           </div>
@@ -130,7 +127,7 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
             id="offersFreeShipping"
             checked={data.offersFreeShipping}
             onCheckedChange={(checked) => onChange("offersFreeShipping", !!checked)}
-            className="size-5 rounded-md border-border text-indigo-600 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 cursor-pointer"
+            className="size-4.5 rounded border-border text-indigo-600 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 cursor-pointer shrink-0"
           />
         </CardContent>
       </Card>
@@ -146,5 +143,5 @@ export const STEP4_INITIAL: Step4ShippingData = {
 };
 
 export function validateStep4(_data: Step4ShippingData): string | null {
-  return null; // Step 4 options always default to valid selections
+  return null;
 }

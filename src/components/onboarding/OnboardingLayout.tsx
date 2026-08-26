@@ -44,9 +44,9 @@ function OnboardingContent() {
       <OnboardingHeader currentStep={currentStep} seller={seller} />
 
       {/* Main Body */}
-      <main className="mx-auto w-full max-w-5xl px-4 sm:px-8 py-8 sm:py-12 my-auto">
+      <main className="mx-auto w-full max-w-4xl px-4 sm:px-6 py-3 sm:py-5 my-auto">
         {/* Step Progress Tracker */}
-        <div className="mb-10">
+        <div className="mb-3 sm:mb-4">
           <OnboardingStepper
             currentStep={currentStep}
             onSelectStep={handleSelectStep}
@@ -56,15 +56,15 @@ function OnboardingContent() {
         </div>
 
         {/* Active Step Route Outlet Card */}
-        <Card className="rounded-3xl border-border/80 bg-card/90 backdrop-blur-2xl shadow-xl shadow-zinc-950/5 dark:shadow-black/20 overflow-hidden">
-          <CardContent className="p-6 sm:p-10">
+        <Card className="rounded-2xl border-border/80 bg-card/90 backdrop-blur-2xl shadow-lg shadow-zinc-950/5 dark:shadow-black/20 overflow-hidden">
+          <CardContent className="p-4 sm:p-6">
             {completed ? <OnboardingSuccess /> : <Outlet />}
           </CardContent>
         </Card>
       </main>
 
       {/* Bottom Footer */}
-      <footer className="border-t border-border/80 bg-card/40 py-4 text-center text-xs text-muted-foreground">
+      <footer className="border-t border-border/80 bg-card/40 py-2.5 text-center text-xs text-muted-foreground">
         <span>&copy; {new Date().getFullYear()} FitSeller Inc. All rights reserved.</span>
       </footer>
     </div>

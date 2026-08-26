@@ -7,23 +7,20 @@ interface OnboardingHeaderProps {
   seller: Seller | null;
 }
 
-export function OnboardingHeader({ currentStep, seller }: OnboardingHeaderProps) {
+export function OnboardingHeader({ seller }: OnboardingHeaderProps) {
   return (
     <header className="border-b border-border/80 bg-card/80 backdrop-blur-xl sticky top-0 z-50">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-8">
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="flex size-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-600/30">
-            <Shirt className="size-5" />
+      <div className="mx-auto flex h-13 max-w-5xl items-center justify-between px-4 sm:px-6">
+        <Link to="/" className="flex items-center gap-2">
+          <div className="flex size-8 items-center justify-center rounded-lg bg-indigo-600 text-white shadow-sm shadow-indigo-600/30">
+            <Shirt className="size-4" />
           </div>
-          <span className="font-bold tracking-tight text-foreground text-lg">
+          <span className="font-bold tracking-tight text-foreground text-base sm:text-lg">
             FitSeller
           </span>
         </Link>
 
-        <div className="flex items-center gap-4 text-xs">
-          <span className="text-muted-foreground font-medium hidden sm:inline">
-            Step <strong className="text-foreground">{currentStep}</strong> of 6
-          </span>
+        <div className="flex items-center gap-3 text-xs">
           {seller?.id ? (
             <Link
               to="/dashboard"
@@ -32,7 +29,7 @@ export function OnboardingHeader({ currentStep, seller }: OnboardingHeaderProps)
               Go to Dashboard &rarr;
             </Link>
           ) : (
-            <span className="text-[11px] font-semibold text-muted-foreground">
+            <span className="text-[11px] font-medium text-muted-foreground">
               Seller Registration
             </span>
           )}

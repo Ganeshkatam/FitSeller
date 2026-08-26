@@ -20,13 +20,13 @@ export function OnboardingNavigation({
   }
 
   return (
-    <div className="flex items-center justify-between pt-6 border-t border-border/80">
+    <div className="flex items-center justify-between pt-4 mt-4 border-t border-border/80">
       {currentStep > 1 ? (
         <Button
           type="button"
           variant="outline"
           onClick={onBack}
-          className="font-bold text-xs rounded-xl h-11 px-5"
+          className="font-bold text-xs rounded-xl h-9.5 px-4"
         >
           <ArrowLeft className="size-3.5 mr-1.5" />
           <span>Back</span>
@@ -38,7 +38,7 @@ export function OnboardingNavigation({
       <Button
         type="submit"
         loading={loading}
-        className="font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-11 px-7 shadow-lg shadow-indigo-600/30 text-sm"
+        className="font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-9.5 px-5 shadow-md shadow-indigo-600/30 text-xs sm:text-sm"
       >
         <span>
           {currentStep === 6

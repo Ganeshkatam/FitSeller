@@ -175,14 +175,9 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
     const verifiedEmail = user.email || profile?.email || data.email;
 
     return (
-      <div className="space-y-6 animate-fadeIn">
-        <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
-            <span>Step 1 of 6</span>
-            <span>•</span>
-            <span>User Account Verified</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+      <div className="space-y-4 animate-fadeIn">
+        <div className="space-y-0.5">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
             Seller Account Creation
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground">
@@ -191,22 +186,22 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
         </div>
 
         {/* Verified User Card */}
-        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-600/30">
-              <ShieldCheck className="size-5.5" />
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-sm shadow-emerald-600/30">
+              <ShieldCheck className="size-4.5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
                   Verified User Account
                 </span>
-                <CheckCircle2 className="size-3.5 text-emerald-600" />
+                <CheckCircle2 className="size-3 text-emerald-600" />
               </div>
-              <p className="text-sm font-semibold text-foreground mt-0.5">
+              <p className="text-xs sm:text-sm font-semibold text-foreground">
                 {verifiedEmail}
               </p>
-              <p className="text-[11px] text-muted-foreground">
+              <p className="text-[10px] text-muted-foreground">
                 All seller listings, orders, and payouts will be anchored to this account.
               </p>
             </div>
@@ -219,21 +214,21 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
             onClick={async () => {
               await signOut();
             }}
-            className="text-xs font-semibold rounded-xl text-muted-foreground hover:text-foreground border-border shrink-0"
+            className="text-xs font-medium rounded-lg text-muted-foreground hover:text-foreground border-border shrink-0 h-8 px-3"
           >
-            <LogOut className="size-3.5 mr-1.5" />
+            <LogOut className="size-3 mr-1.5" />
             <span>Switch Account</span>
           </Button>
         </div>
 
         {/* Primary Contact Details for the Seller Registration */}
-        <div className="space-y-4 pt-2">
-          <h3 className="text-sm font-bold text-foreground">
+        <div className="space-y-3 pt-1">
+          <h3 className="text-xs sm:text-sm font-bold text-foreground">
             Seller Primary Contact Information
           </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="space-y-1.5">
               <Label htmlFor="fullName" className="text-xs font-semibold">
                 Full Name (Contact Person)
               </Label>
@@ -244,11 +239,11 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
                 placeholder="e.g. Katam Ganesh Reddy"
                 value={data.fullName}
                 onChange={(e) => onChange("fullName", e.target.value)}
-                className="mt-1.5 h-11 rounded-xl"
+                className="h-9.5 rounded-lg text-sm"
               />
             </div>
 
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="phone" className="text-xs font-semibold">
                 Mobile Phone Number
               </Label>
@@ -258,11 +253,11 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
                 placeholder="e.g. +91 98765 43210"
                 value={data.phone}
                 onChange={(e) => onChange("phone", e.target.value)}
-                className="mt-1.5 h-11 rounded-xl"
+                className="h-9.5 rounded-lg text-sm"
               />
             </div>
 
-            <div className="sm:col-span-2">
+            <div className="sm:col-span-2 space-y-1.5">
               <Label htmlFor="email" className="text-xs font-semibold">
                 Linked User Account Email
               </Label>
@@ -271,9 +266,9 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
                 type="email"
                 disabled
                 value={verifiedEmail}
-                className="mt-1.5 h-11 rounded-xl bg-muted/40 text-muted-foreground font-mono text-xs"
+                className="h-9.5 rounded-lg bg-muted/40 text-muted-foreground font-mono text-xs"
               />
-              <p className="text-[11px] text-muted-foreground mt-1">
+              <p className="text-[10px] text-muted-foreground">
                 This email is verified on your user account and cannot be modified here.
               </p>
             </div>

@@ -17,12 +17,9 @@ interface Step3Props {
 
 export function Step3Business({ data, onChange }: Step3Props) {
   return (
-    <div className="space-y-6 animate-fadeIn">
-      <div className="space-y-1">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 uppercase tracking-wider">
-          <span>Step 3 of 6</span>
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+    <div className="space-y-4 animate-fadeIn">
+      <div className="space-y-0.5">
+        <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
           Business &amp; Brand Details
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground">
@@ -30,8 +27,8 @@ export function Step3Business({ data, onChange }: Step3Props) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        <div className="space-y-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+        <div className="space-y-1.5">
           <Label htmlFor="businessName" className="text-xs font-semibold text-foreground">
             Seller Display Name
           </Label>
@@ -42,11 +39,11 @@ export function Step3Business({ data, onChange }: Step3Props) {
             placeholder="e.g. Aura Linen Wear"
             value={data.businessName}
             onChange={(e) => onChange("businessName", e.target.value)}
-            className="h-11 rounded-xl"
+            className="h-9.5 rounded-lg text-sm"
           />
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <Label htmlFor="brandName" className="text-xs font-semibold text-foreground">
             Clothing Brand Name (Optional)
           </Label>
@@ -56,11 +53,11 @@ export function Step3Business({ data, onChange }: Step3Props) {
             placeholder="e.g. Aura Studio"
             value={data.brandName}
             onChange={(e) => onChange("brandName", e.target.value)}
-            className="h-11 rounded-xl"
+            className="h-9.5 rounded-lg text-sm"
           />
         </div>
 
-        <div className="sm:col-span-2 space-y-2">
+        <div className="sm:col-span-2 space-y-1.5">
           <Label htmlFor="primaryCategory" className="text-xs font-semibold text-foreground">
             Primary Clothing Category
           </Label>
@@ -68,7 +65,7 @@ export function Step3Business({ data, onChange }: Step3Props) {
             value={data.primaryCategory}
             onValueChange={(val) => onChange("primaryCategory", val)}
           >
-            <SelectTrigger id="primaryCategory" className="w-full h-11 rounded-xl text-sm">
+            <SelectTrigger id="primaryCategory" className="w-full h-9.5 rounded-lg text-sm">
               <SelectValue placeholder="Select primary category" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
@@ -81,17 +78,17 @@ export function Step3Business({ data, onChange }: Step3Props) {
           </Select>
         </div>
 
-        <div className="sm:col-span-2 space-y-2">
+        <div className="sm:col-span-2 space-y-1.5">
           <Label htmlFor="description" className="text-xs font-semibold text-foreground">
             Short Brand Description (Optional)
           </Label>
           <Textarea
             id="description"
-            rows={3}
+            rows={2}
             placeholder="e.g. Crafted pure linen shirts, blazers, and dresses made with sustainable organic fabrics."
             value={data.description}
             onChange={(e) => onChange("description", e.target.value)}
-            className="w-full rounded-xl p-3 text-sm"
+            className="w-full rounded-lg p-2.5 text-sm min-h-16"
           />
         </div>
       </div>
