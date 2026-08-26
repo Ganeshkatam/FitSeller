@@ -2,37 +2,6 @@
 
 **FitSeller** is a seller-facing ecommerce dashboard for managing a fashion/ecommerce seller business. The current application is a client-rendered React + TypeScript dashboard backed directly by Supabase.
 
-## Repository
-
-| Property | Value |
-| --- | --- |
-| Repository | `Ganeshkatam/FitSeller` |
-| GitHub URL | https://github.com/Ganeshkatam/FitSeller |
-| Default branch | `main` |
-| Visibility | Public |
-| Repository type | Application repository |
-| Primary language | TypeScript |
-| License | MIT License |
-| Fork | No |
-| Archived | No |
-| Disabled | No |
-| GitHub Issues | Enabled |
-| GitHub Projects | Enabled |
-| GitHub Wiki | Enabled |
-| Pull Requests | Enabled |
-| Discussions | Disabled |
-| GitHub Pages | Disabled |
-| Downloads | Disabled |
-| Forking | Allowed |
-| Releases | Supported by repository configuration |
-| Open issues | 0 |
-| Stars | 0 |
-| Forks | 0 |
-| Watchers | 0 |
-| Created | 2026-08-26 |
-
-The repository is currently public and its default branch is `main`. fileciteturn13file0L2-L2
-
 > **Project status:** early-stage application. The repository currently contains the frontend application and Supabase client integration; database migrations/schema and automated CI are not included in the current repository tree.
 
 ## Overview
@@ -69,7 +38,7 @@ The application uses Supabase Auth for identity and Supabase/Postgres for applic
 | Notifications | Sonner |
 | Font | Geist variable font |
 
-Dependency versions are defined in `package.json` and should be treated as the source of truth. fileciteturn4file0L2-L2
+Dependency versions are defined in `package.json` and should be treated as the source of truth.
 
 ## Application architecture
 
@@ -90,7 +59,7 @@ Browser
         └── PostgreSQL / RLS
 ```
 
-The current `App.tsx` lazy-loads the Login, Dashboard, Products, Orders, Returns, Payouts, Analytics, and Settings pages and gates the application on the Supabase session. fileciteturn5file0L2-L2
+The current `App.tsx` lazy-loads the Login, Dashboard, Products, Orders, Returns, Payouts, Analytics, and Settings pages and gates the application on the Supabase session.
 
 ## Repository structure
 
@@ -133,13 +102,13 @@ The current `App.tsx` lazy-loads the Login, Dashboard, Products, Orders, Returns
 
 ### Authentication
 
-`AuthContext` maintains the Supabase session, exposes sign-in/sign-up/sign-out operations, and loads the authenticated user's profile and seller context. The Supabase client is configured with persistent sessions and automatic token refresh. fileciteturn6file0L2-L2 fileciteturn7file0L2-L2
+`AuthContext` maintains the Supabase session, exposes sign-in/sign-up/sign-out operations, and loads the authenticated user's profile and seller context. The Supabase client is configured with persistent sessions and automatic token refresh.
 
-Seller lookup currently attempts `profile_id` first and then falls back to `business_email`. The stable long-term ownership relationship should be `profile_id`; email matching should not be relied upon as an authorization mechanism. fileciteturn6file0L2-L2
+Seller lookup currently attempts `profile_id` first and then falls back to `business_email`. The stable long-term ownership relationship should be `profile_id`; email matching should not be relied upon as an authorization mechanism.
 
 ### Dashboard
 
-The dashboard currently queries seller-scoped `order_items` for earnings and sales metrics, `product_offers` for active offers, and `order_items` for returns. It also queries `tryon_sessions` for try-on counts. The earnings chart aggregates the previous 14 days in the client. fileciteturn10file0L2-L2
+The dashboard currently queries seller-scoped `order_items` for earnings and sales metrics, `product_offers` for active offers, and `order_items` for returns. It also queries `tryon_sessions` for try-on counts. The earnings chart aggregates the previous 14 days in the client.
 
 Current dashboard concepts include:
 
@@ -166,7 +135,7 @@ Current dashboard concepts include:
 | `/analytics` | Analytics | Authenticated |
 | `/settings` | Settings | Authenticated |
 
-Unauthenticated users are directed to the login experience; unknown authenticated routes redirect to `/`. fileciteturn5file0L2-L2
+Unauthenticated users are directed to the login experience; unknown authenticated routes redirect to `/`.
 
 ## Local development
 
@@ -185,8 +154,6 @@ Copy `.env.example` to `.env` and configure:
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
-
-The Supabase client validates that both variables exist at application startup. fileciteturn7file0L2-L2
 
 Do **not** put a Supabase service-role key in any `VITE_*` variable. Vite exposes `VITE_*` values to browser code.
 
@@ -214,7 +181,7 @@ npm run typecheck
 npm run build
 ```
 
-The build currently runs `tsc --noEmit` before `vite build`. fileciteturn4file0L2-L2
+The build currently runs `tsc --noEmit` before `vite build`.
 
 ### Preview production build
 
@@ -239,11 +206,11 @@ Production deployments should ensure:
 
 ### Important current security consideration
 
-The dashboard's try-on count currently queries `tryon_sessions` without an explicit seller filter. fileciteturn10file0L2-L2 If `tryon_sessions` is multi-tenant data, its RLS policy must independently prevent cross-seller visibility. Prefer making the query explicitly seller-scoped as well.
+The dashboard's try-on count currently queries `tryon_sessions` without an explicit seller filter. If `tryon_sessions` is multi-tenant data, its RLS policy must independently prevent cross-seller visibility. Prefer making the query explicitly seller-scoped as well.
 
 ## Data and reporting considerations
 
-The dashboard currently performs some aggregation in the browser after fetching `order_items`. fileciteturn10file0L2-L2 This is acceptable for a small prototype but should not become the production reporting strategy.
+The dashboard currently performs some aggregation in the browser after fetching `order_items`. This is acceptable for a small prototype but should not become the production reporting strategy.
 
 At scale, prefer:
 
@@ -275,7 +242,7 @@ Never expose database internals, credentials, SQL statements, or stack traces to
 
 ## Performance
 
-The application already uses route-level code splitting through React `lazy`/`Suspense` and server-state caching through TanStack React Query. fileciteturn5file0L2-L2
+The application already uses route-level code splitting through React `lazy`/`Suspense` and server-state caching through TanStack React Query.
 
 For continued performance improvements:
 
@@ -290,7 +257,7 @@ For continued performance improvements:
 
 ## Testing and CI
 
-The current `package.json` exposes development, build, preview, and typecheck scripts, but does not currently define a dedicated unit-test or end-to-end-test script. fileciteturn4file0L2-L2
+The current `package.json` exposes development, build, preview, and typecheck scripts, but does not currently define a dedicated unit-test or end-to-end-test script.
 
 Before production release, add automated coverage for at least:
 
