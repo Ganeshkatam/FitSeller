@@ -60,8 +60,6 @@ function Button({
     variant?: "primary" | "danger" | NonNullable<VariantProps<typeof buttonVariants>["variant"]>
     size?: "md" | NonNullable<VariantProps<typeof buttonVariants>["size"]>
   }) {
-  const Comp = asChild ? Slot.Root : "button"
-
   const VARIANT_ALIASES = { primary: "default", danger: "destructive" } as const
   const SIZE_ALIASES = { md: "default" } as const
 
@@ -74,8 +72,22 @@ function Button({
       VariantProps<typeof buttonVariants>["size"]
     >
 
+  if (asChild) {
+    return (
+      <Slot.Root
+        data-slot="button"
+        data-variant={resolvedVariant}
+        data-size={resolvedSize}
+        className={cn(buttonVariants({ variant: resolvedVariant, size: resolvedSize, className }))}
+        {...props}
+      >
+        {children}
+      </Slot.Root>
+    )
+  }
+
   return (
-    <Comp
+    <button
       data-slot="button"
       data-variant={resolvedVariant}
       data-size={resolvedSize}
@@ -85,7 +97,7 @@ function Button({
     >
       {loading && <Loader2 className="animate-spin" data-icon="inline-start" />}
       {children}
-    </Comp>
+    </button>
   )
 }
 
