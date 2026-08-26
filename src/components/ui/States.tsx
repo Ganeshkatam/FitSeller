@@ -12,12 +12,12 @@ export function EmptyState({ title, description, icon = "inbox", action }: Empty
   const Icon = icon === "package" ? PackageOpen : icon === "search" ? SearchX : Inbox;
   return (
     <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
-      <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-zinc-800/60">
-        <Icon className="size-7 text-zinc-500" />
+      <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-accent/60">
+        <Icon className="size-7 text-muted-foreground" />
       </div>
-      <h3 className="text-sm font-semibold text-zinc-200">{title}</h3>
+      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
       {description && (
-        <p className="mt-1 max-w-sm text-sm text-zinc-500">{description}</p>
+        <p className="mt-1 max-w-sm text-sm text-muted-foreground">{description}</p>
       )}
       {action && <div className="mt-5">{action}</div>}
     </div>
@@ -25,7 +25,7 @@ export function EmptyState({ title, description, icon = "inbox", action }: Empty
 }
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={`animate-pulse rounded-lg bg-zinc-800 ${className ?? ""}`} />;
+  return <div className={`animate-pulse rounded-lg bg-muted ${className ?? ""}`} />;
 }
 
 export function TableSkeleton({ rows = 5, cols = 5 }: { rows?: number; cols?: number }) {
@@ -45,8 +45,8 @@ export function TableSkeleton({ rows = 5, cols = 5 }: { rows?: number; cols?: nu
 export function Spinner({ label }: { label?: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-16">
-      <div className="size-8 animate-spin rounded-full border-2 border-zinc-700 border-t-indigo-500" />
-      {label && <p className="mt-3 text-sm text-zinc-500">{label}</p>}
+      <div className="size-8 animate-spin rounded-full border-2 border-input border-t-indigo-500" />
+      {label && <p className="mt-3 text-sm text-muted-foreground">{label}</p>}
     </div>
   );
 }

@@ -101,13 +101,13 @@ export default function Orders() {
       <PageHeader title="Orders" description="Track and fulfill buyer orders for your products" />
 
       <div className="flex flex-wrap items-center gap-3 px-4 py-4 lg:px-8">
-        <div className="flex flex-wrap gap-1 rounded-xl bg-zinc-900 p-1">
+        <div className="flex flex-wrap gap-1 rounded-xl bg-card p-1">
           {TABS.map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium capitalize transition ${
-                tab === t ? "bg-indigo-600 text-white" : "text-zinc-400 hover:text-white"
+                tab === t ? "bg-indigo-600 text-white" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {t.replace("_", " ")}
@@ -115,7 +115,7 @@ export default function Orders() {
           ))}
         </div>
         <div className="relative ml-auto min-w-[220px] sm:max-w-xs">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search order or product…"
             value={search}
@@ -133,11 +133,11 @@ export default function Orders() {
         ) : filtered.length === 0 ? (
           <EmptyState title="No orders found" description={search ? "Try a different search." : "Orders will appear here once buyers purchase your offers."} icon={search ? "search" : "inbox"} />
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card/60">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
+                  <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                     <th className="px-5 py-3 font-medium">Order</th>
                     <th className="px-5 py-3 font-medium">Product</th>
                     <th className="px-5 py-3 font-medium">Placed</th>
@@ -148,25 +148,25 @@ export default function Orders() {
                     <th className="px-5 py-3 text-right font-medium">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800/70">
+                <tbody className="divide-y divide-border">
                   {filtered.map((it) => {
                     const snap = it.product_snapshot as { name?: string };
                     const o = it.order;
                     return (
-                      <tr key={it.id} className="group transition hover:bg-zinc-800/40">
+                      <tr key={it.id} className="group transition hover:bg-accent/40">
                         <td className="px-5 py-3.5">
-                          <p className="font-mono text-xs font-semibold text-indigo-300">{o?.order_number ?? "—"}</p>
-                          <p className="text-[11px] capitalize text-zinc-500">{o?.payment_method ?? ""}</p>
+                          <p className="font-mono text-xs font-semibold text-indigo-700">{o?.order_number ?? "—"}</p>
+                          <p className="text-[11px] capitalize text-muted-foreground">{o?.payment_method ?? ""}</p>
                         </td>
                         <td className="px-5 py-3.5">
-                          <span className="block max-w-[180px] truncate text-zinc-200">{snap?.name ?? it.product_id.slice(0, 8)}</span>
-                          <span className="text-[11px] text-zinc-500">×{it.quantity}</span>
+                          <span className="block max-w-[180px] truncate text-foreground">{snap?.name ?? it.product_id.slice(0, 8)}</span>
+                          <span className="text-[11px] text-muted-foreground">×{it.quantity}</span>
                         </td>
-                        <td className="whitespace-nowrap px-5 py-3.5 text-zinc-400">{formatDateTime(it.created_at)}</td>
+                        <td className="whitespace-nowrap px-5 py-3.5 text-muted-foreground">{formatDateTime(it.created_at)}</td>
                         <td className="px-5 py-3.5"><Badge status={o?.payment_status ?? "pending"} /></td>
                         <td className="px-5 py-3.5"><Badge status={it.status} /></td>
-                        <td className="px-5 py-3.5 font-mono text-xs text-zinc-400">{o?.tracking_number ?? "—"}</td>
-                        <td className="px-5 py-3.5 text-right font-semibold text-emerald-400">{formatCurrency(it.seller_amount)}</td>
+                        <td className="px-5 py-3.5 font-mono text-xs text-muted-foreground">{o?.tracking_number ?? "—"}</td>
+                        <td className="px-5 py-3.5 text-right font-semibold text-emerald-600">{formatCurrency(it.seller_amount)}</td>
                         <td className="px-5 py-3.5">
                           <div className="flex justify-end gap-2 opacity-60 transition group-hover:opacity-100">
                             {["confirmed", "processing"].includes(o?.status ?? "") && (
@@ -230,10 +230,10 @@ function ShipModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-sm rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
-        <h3 className="text-base font-semibold text-white">Mark as shipped</h3>
-        <p className="mt-1 text-sm text-zinc-500">Order {orderNumber}</p>
-        <label className="mt-4 mb-1.5 block text-xs font-medium uppercase tracking-wide text-zinc-400">
+      <div className="relative w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-2xl">
+        <h3 className="text-base font-semibold text-foreground">Mark as shipped</h3>
+        <p className="mt-1 text-sm text-muted-foreground">Order {orderNumber}</p>
+        <label className="mt-4 mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">
           Tracking number
         </label>
         <Input

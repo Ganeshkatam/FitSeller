@@ -133,11 +133,11 @@ export default function Products() {
       />
 
       <div className="flex flex-wrap items-center gap-3 px-4 py-4 lg:px-8">
-        <div className="flex gap-1 rounded-xl bg-zinc-900 p-1">
+        <div className="flex gap-1 rounded-xl bg-card p-1">
           <button
             onClick={() => setTab("offers")}
             className={`flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-medium transition ${
-              tab === "offers" ? "bg-indigo-600 text-white" : "text-zinc-400 hover:text-white"
+              tab === "offers" ? "bg-indigo-600 text-white" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Tag className="size-3.5" /> My offers ({offers?.length ?? 0})
@@ -145,7 +145,7 @@ export default function Products() {
           <button
             onClick={() => setTab("catalog")}
             className={`flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-xs font-medium transition ${
-              tab === "catalog" ? "bg-indigo-600 text-white" : "text-zinc-400 hover:text-white"
+              tab === "catalog" ? "bg-indigo-600 text-white" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             <Package className="size-3.5" /> Browse catalog
@@ -153,7 +153,7 @@ export default function Products() {
         </div>
 
         <div className="relative min-w-[200px] flex-1 sm:max-w-xs">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="Search products…"
             value={search}
@@ -195,11 +195,11 @@ export default function Products() {
             icon="search"
           />
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60">
+          <div className="overflow-hidden rounded-2xl border border-border bg-card/60">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
+                  <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                     <th className="px-5 py-3 font-medium">Product</th>
                     <th className="px-5 py-3 font-medium">Category</th>
                     <th className="px-5 py-3 font-medium">Platform price</th>
@@ -217,27 +217,27 @@ export default function Products() {
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800/70">
+                <tbody className="divide-y divide-border">
                   {tab === "offers"
                     ? filteredOffers.map((o) => (
-                        <tr key={o.id} className="group transition hover:bg-zinc-800/40">
+                        <tr key={o.id} className="group transition hover:bg-accent/40">
                           <td className="px-5 py-3.5">
                             <div className="flex items-center gap-3">
                               <Thumb image={o.product?.image} name={o.product?.name} />
                               <div className="min-w-0 max-w-[240px]">
-                                <p className="truncate font-medium text-zinc-100">{o.product?.name}</p>
+                                <p className="truncate font-medium text-foreground">{o.product?.name}</p>
                                 {o.product?.brand && (
-                                  <p className="truncate text-xs text-zinc-500">{o.product.brand}</p>
+                                  <p className="truncate text-xs text-muted-foreground">{o.product.brand}</p>
                                 )}
                               </div>
                             </div>
                           </td>
-                          <td className="px-5 py-3.5 capitalize text-zinc-400">{o.product?.category}</td>
-                          <td className="px-5 py-3.5 text-zinc-400">{formatPaise(o.product?.price ?? 0)}</td>
+                          <td className="px-5 py-3.5 capitalize text-muted-foreground">{o.product?.category}</td>
+                          <td className="px-5 py-3.5 text-muted-foreground">{formatPaise(o.product?.price ?? 0)}</td>
                           <td className="px-5 py-3.5">
-                            <span className="font-semibold text-emerald-400">{formatPaise(o.price_paise)}</span>
+                            <span className="font-semibold text-emerald-600">{formatPaise(o.price_paise)}</span>
                             {o.sale_price_paise != null && Number(o.sale_price_paise) > 0 && (
-                              <span className="ml-2 text-xs text-zinc-500 line-through">
+                              <span className="ml-2 text-xs text-muted-foreground line-through">
                                 {formatPaise(o.sale_price_paise)}
                               </span>
                             )}
@@ -249,7 +249,7 @@ export default function Products() {
                                 <Pencil className="size-4" />
                               </Button>
                               {o.status !== "ended" && (
-                                <Button variant="ghost" size="icon" onClick={() => handleDeleteOffer(o)} className="hover:bg-red-950/50 hover:text-red-400">
+                                <Button variant="ghost" size="icon" onClick={() => handleDeleteOffer(o)} className="hover:bg-red-50 hover:text-red-600">
                                   <Trash2 className="size-4" />
                                 </Button>
                               )}
@@ -258,22 +258,22 @@ export default function Products() {
                         </tr>
                       ))
                     : filteredCatalog.map((p) => (
-                        <tr key={p.id} className="group transition hover:bg-zinc-800/40">
+                        <tr key={p.id} className="group transition hover:bg-accent/40">
                           <td className="px-5 py-3.5">
                             <div className="flex items-center gap-3">
                               <Thumb image={p.image} name={p.name} />
                               <div className="min-w-0 max-w-[240px]">
-                                <p className="truncate font-medium text-zinc-100">{p.name}</p>
-                                {p.brand && <p className="truncate text-xs text-zinc-500">{p.brand}</p>}
+                                <p className="truncate font-medium text-foreground">{p.name}</p>
+                                {p.brand && <p className="truncate text-xs text-muted-foreground">{p.brand}</p>}
                               </div>
                             </div>
                           </td>
-                          <td className="px-5 py-3.5 capitalize text-zinc-400">{p.category}</td>
-                          <td className="px-5 py-3.5 font-semibold text-zinc-100">{formatPaise(Number(p.price) * 100)}</td>
+                          <td className="px-5 py-3.5 capitalize text-muted-foreground">{p.category}</td>
+                          <td className="px-5 py-3.5 font-semibold text-foreground">{formatPaise(Number(p.price) * 100)}</td>
                           <td className="px-5 py-3.5">
                             <div className="flex flex-wrap gap-1">
                               {(p.sizes ?? []).slice(0, 5).map((s) => (
-                                <span key={s} className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-300">{s}</span>
+                                <span key={s} className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground">{s}</span>
                               ))}
                             </div>
                           </td>
@@ -323,7 +323,7 @@ export default function Products() {
 
 function Thumb({ image, name }: { image?: string | null; name?: string | null }) {
   return (
-    <span className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-zinc-800 bg-zinc-800 text-xs font-bold uppercase text-zinc-400">
+    <span className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-muted text-xs font-bold uppercase text-muted-foreground">
       {image ? <img src={image} alt="" className="size-full object-cover" /> : (name ?? "?").slice(0, 2)}
     </span>
   );
@@ -379,7 +379,7 @@ function OfferModal({
         <div>
           <Label>Your selling price (₹) *</Label>
           <Input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} />
-          <p className="mt-1 text-xs text-zinc-600">Stored in paise — e.g. ₹4299 → 429900</p>
+          <p className="mt-1 text-xs text-muted-foreground">Stored in paise — e.g. ₹4299 → 429900</p>
         </div>
         <div>
           <Label>Sale price (₹)</Label>
@@ -392,7 +392,7 @@ function OfferModal({
           </Select>
         </div>
         {error && (
-          <p className="rounded-lg border border-red-500/30 bg-red-950/40 px-3 py-2 text-sm text-red-300">{error}</p>
+          <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
         )}
       </div>
       <ModalFooter onClose={onClose} saving={saving} onSave={handleSave} saveLabel={isNew ? "Create offer" : "Save changes"} />
@@ -591,7 +591,7 @@ function CreateProductModal({
                   type="button"
                   onClick={() => setSizes((cur) => (active ? cur.filter((x) => x !== s) : [...cur, s]))}
                   className={`size-10 rounded-lg text-xs font-bold transition ${
-                    active ? "bg-indigo-600 text-white shadow shadow-indigo-600/30" : "border border-zinc-700 text-zinc-400 hover:border-zinc-500"
+                    active ? "bg-indigo-600 text-white shadow shadow-indigo-600/30" : "border border-input text-muted-foreground hover:border-ring"
                   }`}
                 >
                   {s}
@@ -601,13 +601,13 @@ function CreateProductModal({
           </div>
         </div>
 
-        <label className="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-300">
+        <label className="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground">
           <input type="checkbox" checked={form.is_active} onChange={(e) => set("is_active", e.target.checked)} className="size-4 rounded accent-indigo-600" />
           Active — visible to buyers on fitMirror
         </label>
 
         {error && (
-          <p className="rounded-lg border border-red-500/30 bg-red-950/40 px-3 py-2 text-sm text-red-300">{error}</p>
+          <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
         )}
       </div>
       <ModalFooter onClose={onClose} saving={saving} onSave={handleSave} saveLabel="Create product" />

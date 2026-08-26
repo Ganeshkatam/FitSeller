@@ -111,27 +111,27 @@ export default function Analytics() {
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 px-4 lg:grid-cols-5 lg:px-8">
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 lg:col-span-3">
-          <h3 className="mb-4 text-sm font-semibold text-zinc-100">Try-on sessions — last 14 days</h3>
+        <div className="rounded-2xl border border-border bg-card/60 p-5 lg:col-span-3">
+          <h3 className="mb-4 text-sm font-semibold text-foreground">Try-on sessions — last 14 days</h3>
           {isLoading ? (
             <TableSkeleton rows={6} cols={7} />
           ) : (
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data?.chart ?? []} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-                  <CartesianGrid stroke="#27272a" strokeDasharray="3 3" vertical={false} />
+                  <CartesianGrid stroke="#e4e4e7" strokeDasharray="3 3" vertical={false} />
                   <XAxis
                     dataKey="label"
                     tick={{ fill: "#71717a", fontSize: 11 }}
-                    axisLine={{ stroke: "#27272a" }}
+                    axisLine={{ stroke: "#e4e4e7" }}
                     tickLine={false}
                     interval="preserveStartEnd"
                   />
                   <YAxis tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} width={36} allowDecimals={false} />
                   <Tooltip
-                    cursor={{ fill: "#27272a40" }}
-                    contentStyle={{ background: "#18181b", border: "1px solid #3f3f46", borderRadius: 12, fontSize: 12 }}
-                    labelStyle={{ color: "#a1a1aa" }}
+                    cursor={{ fill: "#e4e4e7" }}
+                    contentStyle={{ background: "#ffffff", border: "1px solid #e4e4e7", borderRadius: 12, fontSize: 12 }}
+                    labelStyle={{ color: "#52525b" }}
                   />
                   <Bar dataKey="sessions" fill="#8b5cf6" radius={[4, 4, 0, 0]} maxBarSize={28} />
                 </BarChart>
@@ -140,8 +140,8 @@ export default function Analytics() {
           )}
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 lg:col-span-2">
-          <h3 className="mb-4 text-sm font-semibold text-zinc-100">Event mix — last 30 days</h3>
+        <div className="rounded-2xl border border-border bg-card/60 p-5 lg:col-span-2">
+          <h3 className="mb-4 text-sm font-semibold text-foreground">Event mix — last 30 days</h3>
           {!data || data.pieData.length === 0 ? (
             <EmptyState title="No analytics yet" description="Event breakdown appears as shoppers interact with try-on." />
           ) : (
@@ -150,11 +150,11 @@ export default function Analytics() {
                 <PieChart>
                   <Pie data={data.pieData} dataKey="value" nameKey="name" innerRadius={55} outerRadius={85} paddingAngle={3}>
                     {data.pieData.map((_, i) => (
-                      <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} stroke="#18181b" />
+                      <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} stroke="#ffffff" />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ background: "#18181b", border: "1px solid #3f3f46", borderRadius: 12, fontSize: 12 }} />
-                  <Legend wrapperStyle={{ fontSize: 12, color: "#a1a1aa" }} />
+                  <Tooltip contentStyle={{ background: "#ffffff", border: "1px solid #e4e4e7", borderRadius: 12, fontSize: 12 }} />
+                  <Legend wrapperStyle={{ fontSize: 12, color: "#52525b" }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>

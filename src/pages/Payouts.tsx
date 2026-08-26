@@ -55,9 +55,9 @@ export default function Payouts() {
   });
 
   const balances = [
-    { label: "Available balance", value: wallet?.available_balance, icon: <IndianRupee className="size-5" />, accent: "text-emerald-400" },
-    { label: "Pending settlement", value: wallet?.pending_balance, icon: <Clock className="size-5" />, accent: "text-amber-400" },
-    { label: "On hold", value: wallet?.on_hold_balance, icon: <Lock className="size-5" />, accent: "text-zinc-400" },
+    { label: "Available balance", value: wallet?.available_balance, icon: <IndianRupee className="size-5" />, accent: "text-emerald-600" },
+    { label: "Pending settlement", value: wallet?.pending_balance, icon: <Clock className="size-5" />, accent: "text-amber-600" },
+    { label: "On hold", value: wallet?.on_hold_balance, icon: <Lock className="size-5" />, accent: "text-muted-foreground" },
   ];
 
   return (
@@ -70,12 +70,12 @@ export default function Payouts() {
       {/* Balance cards */}
       <div className="grid grid-cols-1 gap-4 px-4 pt-6 sm:grid-cols-3 lg:px-8">
         {balances.map((b) => (
-          <div key={b.label} className="rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-zinc-950 p-5">
+          <div key={b.label} className="rounded-2xl border border-border bg-gradient-to-br from-card to-background p-5">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">{b.label}</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{b.label}</p>
               <span className={b.accent}>{b.icon}</span>
             </div>
-            <p className="mt-3 text-2xl font-bold text-white">
+            <p className="mt-3 text-2xl font-bold text-foreground">
               {walletLoading ? "…" : formatCurrency(b.value)}
             </p>
           </div>
@@ -90,8 +90,8 @@ export default function Payouts() {
         <>
           {/* Transactions */}
           <div className="mt-8 px-4 lg:px-8">
-            <h2 className="mb-3 text-sm font-semibold text-zinc-100">Recent transactions</h2>
-            <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60">
+            <h2 className="mb-3 text-sm font-semibold text-foreground">Recent transactions</h2>
+            <div className="overflow-hidden rounded-2xl border border-border bg-card/60">
               {txLoading ? (
                 <TableSkeleton rows={4} cols={4} />
               ) : !transactions || transactions.length === 0 ? (
@@ -99,7 +99,7 @@ export default function Payouts() {
               ) : (
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
+                    <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                       <th className="px-5 py-3 font-medium">Date</th>
                       <th className="px-5 py-3 font-medium">Description</th>
                       <th className="px-5 py-3 font-medium">Type</th>
@@ -108,17 +108,17 @@ export default function Payouts() {
                       <th className="px-5 py-3 text-right font-medium">Balance after</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/70">
+                  <tbody className="divide-y divide-border">
                     {transactions.map((t) => (
-                      <tr key={t.id} className="transition hover:bg-zinc-800/40">
-                        <td className="whitespace-nowrap px-5 py-3.5 text-zinc-400">{formatDateTime(t.created_at)}</td>
-                        <td className="max-w-[240px] truncate px-5 py-3.5 text-zinc-200">{t.description ?? t.reference_type ?? "—"}</td>
+                      <tr key={t.id} className="transition hover:bg-accent/40">
+                        <td className="whitespace-nowrap px-5 py-3.5 text-muted-foreground">{formatDateTime(t.created_at)}</td>
+                        <td className="max-w-[240px] truncate px-5 py-3.5 text-foreground">{t.description ?? t.reference_type ?? "—"}</td>
                         <td className="px-5 py-3.5"><Badge status={t.type === "credit" ? "completed" : t.type === "debit" ? "shipped" : undefined} >{t.type}</Badge></td>
                         <td className="px-5 py-3.5"><Badge status={t.status ?? "completed"} /></td>
-                        <td className={`px-5 py-3.5 text-right font-semibold ${t.type === "credit" ? "text-emerald-400" : "text-red-400"}`}>
+                        <td className={`px-5 py-3.5 text-right font-semibold ${t.type === "credit" ? "text-emerald-600" : "text-red-600"}`}>
                           {t.type === "credit" ? "+" : "−"}{formatCurrency(t.amount)}
                         </td>
-                        <td className="px-5 py-3.5 text-right text-zinc-400">{formatCurrency(t.balance_after)}</td>
+                        <td className="px-5 py-3.5 text-right text-muted-foreground">{formatCurrency(t.balance_after)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -129,10 +129,10 @@ export default function Payouts() {
 
           {/* Payout history */}
           <div className="mt-8 px-4 lg:px-8">
-            <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-zinc-100">
-              <ArrowDownToLine className="size-4 text-zinc-500" /> Withdrawal history
+            <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+              <ArrowDownToLine className="size-4 text-muted-foreground" /> Withdrawal history
             </h2>
-            <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card/60">
               {payoutsLoading ? (
                 <TableSkeleton rows={3} cols={4} />
               ) : !payouts || payouts.length === 0 ? (
@@ -140,7 +140,7 @@ export default function Payouts() {
               ) : (
                 <table className="w-full text-left text-sm">
                   <thead>
-                    <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
+                    <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                       <th className="px-5 py-3 font-medium">Payout</th>
                       <th className="px-5 py-3 font-medium">Requested</th>
                       <th className="px-5 py-3 font-medium">Reference</th>
@@ -148,14 +148,14 @@ export default function Payouts() {
                       <th className="px-5 py-3 text-right font-medium">Amount</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/70">
+                  <tbody className="divide-y divide-border">
                     {payouts.map((p) => (
-                      <tr key={p.id} className="transition hover:bg-zinc-800/40">
-                        <td className="px-5 py-3.5 font-mono text-xs text-indigo-300">{p.payout_number}</td>
-                        <td className="whitespace-nowrap px-5 py-3.5 text-zinc-400">{formatDateTime(p.created_at)}</td>
-                        <td className="px-5 py-3.5 font-mono text-xs text-zinc-500">{p.transaction_reference || "—"}</td>
+                      <tr key={p.id} className="transition hover:bg-accent/40">
+                        <td className="px-5 py-3.5 font-mono text-xs text-indigo-700">{p.payout_number}</td>
+                        <td className="whitespace-nowrap px-5 py-3.5 text-muted-foreground">{formatDateTime(p.created_at)}</td>
+                        <td className="px-5 py-3.5 font-mono text-xs text-muted-foreground">{p.transaction_reference || "—"}</td>
                         <td className="px-5 py-3.5"><Badge status={p.status} /></td>
-                        <td className="px-5 py-3.5 text-right font-semibold text-zinc-100">{formatCurrency(p.amount)}</td>
+                        <td className="px-5 py-3.5 text-right font-semibold text-foreground">{formatCurrency(p.amount)}</td>
                       </tr>
                     ))}
                   </tbody>

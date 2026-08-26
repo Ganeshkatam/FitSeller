@@ -69,17 +69,17 @@ export default function Settings() {
             description="Your account isn't registered in the sellers table yet. Contact the platform team to get approved."
             icon="package"
           />
-          <div className="mx-auto max-w-sm rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-            <p className="text-xs uppercase tracking-wide text-zinc-500">Account</p>
-            <p className="mt-1 truncate text-sm font-medium text-zinc-100">{user?.email}</p>
+          <div className="mx-auto max-w-sm rounded-2xl border border-border bg-card/60 p-5">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">Account</p>
+            <p className="mt-1 truncate text-sm font-medium text-foreground">{user?.email}</p>
           </div>
         </div>
       ) : (
         <div className="max-w-3xl space-y-6 px-4 py-6 lg:px-8">
           {/* Seller identity */}
-          <section className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-            <h2 className="mb-4 flex items-center gap-2 text-sm font-semibold text-zinc-100">
-              <StoreIcon className="size-4 text-indigo-400" /> Seller profile
+          <section className="rounded-2xl border border-border bg-card/60 p-5">
+            <h2 className="mb-4 flex items-center gap-2 text-sm font-semibold text-foreground">
+              <StoreIcon className="size-4 text-indigo-600" /> Seller profile
             </h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
@@ -111,11 +111,11 @@ export default function Settings() {
           </section>
 
           {/* Policies — stored locally until schema adds columns */}
-          <section className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-            <h2 className="mb-1 flex items-center gap-2 text-sm font-semibold text-zinc-100">
-              <ShieldCheck className="size-4 text-emerald-400" /> Business policies
+          <section className="rounded-2xl border border-border bg-card/60 p-5">
+            <h2 className="mb-1 flex items-center gap-2 text-sm font-semibold text-foreground">
+              <ShieldCheck className="size-4 text-emerald-600" /> Business policies
             </h2>
-            <p className="mb-4 text-xs text-zinc-600">
+            <p className="mb-4 text-xs text-muted-foreground">
               Policy fields require a schema update on the sellers table — values below are draft-only.
             </p>
             <div className="space-y-4">
@@ -141,10 +141,10 @@ export default function Settings() {
           </section>
 
           {/* Status */}
-          <section className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+          <section className="flex items-center justify-between rounded-2xl border border-border bg-card/60 p-5">
             <div>
-              <p className="text-sm font-medium text-zinc-100">Account status</p>
-              <p className="mt-0.5 text-xs text-zinc-500">Controlled by the fitMirror platform team</p>
+              <p className="text-sm font-medium text-foreground">Account status</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">Controlled by the fitMirror platform team</p>
             </div>
             <Badge status={seller.status ?? "pending"} />
           </section>

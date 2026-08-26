@@ -172,13 +172,13 @@ export default function Dashboard() {
 
       {/* Chart + top items */}
       <div className="mt-6 grid grid-cols-1 gap-4 px-4 lg:grid-cols-3 lg:px-8">
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 lg:col-span-2">
+        <div className="rounded-2xl border border-border bg-card/60 p-5 lg:col-span-2">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-zinc-100">Earnings — last 14 days</h3>
-              <p className="text-xs text-zinc-500">Your net seller amount per day</p>
+              <h3 className="text-sm font-semibold text-foreground">Earnings — last 14 days</h3>
+              <p className="text-xs text-muted-foreground">Your net seller amount per day</p>
             </div>
-            <Link to="/orders" className="flex items-center gap-1 text-xs font-medium text-indigo-400 hover:text-indigo-300">
+            <Link to="/orders" className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700">
               View orders <ArrowRight className="size-3.5" />
             </Link>
           </div>
@@ -191,11 +191,11 @@ export default function Dashboard() {
                     <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid stroke="#27272a" strokeDasharray="3 3" vertical={false} />
+                <CartesianGrid stroke="#e4e4e7" strokeDasharray="3 3" vertical={false} />
                 <XAxis
                   dataKey="label"
                   tick={{ fill: "#71717a", fontSize: 11 }}
-                  axisLine={{ stroke: "#27272a" }}
+                  axisLine={{ stroke: "#e4e4e7" }}
                   tickLine={false}
                   interval="preserveStartEnd"
                 />
@@ -210,12 +210,12 @@ export default function Dashboard() {
                 />
                 <Tooltip
                   contentStyle={{
-                    background: "#18181b",
-                    border: "1px solid #3f3f46",
+                    background: "#ffffff",
+                    border: "1px solid #e4e4e7",
                     borderRadius: 12,
                     fontSize: 12,
                   }}
-                  labelStyle={{ color: "#a1a1aa" }}
+                  labelStyle={{ color: "#52525b" }}
                   formatter={(value) => [formatCurrency(Number(value)), "Earnings"]}
                 />
                 <Area type="monotone" dataKey="amount" stroke="#6366f1" strokeWidth={2} fill="url(#revGrad)" />
@@ -224,18 +224,18 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
-          <h3 className="mb-4 text-sm font-semibold text-zinc-100">Best sellers by earnings</h3>
+        <div className="rounded-2xl border border-border bg-card/60 p-5">
+          <h3 className="mb-4 text-sm font-semibold text-foreground">Best sellers by earnings</h3>
           <TopItems sellerId={sellerId} />
         </div>
       </div>
 
       {/* Recent sales */}
       <div className="mt-6 px-4 lg:px-8">
-        <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/60">
-          <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-4">
-            <h3 className="text-sm font-semibold text-zinc-100">Recent sales</h3>
-            <Link to="/orders" className="flex items-center gap-1 text-xs font-medium text-indigo-400 hover:text-indigo-300">
+        <div className="overflow-hidden rounded-2xl border border-border bg-card/60">
+          <div className="flex items-center justify-between border-b border-border px-5 py-4">
+            <h3 className="text-sm font-semibold text-foreground">Recent sales</h3>
+            <Link to="/orders" className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700">
               All orders <ArrowRight className="size-3.5" />
             </Link>
           </div>
@@ -247,7 +247,7 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
+                  <tr className="border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
                     <th className="px-5 py-3 font-medium">Product</th>
                     <th className="px-5 py-3 font-medium">Qty</th>
                     <th className="px-5 py-3 font-medium">Status</th>
@@ -255,16 +255,16 @@ export default function Dashboard() {
                     <th className="px-5 py-3 text-right font-medium">Your earnings</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800/70">
+                <tbody className="divide-y divide-border">
                   {recentItems!.map((it) => {
                     const snap = it.product_snapshot as { name?: string };
                     return (
-                      <tr key={it.id} className="transition hover:bg-zinc-800/40">
-                        <td className="max-w-[240px] truncate px-5 py-3.5 font-medium text-zinc-100">{snap?.name ?? it.product_id}</td>
-                        <td className="px-5 py-3.5 text-zinc-400">×{it.quantity}</td>
+                      <tr key={it.id} className="transition hover:bg-accent/40">
+                        <td className="max-w-[240px] truncate px-5 py-3.5 font-medium text-foreground">{snap?.name ?? it.product_id}</td>
+                        <td className="px-5 py-3.5 text-muted-foreground">×{it.quantity}</td>
                         <td className="px-5 py-3.5"><Badge status={it.status} /></td>
-                        <td className="px-5 py-3.5 text-zinc-400">{timeAgo(it.created_at)}</td>
-                        <td className="px-5 py-3.5 text-right font-semibold text-emerald-400">{formatCurrency(it.seller_amount)}</td>
+                        <td className="px-5 py-3.5 text-muted-foreground">{timeAgo(it.created_at)}</td>
+                        <td className="px-5 py-3.5 text-right font-semibold text-emerald-600">{formatCurrency(it.seller_amount)}</td>
                       </tr>
                     );
                   })}
@@ -279,15 +279,15 @@ export default function Dashboard() {
       <div className="mt-6 px-4 lg:px-8">
         <Link
           to="/returns"
-          className="group flex items-center justify-between rounded-2xl border border-zinc-800 bg-gradient-to-r from-red-950/40 to-zinc-900 px-5 py-4 transition hover:border-red-500/40"
+          className="group flex items-center justify-between rounded-2xl border border-border bg-gradient-to-r from-red-50 to-card px-5 py-4 transition hover:border-red-500/40"
         >
           <span className="flex items-center gap-3">
-            <RotateCcw className="size-5 text-red-400" />
-            <span className="text-sm text-zinc-200">
+            <RotateCcw className="size-5 text-red-600" />
+            <span className="text-sm text-foreground">
               {statsLoading ? "Checking returns…" : `${stats?.returnCount ?? 0} returned item(s) need attention`}
             </span>
           </span>
-          <ArrowRight className="size-4 text-zinc-600 transition group-hover:translate-x-0.5 group-hover:text-red-400" />
+          <ArrowRight className="size-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-red-600" />
         </Link>
       </div>
     </Page>
@@ -327,12 +327,12 @@ function TopItems({ sellerId }: { sellerId: string | null }) {
     <ul className="space-y-3">
       {top.map((t, i) => (
         <li key={t.name + i} className="flex items-center gap-3">
-          <span className="w-4 text-xs font-bold text-zinc-600">{i + 1}</span>
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-zinc-800 bg-zinc-800 text-xs font-bold uppercase text-zinc-400">
+          <span className="w-4 text-xs font-bold text-muted-foreground">{i + 1}</span>
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-muted text-xs font-bold uppercase text-muted-foreground">
             {t.name.slice(0, 2)}
           </span>
-          <span className="min-w-0 flex-1 truncate text-sm text-zinc-200">{t.name}</span>
-          <span className="text-sm font-semibold text-emerald-400">{formatCurrency(t.total)}</span>
+          <span className="min-w-0 flex-1 truncate text-sm text-foreground">{t.name}</span>
+          <span className="text-sm font-semibold text-emerald-600">{formatCurrency(t.total)}</span>
         </li>
       ))}
     </ul>

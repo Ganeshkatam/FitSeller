@@ -15,7 +15,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <>
       {children}
-      <Toaster position="bottom-right" />
+      <Toaster position="bottom-right" theme="light" />
     </>
   );
 }

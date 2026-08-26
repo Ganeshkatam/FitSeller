@@ -27,24 +27,24 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-full items-center justify-center bg-zinc-950 px-4 py-12">
+    <div className="flex min-h-full items-center justify-center bg-background px-4 py-12">
       <div className="w-full max-w-md">
         {/* Brand */}
         <div className="mb-8 text-center">
           <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-2xl bg-indigo-600 shadow-xl shadow-indigo-600/30">
             <Shirt className="size-7 text-white" />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">FitSeller</h1>
-          <p className="mt-1.5 text-sm text-zinc-500">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">FitSeller</h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
             Sign in to manage your fitMirror store
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6 backdrop-blur"
+          className="rounded-2xl border border-border bg-card/60 p-6 backdrop-blur"
         >
-          <div className="mb-5 grid grid-cols-2 gap-2 rounded-xl bg-zinc-950 p-1">
+          <div className="mb-5 grid grid-cols-2 gap-2 rounded-xl bg-muted p-1">
             {(["signin", "signup"] as const).map((m) => (
               <button
                 key={m}
@@ -56,7 +56,7 @@ export default function Login() {
                 className={`rounded-lg py-2 text-sm font-medium transition ${
                   mode === m
                     ? "bg-indigo-600 text-white shadow"
-                    : "text-zinc-400 hover:text-white"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {m === "signin" ? "Sign in" : "Create account"}
@@ -93,7 +93,7 @@ export default function Login() {
           </div>
 
           {error && (
-            <p className="mt-4 rounded-lg border border-red-500/30 bg-red-950/40 px-3 py-2 text-sm text-red-300">
+            <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
               {error}
             </p>
           )}
@@ -103,7 +103,7 @@ export default function Login() {
           </Button>
 
           {mode === "signup" && (
-            <p className="mt-3 text-center text-xs text-zinc-500">
+            <p className="mt-3 text-center text-xs text-muted-foreground">
               A store will be linked automatically once your seller profile is approved.
             </p>
           )}

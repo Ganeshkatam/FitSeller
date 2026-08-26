@@ -59,13 +59,13 @@ export default function Returns() {
       <PageHeader title="Returns" description="Review and process buyer return requests for your products" />
 
       <div className="flex flex-wrap gap-1 px-4 py-4 lg:px-8">
-        <div className="flex flex-wrap gap-1 rounded-xl bg-zinc-900 p-1">
+        <div className="flex flex-wrap gap-1 rounded-xl bg-card p-1">
           {TABS.map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium capitalize transition ${
-                tab === t ? "bg-indigo-600 text-white" : "text-zinc-400 hover:text-white"
+                tab === t ? "bg-indigo-600 text-white" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {t.replace("_", " ")}
@@ -88,29 +88,29 @@ export default function Returns() {
         ) : (
           <div className="space-y-3">
             {filtered.map((r) => (
-              <div key={r.id} className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+              <div key={r.id} className="rounded-2xl border border-border bg-card/60 p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex items-center gap-2.5">
                       <Badge status={r.status} />
-                      <span className="font-mono text-xs text-zinc-500">RET-{r.id.slice(0, 8)}</span>
+                      <span className="font-mono text-xs text-muted-foreground">RET-{r.id.slice(0, 8)}</span>
                     </div>
-                    <p className="mt-2 text-sm font-medium capitalize text-zinc-100">{r.reason}</p>
-                    {r.description && <p className="mt-1 text-sm text-zinc-500">{r.description}</p>}
+                    <p className="mt-2 text-sm font-medium capitalize text-foreground">{r.reason}</p>
+                    {r.description && <p className="mt-1 text-sm text-muted-foreground">{r.description}</p>}
                   </div>
                   <div className="text-right">
-                    <p className="text-xs uppercase tracking-wide text-zinc-500">Requested</p>
-                    <p className="text-sm text-zinc-300">{formatDate(r.created_at)}</p>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Requested</p>
+                    <p className="text-sm text-muted-foreground">{formatDate(r.created_at)}</p>
                   </div>
                 </div>
 
                 {(r.items?.length ?? 0) > 0 && (
-                  <ul className="mt-3 space-y-1.5 border-t border-zinc-800 pt-3">
+                  <ul className="mt-3 space-y-1.5 border-t border-border pt-3">
                     {r.items!.map((it) => {
                       const snap = (it.order_item?.product_snapshot ?? {}) as { name?: string };
                       return (
-                        <li key={it.id} className="flex items-center justify-between text-xs text-zinc-400">
-                          <span className="truncate text-zinc-300">{snap.name ?? it.order_item_id.slice(0, 8)}</span>
+                        <li key={it.id} className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span className="truncate text-muted-foreground">{snap.name ?? it.order_item_id.slice(0, 8)}</span>
                           <span>Qty {it.quantity}{it.condition ? ` · ${it.condition}` : ""}</span>
                         </li>
                       );
@@ -119,19 +119,19 @@ export default function Returns() {
                 )}
 
                 {r.refund_amount != null && Number(r.refund_amount) > 0 && (
-                  <p className="mt-3 border-t border-zinc-800 pt-3 text-sm">
-                    <span className="text-zinc-500">Refund amount: </span>
-                    <span className="font-semibold text-emerald-400">{formatCurrency(r.refund_amount)}</span>
+                  <p className="mt-3 border-t border-border pt-3 text-sm">
+                    <span className="text-muted-foreground">Refund amount: </span>
+                    <span className="font-semibold text-emerald-600">{formatCurrency(r.refund_amount)}</span>
                   </p>
                 )}
 
                 {r.status === "requested" && (
-                  <div className="mt-4 flex justify-end gap-2 border-t border-zinc-800 pt-4">
+                  <div className="mt-4 flex justify-end gap-2 border-t border-border pt-4">
                     <Button
                       variant="outline"
                       loading={updateMutation.isPending && updateMutation.variables?.status === "rejected"}
                       onClick={() => updateMutation.mutate({ id: r.id, status: "rejected" })}
-                      className="border-red-500/30 text-red-400 hover:bg-red-950/40 hover:text-red-300"
+                      className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-600"
                     >
                       <X className="size-4" /> Reject
                     </Button>
@@ -145,7 +145,7 @@ export default function Returns() {
                 )}
 
                 {r.status === "approved" && (
-                  <div className="mt-4 flex justify-end border-t border-zinc-800 pt-4">
+                  <div className="mt-4 flex justify-end border-t border-border pt-4">
                     <Button
                       variant="secondary"
                       loading={updateMutation.isPending}
