@@ -171,56 +171,20 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
 
     setLoading(true);
     try {
-      // 3. Verify normal user profile exists in database
-      const { data: userProfile, error: profileErr } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("id", user.id)
-        .maybeSingle();
-
-      if (profileErr || !userProfile) {
-        toast(
-          "error",
-          "Cannot create seller account: No valid normal user profile found. Please re-authenticate your user account."
-        );
-        return false;
-      }
-
       const businessName =
         formData.businessName.trim() || formData.tradeName.trim() || "Seller";
 
-      if (seller?.id) {
-        await supabase
-          .from("sellers")
-          .update({
-            business_name: businessName,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", seller.id);
-      } else {
-        const { error: insertSellerErr } = await supabase
-          .from("sellers")
-          .insert({
-            profile_id: user.id,
-            business_email: user.email || formData.email.trim(),
-            business_name: businessName,
-            status: "active",
-          });
+      // 3. Execute atomic PostgreSQL activation transaction via RPC
+      const { error: rpcErr } = await supabase.rpc("activate_seller", {
+        p_business_name: businessName,
+        p_business_email: user.email || formData.email.trim(),
+        p_full_name: formData.fullName.trim() || null,
+        p_phone: formData.phone.trim() || null,
+      });
 
-        if (insertSellerErr) {
-          throw insertSellerErr;
-        }
+      if (rpcErr) {
+        throw rpcErr;
       }
-
-      await supabase
-        .from("profiles")
-        .update({
-          full_name: formData.fullName.trim(),
-          phone: formData.phone.trim(),
-          role: "seller",
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", user.id);
 
       await refreshAuth();
       clearDraft();
