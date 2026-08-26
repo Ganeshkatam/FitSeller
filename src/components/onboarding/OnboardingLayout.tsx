@@ -8,8 +8,13 @@ import { OnboardingSuccess } from "./OnboardingSuccess";
 import { ONBOARDING_STEPS } from "./OnboardingTypes";
 
 function OnboardingContent() {
-  const { user, seller } = useAuth();
-  const { completed } = useOnboarding();
+  const { seller } = useAuth();
+  const {
+    completed,
+    canAccessStep,
+    isStepFinished,
+    getFirstIncompleteStepSlug,
+  } = useOnboarding();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -18,14 +23,15 @@ function OnboardingContent() {
   const matchedStep = ONBOARDING_STEPS.find((s) => s.slug === activeSlug);
   const currentStep = matchedStep ? matchedStep.id : 1;
 
-  // Guard: if someone visits any subsequent step without a normal user account, redirect to /onboarding/account
-  if (!user && currentStep > 1) {
-    return <Navigate to="/onboarding/account" replace />;
+  // Strict Sequential Guard: Next step is not allowed until the previous step is finished!
+  if (!canAccessStep(currentStep)) {
+    const fallbackSlug = getFirstIncompleteStepSlug();
+    return <Navigate to={`/onboarding/${fallbackSlug}`} replace />;
   }
 
   function handleSelectStep(slug: string) {
     const targetStep = ONBOARDING_STEPS.find((s) => s.slug === slug);
-    if (!user && targetStep && targetStep.id > 1) {
+    if (!targetStep || !canAccessStep(targetStep.id)) {
       return;
     }
     navigate(`/onboarding/${slug}`);
@@ -44,7 +50,8 @@ function OnboardingContent() {
           <OnboardingStepper
             currentStep={currentStep}
             onSelectStep={handleSelectStep}
-            isUserAuthenticated={!!user}
+            canAccessStep={canAccessStep}
+            isStepFinished={isStepFinished}
           />
         </div>
 

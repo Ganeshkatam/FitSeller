@@ -151,8 +151,14 @@ export const STEP5_INITIAL: Step5PickupAddressData = {
 };
 
 export function validateStep5(data: Step5PickupAddressData): string | null {
-  if (!data.addressLine1.trim() || !data.pincode.trim()) {
-    return "Please enter your full pickup address and pincode.";
+  if (!data.addressLine1.trim()) {
+    return "Please enter your pickup address line 1.";
+  }
+  if (!data.pincode.trim() || data.pincode.trim().length !== 6) {
+    return "Please enter a valid 6-digit pickup pincode.";
+  }
+  if (!data.city.trim() || !data.state.trim()) {
+    return "Please enter the pickup city and state.";
   }
   return null;
 }

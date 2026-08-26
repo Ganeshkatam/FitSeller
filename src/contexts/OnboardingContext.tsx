@@ -16,6 +16,13 @@ import { STEP4_INITIAL } from "@/components/onboarding/Step4Shipping";
 import { STEP5_INITIAL } from "@/components/onboarding/Step5PickupAddress";
 import { STEP6_INITIAL } from "@/components/onboarding/Step6Bank";
 
+import { validateStep1 } from "@/components/onboarding/Step1Account";
+import { validateStep2 } from "@/components/onboarding/Step2Gst";
+import { validateStep3 } from "@/components/onboarding/Step3Business";
+import { validateStep4 } from "@/components/onboarding/Step4Shipping";
+import { validateStep5 } from "@/components/onboarding/Step5PickupAddress";
+import { validateStep6 } from "@/components/onboarding/Step6Bank";
+
 const STORAGE_KEY = "fitseller_onboarding_draft";
 
 const DEFAULT_ONBOARDING_DATA: OnboardingData = {
@@ -34,6 +41,9 @@ interface OnboardingContextType {
   loading: boolean;
   completed: boolean;
   clearDraft: () => void;
+  isStepFinished: (stepId: number) => boolean;
+  canAccessStep: (stepId: number) => boolean;
+  getFirstIncompleteStepSlug: () => string;
 }
 
 const OnboardingContext = createContext<OnboardingContextType | null>(null);
@@ -184,6 +194,39 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  function isStepFinished(stepId: number): boolean {
+    switch (stepId) {
+      case 1:
+        return !validateStep1(formData, !!user);
+      case 2:
+        return isStepFinished(1) && !validateStep2(formData);
+      case 3:
+        return isStepFinished(2) && !validateStep3(formData);
+      case 4:
+        return isStepFinished(3) && !validateStep4(formData);
+      case 5:
+        return isStepFinished(4) && !validateStep5(formData);
+      case 6:
+        return isStepFinished(5) && !validateStep6(formData);
+      default:
+        return false;
+    }
+  }
+
+  function canAccessStep(stepId: number): boolean {
+    if (stepId <= 1) return true;
+    return isStepFinished(stepId - 1);
+  }
+
+  function getFirstIncompleteStepSlug(): string {
+    if (!isStepFinished(1)) return "account";
+    if (!isStepFinished(2)) return "gst";
+    if (!isStepFinished(3)) return "business";
+    if (!isStepFinished(4)) return "shipping";
+    if (!isStepFinished(5)) return "pickup-address";
+    return "bank";
+  }
+
   return (
     <OnboardingContext.Provider
       value={{
@@ -193,6 +236,9 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         loading,
         completed,
         clearDraft,
+        isStepFinished,
+        canAccessStep,
+        getFirstIncompleteStepSlug,
       }}
     >
       {children}

@@ -4,21 +4,24 @@ import { ONBOARDING_STEPS } from "./OnboardingTypes";
 interface StepperProps {
   currentStep: number;
   onSelectStep: (slug: string) => void;
-  isUserAuthenticated?: boolean;
+  canAccessStep?: (stepId: number) => boolean;
+  isStepFinished?: (stepId: number) => boolean;
 }
 
 export function OnboardingStepper({
   currentStep,
   onSelectStep,
-  isUserAuthenticated = true,
+  canAccessStep = () => true,
+  isStepFinished = () => false,
 }: StepperProps) {
   return (
     <div className="grid grid-cols-6 gap-2 sm:gap-3">
       {ONBOARDING_STEPS.map((step) => {
         const Icon = step.icon;
-        const isPassed = currentStep > step.id;
+        const isPassed = isStepFinished(step.id);
         const isCurrent = currentStep === step.id;
-        const isLocked = !isUserAuthenticated && step.id > 1;
+        const isAccessible = canAccessStep(step.id);
+        const isLocked = !isAccessible;
 
         return (
           <button
@@ -81,7 +84,7 @@ export function OnboardingStepper({
                 {step.title}
               </p>
               <p className="text-[10px] text-muted-foreground truncate hidden md:block mt-0.5">
-                {isLocked ? "User Account Required" : step.subtitle}
+                {isLocked ? "Complete previous step" : step.subtitle}
               </p>
             </div>
           </button>

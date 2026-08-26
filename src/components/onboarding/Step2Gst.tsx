@@ -106,12 +106,14 @@ export const STEP2_INITIAL: Step2GstData = {
 };
 
 export function validateStep2(data: Step2GstData): string | null {
-  if (
-    !data.isGstExempt &&
-    data.gstNumber.trim().length > 0 &&
-    data.gstNumber.trim().length < 15
-  ) {
-    return "Please enter a valid 15-character GSTIN or check the exemption box.";
+  if (data.isGstExempt) {
+    return null;
+  }
+  if (!data.gstNumber.trim()) {
+    return "Please enter your 15-character GSTIN or check the exemption box.";
+  }
+  if (data.gstNumber.trim().length !== 15) {
+    return "GSTIN must be exactly 15 characters.";
   }
   return null;
 }

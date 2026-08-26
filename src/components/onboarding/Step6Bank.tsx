@@ -106,12 +106,20 @@ export const STEP6_INITIAL: Step6BankData = {
 };
 
 export function validateStep6(data: Step6BankData): string | null {
-  if (
-    data.accountNumber &&
-    data.confirmAccountNumber &&
-    data.accountNumber !== data.confirmAccountNumber
-  ) {
+  if (!data.accountHolderName.trim()) {
+    return "Please enter the account holder name.";
+  }
+  if (!data.accountNumber.trim()) {
+    return "Please enter your bank account number.";
+  }
+  if (data.accountNumber !== data.confirmAccountNumber) {
     return "Bank account numbers do not match.";
+  }
+  if (!data.ifscCode.trim()) {
+    return "Please enter your bank IFSC code.";
+  }
+  if (data.ifscCode.trim().length !== 11) {
+    return "Bank IFSC code must be exactly 11 characters.";
   }
   return null;
 }
