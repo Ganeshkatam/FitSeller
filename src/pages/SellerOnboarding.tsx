@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Shirt,
@@ -67,6 +67,28 @@ export default function SellerOnboarding() {
     bankName: "",
   });
 
+  // Synchronize normal user profile data once authenticated
+  useEffect(() => {
+    if (user?.email) {
+      setFormData((prev) => ({
+        ...prev,
+        email: user.email || prev.email,
+        fullName:
+          prev.fullName ||
+          profile?.full_name ||
+          profile?.display_name ||
+          (user.user_metadata?.full_name as string) ||
+          "",
+        phone:
+          prev.phone ||
+          profile?.phone ||
+          user.phone ||
+          (user.user_metadata?.phone as string) ||
+          "",
+      }));
+    }
+  }, [user, profile]);
+
   function updateField<K extends keyof OnboardingData>(field: K, value: OnboardingData[K]) {
     setFormData((prev) => ({ ...prev, [field]: value }));
   }
@@ -115,6 +137,13 @@ export default function SellerOnboarding() {
     if (e) e.preventDefault();
 
     if (currentStep === 1) {
+      if (!user) {
+        toast(
+          "error",
+          "A normal user account is required first. Please create your account or sign in."
+        );
+        return;
+      }
       if (!formData.fullName.trim()) {
         toast("error", "Please enter your full name.");
         return;
@@ -230,12 +259,18 @@ export default function SellerOnboarding() {
             <span className="text-muted-foreground font-medium hidden sm:inline">
               Step <strong className="text-foreground">{currentStep}</strong> of 6
             </span>
-            <Link
-              to="/dashboard"
-              className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Skip to Dashboard &rarr;
-            </Link>
+            {seller?.id ? (
+              <Link
+                to="/dashboard"
+                className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Go to Dashboard &rarr;
+              </Link>
+            ) : (
+              <span className="text-[11px] font-semibold text-muted-foreground">
+                Seller Registration
+              </span>
+            )}
           </div>
         </div>
       </header>
@@ -247,6 +282,7 @@ export default function SellerOnboarding() {
           <OnboardingStepper
             currentStep={currentStep}
             onSelectStep={(stepId) => setCurrentStep(stepId)}
+            isUserAuthenticated={!!user}
           />
         </div>
 
@@ -267,7 +303,15 @@ export default function SellerOnboarding() {
           ) : (
             <form onSubmit={handleNext} className="space-y-8">
               {currentStep === 1 && (
-                <Step1Account data={formData} onChange={updateField} />
+                <Step1Account
+                  data={formData}
+                  onChange={updateField}
+                  onAuthenticated={() => {
+                    toast("success", "User account authenticated successfully!");
+                    setCurrentStep(2);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                />
               )}
 
               {currentStep === 2 && (
@@ -314,18 +358,23 @@ export default function SellerOnboarding() {
                   <div />
                 )}
 
-                <Button
-                  type="submit"
-                  loading={loading}
-                  className="font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-11 px-7 shadow-lg shadow-indigo-600/30 text-sm"
-                >
-                  <span>
-                    {currentStep === 6
-                      ? "Complete Seller Registration"
-                      : `Next: Step ${currentStep + 1}`}
-                  </span>
-                  <ArrowRight className="size-4 ml-1.5" />
-                </Button>
+                {/* Hide generic next button when unauthenticated on step 1 (Step 1 has its own dedicated auth action) */}
+                {!(currentStep === 1 && !user) && (
+                  <Button
+                    type="submit"
+                    loading={loading}
+                    className="font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl h-11 px-7 shadow-lg shadow-indigo-600/30 text-sm"
+                  >
+                    <span>
+                      {currentStep === 6
+                        ? "Complete Seller Registration"
+                        : currentStep === 1
+                        ? "Proceed to GST Verification"
+                        : `Next: Step ${currentStep + 1}`}
+                    </span>
+                    <ArrowRight className="size-4 ml-1.5" />
+                  </Button>
+                )}
               </div>
             </form>
           )}

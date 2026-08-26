@@ -6,6 +6,8 @@ export interface OnboardingData {
   email: string;
   phone: string;
   fullName: string;
+  password?: string;
+  confirmPassword?: string;
   // Step 2: GST
   gstNumber: string;
   panNumber: string;

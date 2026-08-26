@@ -1,29 +1,40 @@
-import { Check } from "lucide-react";
+import { Check, Lock } from "lucide-react";
 import { ONBOARDING_STEPS } from "./OnboardingTypes";
 
 interface StepperProps {
   currentStep: number;
   onSelectStep: (stepId: number) => void;
+  isUserAuthenticated?: boolean;
 }
 
-export function OnboardingStepper({ currentStep, onSelectStep }: StepperProps) {
+export function OnboardingStepper({
+  currentStep,
+  onSelectStep,
+  isUserAuthenticated = true,
+}: StepperProps) {
   return (
     <div className="grid grid-cols-6 gap-2 sm:gap-3">
       {ONBOARDING_STEPS.map((step) => {
         const Icon = step.icon;
         const isPassed = currentStep > step.id;
         const isCurrent = currentStep === step.id;
+        const isLocked = !isUserAuthenticated && step.id > 1;
 
         return (
           <button
             key={step.id}
             type="button"
-            onClick={() => onSelectStep(step.id)}
+            disabled={isLocked}
+            onClick={() => {
+              if (!isLocked) onSelectStep(step.id);
+            }}
             className={`text-left rounded-2xl border p-2.5 sm:p-3.5 transition-all flex flex-col justify-between ${
               isCurrent
                 ? "border-indigo-600 bg-indigo-500/10 shadow-lg shadow-indigo-500/10"
                 : isPassed
                 ? "border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-500/50"
+                : isLocked
+                ? "border-border/40 bg-muted/20 opacity-40 cursor-not-allowed"
                 : "border-border/60 bg-card/50 opacity-60 hover:opacity-100"
             }`}
           >
@@ -34,10 +45,18 @@ export function OnboardingStepper({ currentStep, onSelectStep }: StepperProps) {
                     ? "bg-indigo-600 text-white"
                     : isPassed
                     ? "bg-emerald-600 text-white"
+                    : isLocked
+                    ? "bg-muted/60 text-muted-foreground"
                     : "bg-muted text-muted-foreground"
                 }`}
               >
-                {isPassed ? <Check className="size-3.5" /> : step.id}
+                {isPassed ? (
+                  <Check className="size-3.5" />
+                ) : isLocked ? (
+                  <Lock className="size-3 text-muted-foreground" />
+                ) : (
+                  step.id
+                )}
               </div>
               <Icon
                 className={`size-4 hidden sm:block ${
@@ -62,7 +81,7 @@ export function OnboardingStepper({ currentStep, onSelectStep }: StepperProps) {
                 {step.title}
               </p>
               <p className="text-[10px] text-muted-foreground truncate hidden md:block mt-0.5">
-                {step.subtitle}
+                {isLocked ? "User Account Required" : step.subtitle}
               </p>
             </div>
           </button>
