@@ -136,14 +136,17 @@ export default function SellerOnboarding() {
   function handleNext(e?: FormEvent) {
     if (e) e.preventDefault();
 
+    // Global guard: a valid normal user account is required before any step can proceed
+    if (!user) {
+      toast(
+        "error",
+        "A normal user account is required first. Please create your user account or sign in."
+      );
+      if (currentStep !== 1) setCurrentStep(1);
+      return;
+    }
+
     if (currentStep === 1) {
-      if (!user) {
-        toast(
-          "error",
-          "A normal user account is required first. Please create your account or sign in."
-        );
-        return;
-      }
       if (!formData.fullName.trim()) {
         toast("error", "Please enter your full name.");
         return;
@@ -186,8 +189,34 @@ export default function SellerOnboarding() {
   }
 
   async function finishOnboarding() {
+    // 1. Strict guard: A valid normal user account MUST exist
+    if (!user?.id) {
+      toast(
+        "error",
+        "A valid normal user account is required before a seller account can be created. Please complete Step 1 first."
+      );
+      setCurrentStep(1);
+      return;
+    }
+
     setLoading(true);
     try {
+      // 2. Verify normal user profile exists in database
+      const { data: userProfile, error: profileErr } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profileErr || !userProfile) {
+        toast(
+          "error",
+          "Cannot create seller account: No valid normal user profile found. Please re-authenticate your user account."
+        );
+        setCurrentStep(1);
+        return;
+      }
+
       const businessName =
         formData.businessName.trim() || formData.tradeName.trim() || "Seller";
 
@@ -199,8 +228,8 @@ export default function SellerOnboarding() {
             updated_at: new Date().toISOString(),
           })
           .eq("id", seller.id);
-      } else if (user?.id) {
-        await supabase
+      } else {
+        const { error: insertSellerErr } = await supabase
           .from("sellers")
           .insert({
             profile_id: user.id,
@@ -208,19 +237,21 @@ export default function SellerOnboarding() {
             business_name: businessName,
             status: "active",
           });
+
+        if (insertSellerErr) {
+          throw insertSellerErr;
+        }
       }
 
-      if (user?.id) {
-        await supabase
-          .from("profiles")
-          .update({
-            full_name: formData.fullName.trim(),
-            phone: formData.phone.trim(),
-            role: "seller",
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", user.id);
-      }
+      await supabase
+        .from("profiles")
+        .update({
+          full_name: formData.fullName.trim(),
+          phone: formData.phone.trim(),
+          role: "seller",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", user.id);
 
       await refreshAuth();
 
@@ -229,10 +260,11 @@ export default function SellerOnboarding() {
       setTimeout(() => {
         navigate("/dashboard", { replace: true });
       }, 1500);
-    } catch {
+    } catch (err: unknown) {
       await refreshAuth();
-      toast("success", "Seller configuration saved!");
-      navigate("/dashboard", { replace: true });
+      const message =
+        err instanceof Error ? err.message : "Failed to create seller account.";
+      toast("error", message);
     } finally {
       setLoading(false);
     }
