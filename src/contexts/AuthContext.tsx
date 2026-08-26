@@ -92,10 +92,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setProfile(profileData ?? null);
 
-      // 2. Fetch Seller record if one exists (never silently auto-created)
+      // 2. Fetch Seller record if one exists (scoped to operational columns, excluding sensitive financial fields)
       const { data: sellerRecord } = await supabase
         .from("sellers")
-        .select("*")
+        .select(
+          "id, profile_id, business_name, business_email, status, brand_name, primary_category, shipping_mode, courier_partner, dispatch_time_hours, onboarding_completed_at, created_at, updated_at"
+        )
         .or(`profile_id.eq.${userId},business_email.eq.${cleanEmail}`)
         .maybeSingle();
 
@@ -105,7 +107,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .from("sellers")
           .update({ profile_id: userId })
           .eq("id", sellerRecord.id)
-          .select()
+          .select(
+            "id, profile_id, business_name, business_email, status, brand_name, primary_category, shipping_mode, courier_partner, dispatch_time_hours, onboarding_completed_at, created_at, updated_at"
+          )
           .maybeSingle();
         setSeller(linkedSeller ?? sellerRecord);
       } else {

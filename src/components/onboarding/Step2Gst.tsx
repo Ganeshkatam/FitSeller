@@ -33,10 +33,10 @@ export function Step2Gst({ data, onChange }: Step2Props) {
     <div className="space-y-4 animate-fadeIn">
       <div className="space-y-0.5">
         <h2 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">
-          GST Verification
+          GST Details &amp; Tax Status
         </h2>
         <p className="text-xs sm:text-sm text-muted-foreground">
-          Enter your GST number for automated tax invoicing and customer orders.
+          Provide your 15-character GSTIN or select exemption for marketplace tax compliance.
         </p>
       </div>
 
