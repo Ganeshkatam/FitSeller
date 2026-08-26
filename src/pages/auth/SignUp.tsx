@@ -65,6 +65,7 @@ export default function SignUp() {
   const hasUpperCase = /[A-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
   const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const allRequirementsMet = hasMinLength && hasUpperCase && hasNumber && hasSpecial;
   const isPasswordValid = hasMinLength && hasUpperCase && hasNumber;
 
   async function handleSubmit(e: FormEvent) {
@@ -161,10 +162,10 @@ export default function SignUp() {
               <img
                 src="/images/auth/sign-up.jpg"
                 alt="Fashion atelier and apparel display"
-                className="h-full w-full object-cover object-center filter brightness-[0.65] contrast-105"
+                className="h-full w-full object-cover object-center filter brightness-[0.55] contrast-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#080B17] via-[#0A0E24]/80 to-transparent" />
-              <div className="absolute inset-0 bg-radial from-transparent via-transparent to-[#080B17]/80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#080B17] via-[#0A0E24]/85 to-[#080B17]/30" />
+              <div className="absolute inset-0 bg-radial from-transparent via-[#080B17]/30 to-[#080B17]/85" />
             </div>
 
             {/* Spacer to push content down */}
@@ -213,17 +214,17 @@ export default function SignUp() {
           {/* ============================================================ */}
           {/* RIGHT PANEL: Registration Form (~60%)                       */}
           {/* ============================================================ */}
-          <div className="lg:col-span-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:p-8 xl:p-10 shadow-lg shadow-zinc-200/30 dark:shadow-black/20 flex flex-col justify-center overflow-y-auto">
+          <div className="lg:col-span-3 rounded-2xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-7 py-6 sm:px-10 sm:py-7 shadow-lg shadow-zinc-200/30 dark:shadow-black/20 flex flex-col justify-center overflow-y-auto">
             <div className="w-full max-w-xl mx-auto space-y-4">
               {/* Header */}
               <div className="space-y-0.5">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 block">
+                <span className="text-[11px] font-extrabold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 block">
                   CREATE YOUR ACCOUNT
                 </span>
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-zinc-900 dark:text-white leading-tight">
+                <h2 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-white leading-tight">
                   Create your seller account
                 </h2>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-[13px] text-zinc-500 dark:text-zinc-400">
                   Start managing your fashion business with FitSeller.
                 </p>
               </div>
@@ -254,7 +255,7 @@ export default function SignUp() {
                 loading={googleLoading}
                 disabled={loading || googleLoading}
                 onClick={handleGoogleSignUp}
-                className="w-full flex items-center justify-center gap-2 font-semibold border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 rounded-xl h-10 text-xs shadow-none text-zinc-800 dark:text-zinc-200"
+                className="w-full flex items-center justify-center gap-2 font-semibold border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 rounded-xl h-11 text-[13px] shadow-none text-zinc-800 dark:text-zinc-200"
               >
                 <GoogleIcon className="size-4 shrink-0" />
                 <span>Continue with Google</span>
@@ -263,7 +264,7 @@ export default function SignUp() {
               {/* Divider */}
               <div className="relative flex items-center justify-center">
                 <div className="w-full border-t border-zinc-200 dark:border-zinc-800" />
-                <span className="bg-white dark:bg-zinc-900 px-3 text-[10px] font-semibold text-zinc-400 lowercase absolute">
+                <span className="bg-white dark:bg-zinc-900 px-3 text-[11px] font-semibold text-zinc-400 lowercase absolute">
                   or
                 </span>
               </div>
@@ -272,7 +273,7 @@ export default function SignUp() {
               <form onSubmit={handleSubmit} className="space-y-3">
                 {/* Full name */}
                 <div>
-                  <Label htmlFor="fullName" className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                  <Label htmlFor="fullName" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                     Full name (Contact person)
                   </Label>
                   <Input
@@ -283,20 +284,20 @@ export default function SignUp() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     disabled={loading}
-                    className="mt-0.5 h-9.5 rounded-lg text-xs border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
+                    className="mt-0.5 h-10 rounded-lg text-[13px] border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
                   />
                 </div>
 
                 {/* Mobile & Email */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <Label htmlFor="phone" className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <Label htmlFor="phone" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                       Mobile number
                     </Label>
                     <div className="flex gap-1.5 mt-0.5">
                       <button
                         type="button"
-                        className="flex h-9.5 items-center justify-center gap-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-800/40 px-2 text-[11px] font-semibold text-zinc-600 dark:text-zinc-400"
+                        className="flex h-10 items-center justify-center gap-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-800/40 px-2.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400"
                       >
                         <span>+91</span>
                         <ChevronDown className="size-3 text-zinc-400" />
@@ -308,13 +309,13 @@ export default function SignUp() {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         disabled={loading}
-                        className="h-9.5 rounded-lg text-xs flex-1 border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
+                        className="h-10 rounded-lg text-[13px] flex-1 border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="email" className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <Label htmlFor="email" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                       Business email address
                     </Label>
                     <Input
@@ -326,7 +327,7 @@ export default function SignUp() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       disabled={loading}
-                      className="mt-0.5 h-9.5 rounded-lg text-xs border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
+                      className="mt-0.5 h-10 rounded-lg text-[13px] border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
                     />
                   </div>
                 </div>
@@ -334,7 +335,7 @@ export default function SignUp() {
                 {/* Password & Confirm */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <Label htmlFor="password" className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <Label htmlFor="password" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                       Password
                     </Label>
                     <div className="relative mt-0.5">
@@ -347,20 +348,20 @@ export default function SignUp() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         disabled={loading}
-                        className="pr-9 h-9.5 rounded-lg text-xs border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
+                        className="pr-9 h-10 rounded-lg text-[13px] border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
                       >
-                        {showPassword ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+                        {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       </button>
                     </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="confirm" className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                    <Label htmlFor="confirm" className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
                       Confirm password
                     </Label>
                     <div className="relative mt-0.5">
@@ -373,69 +374,80 @@ export default function SignUp() {
                         value={confirm}
                         onChange={(e) => setConfirm(e.target.value)}
                         disabled={loading}
-                        className="pr-9 h-9.5 rounded-lg text-xs border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
+                        className="pr-9 h-10 rounded-lg text-[13px] border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-800/30 focus:bg-white"
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirm(!showConfirm)}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
                       >
-                        {showConfirm ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+                        {showConfirm ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                       </button>
                     </div>
                   </div>
                 </div>
 
-                {/* Password Requirements */}
-                <div className="rounded-lg border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/80 dark:bg-zinc-800/30 px-3 py-2 space-y-1.5">
-                  <p className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-500">
-                    Password must contain:
-                  </p>
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px]">
-                    <div className="flex items-center gap-1.5">
-                      <CheckCircle2
-                        className={`size-3.5 shrink-0 transition-colors ${
-                          hasMinLength ? "text-emerald-600" : "text-zinc-300 dark:text-zinc-600"
-                        }`}
-                      />
-                      <span className={`transition-colors ${hasMinLength ? "text-zinc-800 dark:text-zinc-200 font-medium" : "text-zinc-400"}`}>
-                        8+ characters
+                {/* Password Requirements -- live validation with collapsed success state */}
+                <div className="rounded-lg border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/80 dark:bg-zinc-800/30 px-3 py-2">
+                  {allRequirementsMet ? (
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
+                      <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                        Password meets all requirements
                       </span>
                     </div>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <p className="text-[10.5px] font-semibold text-zinc-500">
+                        Password must contain:
+                      </p>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11.5px]">
+                        <div className="flex items-center gap-1.5">
+                          <CheckCircle2
+                            className={`size-3.5 shrink-0 transition-colors duration-200 ${
+                              hasMinLength ? "text-emerald-600" : "text-zinc-300 dark:text-zinc-600"
+                            }`}
+                          />
+                          <span className={`transition-colors duration-200 ${hasMinLength ? "text-zinc-800 dark:text-zinc-200 font-medium" : "text-zinc-400"}`}>
+                            8+ characters
+                          </span>
+                        </div>
 
-                    <div className="flex items-center gap-1.5">
-                      <CheckCircle2
-                        className={`size-3.5 shrink-0 transition-colors ${
-                          hasUpperCase ? "text-emerald-600" : "text-zinc-300 dark:text-zinc-600"
-                        }`}
-                      />
-                      <span className={`transition-colors ${hasUpperCase ? "text-zinc-800 dark:text-zinc-200 font-medium" : "text-zinc-400"}`}>
-                        One uppercase letter
-                      </span>
-                    </div>
+                        <div className="flex items-center gap-1.5">
+                          <CheckCircle2
+                            className={`size-3.5 shrink-0 transition-colors duration-200 ${
+                              hasUpperCase ? "text-emerald-600" : "text-zinc-300 dark:text-zinc-600"
+                            }`}
+                          />
+                          <span className={`transition-colors duration-200 ${hasUpperCase ? "text-zinc-800 dark:text-zinc-200 font-medium" : "text-zinc-400"}`}>
+                            One uppercase letter
+                          </span>
+                        </div>
 
-                    <div className="flex items-center gap-1.5">
-                      <CheckCircle2
-                        className={`size-3.5 shrink-0 transition-colors ${
-                          hasNumber ? "text-emerald-600" : "text-zinc-300 dark:text-zinc-600"
-                        }`}
-                      />
-                      <span className={`transition-colors ${hasNumber ? "text-zinc-800 dark:text-zinc-200 font-medium" : "text-zinc-400"}`}>
-                        One number
-                      </span>
-                    </div>
+                        <div className="flex items-center gap-1.5">
+                          <CheckCircle2
+                            className={`size-3.5 shrink-0 transition-colors duration-200 ${
+                              hasNumber ? "text-emerald-600" : "text-zinc-300 dark:text-zinc-600"
+                            }`}
+                          />
+                          <span className={`transition-colors duration-200 ${hasNumber ? "text-zinc-800 dark:text-zinc-200 font-medium" : "text-zinc-400"}`}>
+                            One number
+                          </span>
+                        </div>
 
-                    <div className="flex items-center gap-1.5">
-                      <CheckCircle2
-                        className={`size-3.5 shrink-0 transition-colors ${
-                          hasSpecial ? "text-emerald-600" : "text-zinc-300 dark:text-zinc-600"
-                        }`}
-                      />
-                      <span className={`transition-colors ${hasSpecial ? "text-zinc-800 dark:text-zinc-200 font-medium" : "text-zinc-400"}`}>
-                        One special character
-                      </span>
+                        <div className="flex items-center gap-1.5">
+                          <CheckCircle2
+                            className={`size-3.5 shrink-0 transition-colors duration-200 ${
+                              hasSpecial ? "text-emerald-600" : "text-zinc-300 dark:text-zinc-600"
+                            }`}
+                          />
+                          <span className={`transition-colors duration-200 ${hasSpecial ? "text-zinc-800 dark:text-zinc-200 font-medium" : "text-zinc-400"}`}>
+                            One special character
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* Terms Checkbox */}
@@ -447,7 +459,7 @@ export default function SignUp() {
                     onChange={(e) => setAgreed(e.target.checked)}
                     className="size-3.5 rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
                   />
-                  <label htmlFor="terms" className="text-[11px] text-zinc-500 dark:text-zinc-400 cursor-pointer select-none">
+                  <label htmlFor="terms" className="text-xs text-zinc-500 dark:text-zinc-400 cursor-pointer select-none">
                     I agree to the Seller{" "}
                     <Link to="/#faqs" className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
                       Terms of Service
@@ -464,15 +476,15 @@ export default function SignUp() {
                   type="submit"
                   loading={loading}
                   disabled={googleLoading}
-                  className="w-full font-bold bg-[#4F46E5] hover:bg-indigo-700 text-white rounded-xl h-10 text-sm shadow-md shadow-indigo-600/20"
+                  className="w-full font-bold bg-[#4F46E5] hover:bg-indigo-700 text-white rounded-xl h-11 text-[15px] shadow-md shadow-indigo-600/20"
                 >
                   Create seller account
                 </Button>
 
                 {/* Secure notice */}
-                <div className="flex items-center justify-center gap-1.5 text-[10px] text-zinc-400">
+                <div className="flex items-center justify-center gap-1.5 text-[11px] text-zinc-400">
                   <Lock className="size-3 text-indigo-500" />
-                  <span>Your information is encrypted and secure.</span>
+                  <span>Your information is protected by secure authentication.</span>
                 </div>
               </form>
             </div>
