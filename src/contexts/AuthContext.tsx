@@ -18,7 +18,7 @@ interface AuthState {
   authError: string | null;
   clearAuthError: () => void;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, fullName: string, phone: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
@@ -198,15 +198,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  async function signUp(email: string, password: string) {
+  async function signUp(email: string, password: string, fullName: string, phone: string) {
     setAuthError(null);
     const cleanEmail = email.trim().toLowerCase();
 
     const { data, error } = await supabase.auth.signUp({
       email: cleanEmail,
       password,
+      phone: phone.trim() || undefined,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/verify-email`,
+        data: {
+          full_name: fullName.trim(),
+          phone: phone.trim() || null,
+        },
       },
     });
     if (error) throw error;

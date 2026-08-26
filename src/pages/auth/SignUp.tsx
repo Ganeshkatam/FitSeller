@@ -93,7 +93,7 @@ export default function SignUp() {
 
     setLoading(true);
     try {
-      await signUp(email.trim(), password);
+      await signUp(email.trim(), password, fullName, phone);
       navigate("/auth/verify-email", { state: { email: email.trim() } });
     } catch (err) {
       setLocalError(
