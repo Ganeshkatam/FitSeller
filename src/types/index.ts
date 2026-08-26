@@ -9,13 +9,22 @@ export interface Profile {
   created_at: string;
 }
 
+export type SellerStatus = "pending" | "active" | "suspended" | "terminated";
+
 export interface Seller {
   id: string;
   profile_id: string;
   business_name: string;
   business_email: string;
-  status: string | null;
+  status: SellerStatus | string | null;
+  brand_name?: string | null;
+  primary_category?: string | null;
+  shipping_mode?: string | null;
+  courier_partner?: string | null;
+  dispatch_time_hours?: number | null;
+  onboarding_completed_at?: string | null;
   created_at: string;
+  updated_at?: string;
 }
 
 export type OfferStatus = "draft" | "active" | "paused" | "suspended" | "ended";
@@ -83,15 +92,41 @@ export interface ProductVariant {
   is_active: boolean | null;
 }
 
+export type OrderStatus =
+  | "pending_payment"
+  | "placed"
+  | "confirmed"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled"
+  | "returned";
+
+export type OrderItemStatus =
+  | "pending"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled"
+  | "return_requested"
+  | "returned";
+
+export type PaymentStatus =
+  | "pending"
+  | "authorized"
+  | "captured"
+  | "failed"
+  | "refunded";
+
 export interface Order {
   id: string;
   order_number: string;
   user_id: string;
   total_amount: number;
-  status: string;
+  status: OrderStatus | string;
   fulfillment_status: string | null;
   payment_method: string;
-  payment_status: string;
+  payment_status: PaymentStatus | string;
   is_paid: boolean;
   tracking_number: string | null;
   shipping_address: Record<string, unknown>;
@@ -118,7 +153,7 @@ export interface OrderItem {
   commission_rate: number | null;
   commission_amount: number | null;
   seller_amount: number;
-  status: string;
+  status: OrderItemStatus | string;
   created_at: string;
 }
 

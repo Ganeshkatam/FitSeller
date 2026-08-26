@@ -49,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (cancelled) return;
         setSession(data.session);
         if (data.session?.user) {
-          await loadSellerContext(data.session.user.id, data.session.user.email ?? "");
+          await loadSellerContext(data.session.user.id);
         }
       } catch (err) {
         console.error("Auth context initialization error:", err);
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (cancelled) return;
       setSession(s);
       if (s?.user) {
-        await loadSellerContext(s.user.id, s.user.email ?? "");
+        await loadSellerContext(s.user.id);
       } else {
         setProfile(null);
         setSeller(null);
@@ -79,10 +79,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  async function loadSellerContext(userId: string, email: string) {
+  async function loadSellerContext(userId: string) {
     try {
-      const cleanEmail = email.trim().toLowerCase();
-
       // 1. Fetch user Profile (created and managed at database level via handle_new_user trigger)
       const { data: profileData } = await supabase
         .from("profiles")
@@ -93,37 +91,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setProfile(profileData ?? null);
 
       // 2. Fetch Seller record by authoritative profile ownership
-      let { data: sellerRecord } = await supabase
+      const { data: sellerRecord } = await supabase
         .from("sellers")
         .select(
           "id, profile_id, business_name, business_email, status, brand_name, primary_category, shipping_mode, courier_partner, dispatch_time_hours, onboarding_completed_at, created_at, updated_at"
         )
         .eq("profile_id", userId)
         .maybeSingle();
-
-      // Fallback: Link legacy record only if profile_id was never assigned
-      if (!sellerRecord && cleanEmail) {
-        const { data: legacyRecord } = await supabase
-          .from("sellers")
-          .select(
-            "id, profile_id, business_name, business_email, status, brand_name, primary_category, shipping_mode, courier_partner, dispatch_time_hours, onboarding_completed_at, created_at, updated_at"
-          )
-          .eq("business_email", cleanEmail)
-          .is("profile_id", null)
-          .maybeSingle();
-
-        if (legacyRecord) {
-          const { data: linkedSeller } = await supabase
-            .from("sellers")
-            .update({ profile_id: userId })
-            .eq("id", legacyRecord.id)
-            .select(
-              "id, profile_id, business_name, business_email, status, brand_name, primary_category, shipping_mode, courier_partner, dispatch_time_hours, onboarding_completed_at, created_at, updated_at"
-            )
-            .maybeSingle();
-          sellerRecord = linkedSeller ?? legacyRecord;
-        }
-      }
 
       setSeller(sellerRecord ?? null);
 
@@ -136,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function refreshAuth() {
     if (session?.user) {
-      await loadSellerContext(session.user.id, session.user.email ?? "");
+      await loadSellerContext(session.user.id);
     }
   }
 

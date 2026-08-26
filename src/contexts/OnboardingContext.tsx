@@ -49,7 +49,7 @@ interface OnboardingContextType {
 const OnboardingContext = createContext<OnboardingContextType | null>(null);
 
 // Sensitive fields that MUST NEVER be stored in browser storage (sessionStorage/localStorage)
-const SENSITIVE_FIELDS: (keyof OnboardingData)[] = [
+export const SENSITIVE_FIELDS: (keyof OnboardingData)[] = [
   "accountNumber",
   "confirmAccountNumber",
   "ifscCode",
@@ -62,7 +62,7 @@ const SENSITIVE_FIELDS: (keyof OnboardingData)[] = [
   "pickupContactPhone",
 ];
 
-function sanitizeDraftForStorage(data: OnboardingData): Partial<OnboardingData> {
+export function sanitizeDraftForStorage(data: OnboardingData): Partial<OnboardingData> {
   const safeData: Partial<OnboardingData> = { ...data };
   for (const field of SENSITIVE_FIELDS) {
     delete safeData[field];

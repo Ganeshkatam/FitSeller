@@ -1,17 +1,19 @@
 # FitSeller
 
-FitSeller is a specialized, high-performance ecommerce platform and seller dashboard designed specifically for fashion, apparel, and clothing brands. Built with React 19, Vite, TypeScript, and Supabase, it provides end-to-end tooling for managing products, tracking customer orders, automated return workflows, nightly payout settlements, and sales analytics.
+FitSeller is a dedicated ecommerce platform and merchant operating system designed specifically for fashion, apparel, and clothing brands. Built with React 19, Vite, TypeScript, and Supabase PostgreSQL, it provides end-to-end tooling for managing product offers, processing customer orders, managing reverse logistics, tracking seller payouts, and monitoring business analytics.
 
 ---
 
 ## Overview
 
-FitSeller delivers an end-to-end operating system for fashion merchants:
+FitSeller delivers an authentic, multi-tenant operating system for fashion merchants:
 
-- **Public Seller Landing & Growth**: Interactive revenue calculator, platform capability showcase, feature roadmaps, and seller onboarding entry points.
-- **Authentication Suite**: Streamlined, secure authentication featuring email/password sign-in, Google OAuth, transactional email verification, and password recovery.
-- **Multi-Step Onboarding Wizard**: A strictly sequential 6-step registration flow backed by individual routes, persistent drafts, and database-enforced user verification.
-- **Merchant Operations Dashboard**: Real-time sales metrics, GMV tracking, inventory cataloging, order fulfillment, return management, and nightly bank settlements.
+- **Public Seller Landing**: Platform overview, commission structure, and seller onboarding entry points.
+- **Authentication Suite**: Secure authentication featuring email/password sign-in, Google OAuth, transactional email verification, and password recovery.
+- **Progressive Onboarding Flow**: A strictly sequential 6-step registration flow backed by individual semantic routes, volatile memory handling for sensitive inputs, and database-enforced identity linking.
+- **Atomic Activation Boundary**: Single-transaction database activation RPC (`activate_seller`) enforcing 6-step compliance validation, unique profile ownership, and automatic wallet provisioning.
+- **Merchant Workspace**: Real-time sales metrics, inventory offers, order fulfillment, return management, and wallet balance tracking.
+- **Zero-Fabrication Data Principle**: The application exclusively displays actual database records. New or empty stores render authentic empty states without simulated metrics or artificial charts.
 
 ---
 
@@ -24,7 +26,7 @@ FitSeller delivers an end-to-end operating system for fashion merchants:
 | Build Tool | Vite 6 |
 | Routing | React Router 7 |
 | Server State Management | TanStack React Query 5 |
-| Database & Authentication | Supabase JS 2 / PostgreSQL |
+| Database & Authentication | Supabase JS 2 / PostgreSQL 17 |
 | Charting & Visualization | Recharts 2 |
 | Styling | Tailwind CSS 4 |
 | UI Primitives | Radix UI / Accessible component primitives |
@@ -47,7 +49,7 @@ Browser Client (React 19 + Vite 6)
   │
   ├── State & Context Layer
   │     ├── AuthContext: User session, Supabase auth sync, refreshAuth()
-  │     ├── OnboardingContext: Sequential step validation, draft persistence (sessionStorage)
+  │     ├── OnboardingContext: Sequential step validation, sensitive memory split, draft persistence
   │     └── React Query: Server-state caching and invalidation
   │
   └── Supabase Backend
@@ -55,12 +57,13 @@ Browser Client (React 19 + Vite 6)
         │     └── Trigger: handle_new_user() -> public.profiles
         ├── public.profiles (ON DELETE CASCADE from auth.users)
         ├── public.sellers (Strict BEFORE INSERT check: trg_check_seller_valid_user)
+        │     ├── Constraint: UNIQUE(profile_id)
         │     └── Trigger: handle_new_seller() -> public.wallets
         ├── public.wallets (ON DELETE CASCADE from public.sellers)
         └── PostgreSQL Row Level Security (RLS)
 ```
 
-### Relational Integrity and Orphan Prevention
+### Relational Integrity and Ownership Hierarchy
 
 A seller account cannot exist in isolation. The application enforces a strict hierarchical relational model at both the application and database levels:
 
@@ -70,7 +73,7 @@ auth.users (id)
       ▼  ON DELETE CASCADE
 public.profiles (id)
       │
-      ▼  ON DELETE CASCADE (fk_sellers_profile)
+      ▼  ON DELETE CASCADE (UNIQUE: profile_id)
 public.sellers (profile_id)
       │
       ▼  ON DELETE CASCADE (fk_wallets_seller)
@@ -78,10 +81,10 @@ public.wallets (seller_id)
 ```
 
 1. **Atomic Profile Creation**: When a user registers via email or Google OAuth, a PostgreSQL trigger (`handle_new_user`) atomically creates and populates `public.profiles`. Auth transactions abort if profile initialization fails.
-2. **Database Pre-Insert Guard (`trg_check_seller_valid_user`)**: A `BEFORE INSERT` trigger on `public.sellers` queries `auth.users` and `public.profiles`. If a valid user account does not exist, the insert is rejected with an exception.
-3. **No Silent Account Creation**: Neither sellers nor wallets are created automatically upon user sign-up. Seller records are created exclusively when the merchant completes onboarding.
+2. **Pre-Insert User Verification (`trg_check_seller_valid_user`)**: A `BEFORE INSERT` trigger on `public.sellers` verifies that `auth.users` and `public.profiles` records exist prior to seller creation.
+3. **No Unauthenticated Account Creation**: Neither sellers nor wallets are created automatically upon user sign-up. Seller records are created exclusively when the merchant completes onboarding verification.
 4. **Database Wallet Initialization**: When a seller record is created, the PostgreSQL trigger `on_seller_created` initializes the associated record in `public.wallets`.
-5. **Cascade Deletions**: Deleting a user cleanly cascades to delete profiles, sellers, wallets, and analytics events without leaving orphaned data.
+5. **Cascade Deletions**: Deleting an authentication record cascades to delete associated profiles, sellers, wallets, and operational records.
 
 ---
 
@@ -94,7 +97,7 @@ public.wallets (seller_id)
 | `/` | Seller marketing landing page | Public |
 | `/landing`, `/welcome` | Landing page aliases | Public |
 | `/auth/sign-in` | Seller sign-in with email or Google | Guest only |
-| `/auth/sign-up` | New user registration (40/60 split, live password rules) | Guest only |
+| `/auth/sign-up` | New user registration with real-time password rules | Guest only |
 | `/auth/forgot-password` | Password reset request | Guest only |
 | `/auth/reset-password` | Update password via recovery token | Mid-session / Recovery |
 | `/auth/verify-email` | Email confirmation screen | Mid-session |
@@ -106,17 +109,17 @@ Each step of onboarding resides on its own semantic URL without step numbers. A 
 | Route | Step | Key Fields & Validations | Page Component |
 | --- | --- | --- | --- |
 | `/onboarding` | Entry | Redirects to `/onboarding/account` | Layout coordinator |
-| `/onboarding/account` | Step 1 | User account authentication, email, mobile, full name | `Step1AccountPage.tsx` |
-| `/onboarding/gst` | Step 2 | 15-character GSTIN, auto PAN extraction, exemption toggle | `Step2GstPage.tsx` |
-| `/onboarding/business` | Step 3 | Seller display name, clothing brand name, primary apparel category | `Step3BusinessPage.tsx` |
-| `/onboarding/shipping` | Step 4 | Doorstep pickup vs self-ship, preferred couriers, dispatch window | `Step4ShippingPage.tsx` |
-| `/onboarding/pickup-address` | Step 5 | Warehouse address, 6-digit PIN code auto-fill for city/state | `Step5PickupAddressPage.tsx` |
-| `/onboarding/bank` | Step 6 | Account holder name, account matching check, 11-digit IFSC code | `Step6BankPage.tsx` |
+| `/onboarding/account` | Step 1 | User account credentials, contact phone, contact person | `Step1AccountPage.tsx` |
+| `/onboarding/gst` | Step 2 | 15-character GSTIN format validation, PAN, exemption toggle | `Step2GstPage.tsx` |
+| `/onboarding/business` | Step 3 | Public brand name, legal entity name, primary apparel category | `Step3BusinessPage.tsx` |
+| `/onboarding/shipping` | Step 4 | Doorstep pickup vs self-ship, partner courier, dispatch window | `Step4ShippingPage.tsx` |
+| `/onboarding/pickup-address` | Step 5 | Warehouse address, 6-digit postal PIN code format validation | `Step5PickupAddressPage.tsx` |
+| `/onboarding/bank` | Step 6 | Account holder name, account matching check, 11-digit IFSC format validation | `Step6BankPage.tsx` |
 
 **Progression Rules:**
 - Attempting to access any subsequent route directly without completing previous steps automatically redirects the user to their earliest incomplete step.
-- The interactive stepper disables and locks future steps until the current step is completed.
-- Draft inputs are automatically persisted in `sessionStorage` to preserve progress across refreshes and browser navigation.
+- The interactive stepper indicates completed steps and locks subsequent steps until prerequisites are satisfied.
+- **Client Draft Privacy**: Non-sensitive UI workflow progress is saved in `sessionStorage`. Sensitive financial and tax details (bank account number, IFSC code, GSTIN, PAN, full address) are kept in volatile React memory only.
 
 ### Authenticated Seller Workspace
 
@@ -128,89 +131,38 @@ Protected by `RequireAuth`. Visitors without an active session are directed to `
 | `/products` | Catalog listing, stock levels, variants, and offer management | Authenticated Seller |
 | `/orders` | Order processing, dispatch status, tracking numbers | Authenticated Seller |
 | `/returns` | Return authorizations, inspection status, reverse logistics | Authenticated Seller |
-| `/payouts` | Daily settlement history, bank deposits, statement exports | Authenticated Seller |
-| `/analytics` | Conversion rates, top apparel categories, revenue trends | Authenticated Seller |
-| `/settings` | Store profile, brand details, shipping, and notification preferences | Authenticated Seller |
+| `/payouts` | Wallet balance, settlement tracking, payout requests | Authenticated Seller |
+| `/analytics` | Category breakdowns, order volume, revenue trends | Authenticated Seller |
+| `/settings` | Store profile, brand details, shipping, and preferences | Authenticated Seller |
 
 ---
 
-## Project Structure
+## Business State Machines
 
-```text
-.
-├── index.html
-├── package.json
-├── package-lock.json
-├── tailwind.config.ts
-├── tsconfig.json
-├── tsconfig.app.json
-├── tsconfig.node.json
-├── vite.config.ts
-├── README.md
-└── src/
-    ├── App.tsx
-    ├── main.tsx
-    ├── index.css
-    ├── components/
-    │   ├── layout/
-    │   │   ├── AppHeader.tsx
-    │   │   ├── AppLayout.tsx
-    │   │   └── AppSidebar.tsx
-    │   ├── onboarding/
-    │   │   ├── OnboardingHeader.tsx
-    │   │   ├── OnboardingLayout.tsx
-    │   │   ├── OnboardingNavigation.tsx
-    │   │   ├── OnboardingStepper.tsx
-    │   │   ├── OnboardingSuccess.tsx
-    │   │   ├── OnboardingTypes.ts
-    │   │   ├── Step1Account.tsx
-    │   │   ├── Step2Gst.tsx
-    │   │   ├── Step3Business.tsx
-    │   │   ├── Step4Shipping.tsx
-    │   │   ├── Step5PickupAddress.tsx
-    │   │   └── Step6Bank.tsx
-    │   └── ui/
-    │       ├── Badge.tsx
-    │       ├── button.tsx
-    │       ├── Field.tsx
-    │       ├── modal.tsx
-    │       ├── States.tsx
-    │       ├── table.tsx
-    │       └── Toast.tsx
-    ├── contexts/
-    │   ├── AuthContext.tsx
-    │   └── OnboardingContext.tsx
-    ├── lib/
-    │   ├── offers.ts
-    │   ├── supabase.ts
-    │   └── utils.ts
-    ├── pages/
-    │   ├── Analytics.tsx
-    │   ├── Dashboard.tsx
-    │   ├── GlobalError.tsx
-    │   ├── Orders.tsx
-    │   ├── Payouts.tsx
-    │   ├── Products.tsx
-    │   ├── Returns.tsx
-    │   ├── SellerLanding.tsx
-    │   ├── Settings.tsx
-    │   ├── auth/
-    │   │   ├── ForgotPassword.tsx
-    │   │   ├── ResetPassword.tsx
-    │   │   ├── SignIn.tsx
-    │   │   ├── SignUp.tsx
-    │   │   └── VerifyEmail.tsx
-    │   └── onboarding/
-    │       ├── Step1AccountPage.tsx
-    │       ├── Step2GstPage.tsx
-    │       ├── Step3BusinessPage.tsx
-    │       ├── Step4ShippingPage.tsx
-    │       ├── Step5PickupAddressPage.tsx
-    │       └── Step6BankPage.tsx
-    └── types/
-        ├── database.ts
-        └── index.ts
-```
+The application interfaces directly with PostgreSQL enums and constraints rather than defining client-only statuses:
+
+### Seller Status (`seller_status`)
+- `pending`: Onboarding incomplete or draft state.
+- `active`: Fully activated merchant eligible to list offers and fulfill orders.
+- `suspended`: Temporarily restricted from marketplace activity.
+- `terminated`: Permanently closed merchant account.
+
+### Product Offer Status (`product_offer_status`)
+- `draft`: Created by merchant but not visible on marketplace.
+- `active`: Live on marketplace for customer purchase.
+- `paused`: Temporarily hidden from customer purchase.
+- `suspended`: Blocked due to administrative action.
+- `ended`: Catalog offer decommissioned.
+
+### Order Status (`order_status`)
+- `pending_payment`: Awaiting payment confirmation.
+- `placed`: Customer order recorded.
+- `confirmed`: Order accepted and validated.
+- `processing`: Order in fulfillment queue.
+- `shipped`: In transit with courier tracking.
+- `delivered`: Order received by customer.
+- `cancelled`: Order voided before fulfillment.
+- `returned`: Order returned and processed.
 
 ---
 
@@ -247,7 +199,7 @@ npm run dev
 
 The development server starts by default at `http://localhost:5173`.
 
-### Type Checking & Production Build
+### Verification & Production Build
 
 ```bash
 # Type check TypeScript files without emitting
@@ -264,10 +216,11 @@ npm run preview
 
 ## Security and Permissions
 
-1. **Row Level Security (RLS)**: PostgreSQL RLS policies enforce tenant boundaries. Queries are scoped to `auth.uid() = profile_id` on the database level.
-2. **User-First Verification**: Seller profile creation requires an existing, authenticated user profile verified by PostgreSQL pre-insert triggers.
-3. **Encrypted Credentials**: Password hashing, token management, and OAuth flows are delegated to Supabase Auth. Sensitive merchant bank details are encrypted and restricted to payout processing.
-4. **Client Hardening**: No administrative service-role keys are exposed to the browser. All client mutations pass through RLS with strict constraints.
+1. **Row Level Security (RLS)**: PostgreSQL RLS policies enforce tenant boundaries across all public tables (`sellers`, `product_offers`, `orders`, `order_items`, `wallets`, `payouts`).
+2. **Authoritative Ownership**: Seller lookups resolve strictly via `sellers.profile_id = auth.uid()`.
+3. **Atomic Activation RPC**: `activate_seller` runs with `SECURITY DEFINER` and an immutable `search_path = public, auth`. Execution is restricted to `authenticated` callers and revoked from `public`/`anon`.
+4. **Column Exposure Control**: Global authentication context queries project specific operational columns rather than exposing sensitive banking and tax fields.
+5. **Transparent Terminology**: Input validations on GSTIN, IFSC, and PIN codes are labeled as format checks rather than external government or banking verification services.
 
 ---
 

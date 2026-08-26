@@ -47,6 +47,7 @@ export default function Payouts() {
       const { data, error } = await supabase
         .from("payouts")
         .select("*")
+        .eq("seller_id", seller!.id)
         .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
