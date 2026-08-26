@@ -1,5 +1,14 @@
 import { Truck, Building2 } from "lucide-react";
-import { Label } from "@/components/ui/Field";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { Step4ShippingData } from "./OnboardingTypes";
 
 interface Step4Props {
@@ -68,53 +77,63 @@ export function Step4Shipping({ data, onChange }: Step4Props) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        <div>
-          <Label htmlFor="dispatchTime">Order Handling &amp; Dispatch Time</Label>
-          <select
-            id="dispatchTime"
+        <div className="space-y-2">
+          <Label htmlFor="dispatchTime" className="text-xs font-semibold text-foreground">
+            Order Handling &amp; Dispatch Time
+          </Label>
+          <Select
             value={data.dispatchTimeHours}
-            onChange={(e) =>
-              onChange("dispatchTimeHours", e.target.value as "24" | "48" | "72")
-            }
-            className="mt-1.5 w-full h-11 rounded-xl border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            onValueChange={(val) => onChange("dispatchTimeHours", val)}
           >
-            <option value="24">Within 24 Hours (Fastest delivery badge)</option>
-            <option value="48">Within 48 Hours (Standard)</option>
-            <option value="72">Within 72 Hours (Custom / Made-to-order)</option>
-          </select>
+            <SelectTrigger id="dispatchTime" className="w-full h-11 rounded-xl text-sm">
+              <SelectValue placeholder="Select handling window" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="24">Within 24 Hours (Fastest delivery badge)</SelectItem>
+              <SelectItem value="48">Within 48 Hours (Standard)</SelectItem>
+              <SelectItem value="72">Within 72 Hours (Custom / Made-to-order)</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <div>
-          <Label htmlFor="courierPref">Preferred Courier Network</Label>
-          <select
-            id="courierPref"
+        <div className="space-y-2">
+          <Label htmlFor="courierPref" className="text-xs font-semibold text-foreground">
+            Preferred Courier Network
+          </Label>
+          <Select
             value={data.courierPartner}
-            onChange={(e) =>
-              onChange("courierPartner", e.target.value as "bluedart" | "delhivery" | "both")
-            }
-            className="mt-1.5 w-full h-11 rounded-xl border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            onValueChange={(val) => onChange("courierPartner", val)}
           >
-            <option value="both">Both BlueDart &amp; Delhivery (Fastest routing)</option>
-            <option value="bluedart">BlueDart Express Only</option>
-            <option value="delhivery">Delhivery Surface &amp; Express</option>
-          </select>
+            <SelectTrigger id="courierPref" className="w-full h-11 rounded-xl text-sm">
+              <SelectValue placeholder="Select courier network" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="both">Both BlueDart &amp; Delhivery (Fastest routing)</SelectItem>
+              <SelectItem value="bluedart">BlueDart Express Only</SelectItem>
+              <SelectItem value="delhivery">Delhivery Surface &amp; Express</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-border/80 bg-card p-4 flex items-center justify-between text-xs">
-        <div className="space-y-0.5">
-          <p className="font-bold text-foreground">Provide Free Nationwide Shipping</p>
-          <p className="text-muted-foreground">
-            Sellers offering free shipping convert 3.2x more fashion shoppers.
-          </p>
-        </div>
-        <input
-          type="checkbox"
-          checked={data.offersFreeShipping}
-          onChange={(e) => onChange("offersFreeShipping", e.target.checked)}
-          className="size-5 rounded border-border text-indigo-600 focus:ring-indigo-500 cursor-pointer"
-        />
-      </div>
+      <Card className="rounded-2xl border-border/80 bg-card shadow-none">
+        <CardContent className="p-4 flex items-center justify-between gap-4">
+          <div className="space-y-0.5">
+            <p className="font-bold text-foreground text-xs sm:text-sm">
+              Provide Free Nationwide Shipping
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Sellers offering free shipping convert 3.2x more fashion shoppers.
+            </p>
+          </div>
+          <Checkbox
+            id="offersFreeShipping"
+            checked={data.offersFreeShipping}
+            onCheckedChange={(checked) => onChange("offersFreeShipping", !!checked)}
+            className="size-5 rounded-md border-border text-indigo-600 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 cursor-pointer"
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }

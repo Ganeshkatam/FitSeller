@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input, Label } from "@/components/ui/Field";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { getHumanErrorMessage } from "@/lib/utils";
 import type { OnboardingData } from "./OnboardingTypes";
 
@@ -310,11 +311,10 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
             clearAuthError();
             setLocalError(null);
           }}
-          className={`flex-1 rounded-lg py-2 text-xs font-bold transition-all ${
-            authMode === "signup"
+          className={`flex-1 rounded-lg py-2 text-xs font-bold transition-all ${authMode === "signup"
               ? "bg-card text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground"
-          }`}
+            }`}
         >
           Create New User Account
         </button>
@@ -325,11 +325,10 @@ export function Step1Account({ data, onChange, onAuthenticated }: StepProps) {
             clearAuthError();
             setLocalError(null);
           }}
-          className={`flex-1 rounded-lg py-2 text-xs font-bold transition-all ${
-            authMode === "signin"
+          className={`flex-1 rounded-lg py-2 text-xs font-bold transition-all ${authMode === "signin"
               ? "bg-card text-foreground shadow-sm"
               : "text-muted-foreground hover:text-foreground"
-          }`}
+            }`}
         >
           Sign In to Existing Account
         </button>

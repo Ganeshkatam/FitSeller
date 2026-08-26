@@ -1,4 +1,5 @@
-import { Input, Label } from "@/components/ui/Field";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import type { Step5PickupAddressData } from "./OnboardingTypes";
 
 interface Step5Props {
@@ -46,8 +47,10 @@ export function Step5PickupAddress({ data, onChange }: Step5Props) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-        <div className="sm:col-span-3">
-          <Label htmlFor="addressLine1">Address Line 1 (Building, Street, Unit Number)</Label>
+        <div className="sm:col-span-3 space-y-2">
+          <Label htmlFor="addressLine1" className="text-xs font-semibold text-foreground">
+            Address Line 1 (Building, Street, Unit Number)
+          </Label>
           <Input
             id="addressLine1"
             type="text"
@@ -55,24 +58,28 @@ export function Step5PickupAddress({ data, onChange }: Step5Props) {
             placeholder="e.g. Unit 402, Lotus Fashion Park, Linking Road"
             value={data.addressLine1}
             onChange={(e) => onChange("addressLine1", e.target.value)}
-            className="mt-1.5 h-11 rounded-xl"
+            className="h-11 rounded-xl"
           />
         </div>
 
-        <div className="sm:col-span-3">
-          <Label htmlFor="addressLine2">Address Line 2 (Area, Landmark)</Label>
+        <div className="sm:col-span-3 space-y-2">
+          <Label htmlFor="addressLine2" className="text-xs font-semibold text-foreground">
+            Address Line 2 (Area, Landmark)
+          </Label>
           <Input
             id="addressLine2"
             type="text"
             placeholder="e.g. Near National College, Bandra West"
             value={data.addressLine2}
             onChange={(e) => onChange("addressLine2", e.target.value)}
-            className="mt-1.5 h-11 rounded-xl"
+            className="h-11 rounded-xl"
           />
         </div>
 
-        <div>
-          <Label htmlFor="pincode">Pincode (6 Digits)</Label>
+        <div className="space-y-2">
+          <Label htmlFor="pincode" className="text-xs font-semibold text-foreground">
+            Pincode (6 Digits)
+          </Label>
           <Input
             id="pincode"
             type="text"
@@ -81,12 +88,14 @@ export function Step5PickupAddress({ data, onChange }: Step5Props) {
             placeholder="e.g. 400050"
             value={data.pincode}
             onChange={(e) => handlePincodeInput(e.target.value)}
-            className="mt-1.5 h-11 rounded-xl font-mono"
+            className="h-11 rounded-xl font-mono"
           />
         </div>
 
-        <div>
-          <Label htmlFor="city">City</Label>
+        <div className="space-y-2">
+          <Label htmlFor="city" className="text-xs font-semibold text-foreground">
+            City
+          </Label>
           <Input
             id="city"
             type="text"
@@ -94,12 +103,14 @@ export function Step5PickupAddress({ data, onChange }: Step5Props) {
             placeholder="e.g. Mumbai"
             value={data.city}
             onChange={(e) => onChange("city", e.target.value)}
-            className="mt-1.5 h-11 rounded-xl"
+            className="h-11 rounded-xl"
           />
         </div>
 
-        <div>
-          <Label htmlFor="state">State</Label>
+        <div className="space-y-2">
+          <Label htmlFor="state" className="text-xs font-semibold text-foreground">
+            State
+          </Label>
           <Input
             id="state"
             type="text"
@@ -107,31 +118,35 @@ export function Step5PickupAddress({ data, onChange }: Step5Props) {
             placeholder="e.g. Maharashtra"
             value={data.state}
             onChange={(e) => onChange("state", e.target.value)}
-            className="mt-1.5 h-11 rounded-xl"
+            className="h-11 rounded-xl"
           />
         </div>
 
-        <div className="sm:col-span-2">
-          <Label htmlFor="contactName">Pickup Contact Person</Label>
+        <div className="sm:col-span-2 space-y-2">
+          <Label htmlFor="contactName" className="text-xs font-semibold text-foreground">
+            Pickup Contact Person
+          </Label>
           <Input
             id="contactName"
             type="text"
             placeholder="e.g. Rajesh (Dispatch Manager)"
             value={data.pickupContactName}
             onChange={(e) => onChange("pickupContactName", e.target.value)}
-            className="mt-1.5 h-11 rounded-xl"
+            className="h-11 rounded-xl"
           />
         </div>
 
-        <div>
-          <Label htmlFor="contactPhone">Pickup Contact Phone</Label>
+        <div className="space-y-2">
+          <Label htmlFor="contactPhone" className="text-xs font-semibold text-foreground">
+            Pickup Contact Phone
+          </Label>
           <Input
             id="contactPhone"
             type="tel"
             placeholder="e.g. +91 98765 43210"
             value={data.pickupContactPhone}
             onChange={(e) => onChange("pickupContactPhone", e.target.value)}
-            className="mt-1.5 h-11 rounded-xl"
+            className="h-11 rounded-xl"
           />
         </div>
       </div>

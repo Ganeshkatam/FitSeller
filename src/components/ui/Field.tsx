@@ -1,53 +1,27 @@
-import type { HTMLAttributes, InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import type { SelectHTMLAttributes, HTMLAttributes } from "react";
 import { cn } from "../../lib/utils";
 
-export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={cn(
-        "rounded-xl border border-border bg-card text-card-foreground shadow-sm",
-        className
-      )}
-      {...props}
-    />
-  );
-}
-
-export function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("flex items-center justify-between gap-4 border-b border-border px-5 py-4", className)} {...props} />;
-}
-
-export function CardTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
-  return <h3 className={cn("text-sm font-semibold text-foreground", className)} {...props} />;
-}
-
-export function CardContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("p-5", className)} {...props} />;
-}
+// Re-export official shadcn UI primitives
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "./card";
+export { Input } from "./input";
+export { Label } from "./label";
+export { Textarea } from "./textarea";
 
 const fieldClasses =
   "w-full rounded-lg border border-input bg-input/20 px-3 text-sm text-foreground placeholder:text-muted-foreground transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20";
 
-export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      className={cn(fieldClasses, "h-9", className)}
-      {...props}
-    />
-  );
-}
-
-export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return (
-    <textarea
-      className={cn(fieldClasses, "min-h-16 py-2", className)}
-      rows={3}
-      {...props}
-    />
-  );
-}
-
-export function Select({ className, children, ...props }: SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({
+  className,
+  children,
+  ...props
+}: SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
       className={cn(
@@ -66,11 +40,23 @@ export function Select({ className, children, ...props }: SelectHTMLAttributes<H
   );
 }
 
-export function Label({ className, ...props }: HTMLAttributes<HTMLLabelElement> & { htmlFor?: string }) {
+export function Field({
+  className,
+  error,
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement> & { error?: string }) {
   return (
-    <label
-      className={cn("mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground", className)}
-      {...props}
-    />
+    <div className={cn("space-y-1.5", className)} {...props}>
+      {children}
+      {error && <p className="text-xs text-destructive">{error}</p>}
+    </div>
   );
+}
+
+export function FieldGroup({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("grid gap-4", className)} {...props} />;
 }

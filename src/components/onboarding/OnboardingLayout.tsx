@@ -4,7 +4,7 @@ import { OnboardingProvider, useOnboarding } from "@/contexts/OnboardingContext"
 import { OnboardingHeader } from "./OnboardingHeader";
 import { OnboardingStepper } from "./OnboardingStepper";
 import { OnboardingSuccess } from "./OnboardingSuccess";
-
+import { Card, CardContent } from "@/components/ui/card";
 import { ONBOARDING_STEPS } from "./OnboardingTypes";
 
 function OnboardingContent() {
@@ -56,9 +56,11 @@ function OnboardingContent() {
         </div>
 
         {/* Active Step Route Outlet Card */}
-        <div className="rounded-3xl border border-border/80 bg-card/90 backdrop-blur-2xl p-6 sm:p-10 shadow-xl shadow-zinc-950/5 dark:shadow-black/20">
-          {completed ? <OnboardingSuccess /> : <Outlet />}
-        </div>
+        <Card className="rounded-3xl border-border/80 bg-card/90 backdrop-blur-2xl shadow-xl shadow-zinc-950/5 dark:shadow-black/20 overflow-hidden">
+          <CardContent className="p-6 sm:p-10">
+            {completed ? <OnboardingSuccess /> : <Outlet />}
+          </CardContent>
+        </Card>
       </main>
 
       {/* Bottom Footer */}

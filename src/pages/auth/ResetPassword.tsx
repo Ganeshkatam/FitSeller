@@ -15,7 +15,8 @@ import {
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input, Label } from "@/components/ui/Field";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/States";
 import { getHumanErrorMessage } from "@/lib/utils";
 

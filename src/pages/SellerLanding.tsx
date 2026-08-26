@@ -34,7 +34,7 @@ import {
   FileCheck,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/Field";
+import { Input } from "@/components/ui/input";
 import { formatCurrency, formatNumber } from "../lib/utils";
 
 function GoogleIcon({ className = "size-4.5" }: { className?: string }) {

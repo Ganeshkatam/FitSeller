@@ -14,7 +14,8 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input, Label } from "@/components/ui/Field";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { getHumanErrorMessage } from "@/lib/utils";
 
 export default function ForgotPassword() {

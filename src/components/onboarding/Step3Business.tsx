@@ -1,4 +1,13 @@
-import { Input, Label } from "@/components/ui/Field";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { APPAREL_CATEGORIES, type Step3BusinessData } from "./OnboardingTypes";
 
 interface Step3Props {
@@ -22,8 +31,10 @@ export function Step3Business({ data, onChange }: Step3Props) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-        <div>
-          <Label htmlFor="businessName">Seller Display Name</Label>
+        <div className="space-y-2">
+          <Label htmlFor="businessName" className="text-xs font-semibold text-foreground">
+            Seller Display Name
+          </Label>
           <Input
             id="businessName"
             type="text"
@@ -31,47 +42,56 @@ export function Step3Business({ data, onChange }: Step3Props) {
             placeholder="e.g. Aura Linen Wear"
             value={data.businessName}
             onChange={(e) => onChange("businessName", e.target.value)}
-            className="mt-1.5 h-11 rounded-xl"
+            className="h-11 rounded-xl"
           />
         </div>
 
-        <div>
-          <Label htmlFor="brandName">Clothing Brand Name (Optional)</Label>
+        <div className="space-y-2">
+          <Label htmlFor="brandName" className="text-xs font-semibold text-foreground">
+            Clothing Brand Name (Optional)
+          </Label>
           <Input
             id="brandName"
             type="text"
             placeholder="e.g. Aura Studio"
             value={data.brandName}
             onChange={(e) => onChange("brandName", e.target.value)}
-            className="mt-1.5 h-11 rounded-xl"
+            className="h-11 rounded-xl"
           />
         </div>
 
-        <div className="sm:col-span-2">
-          <Label htmlFor="primaryCategory">Primary Clothing Category</Label>
-          <select
-            id="primaryCategory"
+        <div className="sm:col-span-2 space-y-2">
+          <Label htmlFor="primaryCategory" className="text-xs font-semibold text-foreground">
+            Primary Clothing Category
+          </Label>
+          <Select
             value={data.primaryCategory}
-            onChange={(e) => onChange("primaryCategory", e.target.value)}
-            className="mt-1.5 w-full h-11 rounded-xl border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            onValueChange={(val) => onChange("primaryCategory", val)}
           >
-            {APPAREL_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger id="primaryCategory" className="w-full h-11 rounded-xl text-sm">
+              <SelectValue placeholder="Select primary category" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              {APPAREL_CATEGORIES.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        <div className="sm:col-span-2">
-          <Label htmlFor="description">Short Brand Description (Optional)</Label>
-          <textarea
+        <div className="sm:col-span-2 space-y-2">
+          <Label htmlFor="description" className="text-xs font-semibold text-foreground">
+            Short Brand Description (Optional)
+          </Label>
+          <Textarea
             id="description"
             rows={3}
             placeholder="e.g. Crafted pure linen shirts, blazers, and dresses made with sustainable organic fabrics."
             value={data.description}
             onChange={(e) => onChange("description", e.target.value)}
-            className="mt-1.5 w-full rounded-xl border border-input bg-background p-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full rounded-xl p-3 text-sm"
           />
         </div>
       </div>

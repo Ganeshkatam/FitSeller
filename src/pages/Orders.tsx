@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { Page, PageHeader } from "../components/layout/Page";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/Badge";
-import { Input } from "../components/ui/Field";
+import { Input } from "@/components/ui/input";
 import { EmptyState, TableSkeleton } from "../components/ui/States";
 import { useToast } from "../components/ui/Toast";
 import { formatCurrency, formatDateTime } from "../lib/utils";
