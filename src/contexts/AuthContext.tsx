@@ -92,29 +92,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setProfile(profileData ?? null);
 
-      // 2. Fetch Seller record if one exists (scoped to operational columns, excluding sensitive financial fields)
-      const { data: sellerRecord } = await supabase
+      // 2. Fetch Seller record by authoritative profile ownership
+      let { data: sellerRecord } = await supabase
         .from("sellers")
         .select(
           "id, profile_id, business_name, business_email, status, brand_name, primary_category, shipping_mode, courier_partner, dispatch_time_hours, onboarding_completed_at, created_at, updated_at"
         )
-        .or(`profile_id.eq.${userId},business_email.eq.${cleanEmail}`)
+        .eq("profile_id", userId)
         .maybeSingle();
 
-      // Link profile_id if legacy record found by email without profile_id
-      if (sellerRecord && !sellerRecord.profile_id && userId) {
-        const { data: linkedSeller } = await supabase
+      // Fallback: Link legacy record only if profile_id was never assigned
+      if (!sellerRecord && cleanEmail) {
+        const { data: legacyRecord } = await supabase
           .from("sellers")
-          .update({ profile_id: userId })
-          .eq("id", sellerRecord.id)
           .select(
             "id, profile_id, business_name, business_email, status, brand_name, primary_category, shipping_mode, courier_partner, dispatch_time_hours, onboarding_completed_at, created_at, updated_at"
           )
+          .eq("business_email", cleanEmail)
+          .is("profile_id", null)
           .maybeSingle();
-        setSeller(linkedSeller ?? sellerRecord);
-      } else {
-        setSeller(sellerRecord ?? null);
+
+        if (legacyRecord) {
+          const { data: linkedSeller } = await supabase
+            .from("sellers")
+            .update({ profile_id: userId })
+            .eq("id", legacyRecord.id)
+            .select(
+              "id, profile_id, business_name, business_email, status, brand_name, primary_category, shipping_mode, courier_partner, dispatch_time_hours, onboarding_completed_at, created_at, updated_at"
+            )
+            .maybeSingle();
+          sellerRecord = linkedSeller ?? legacyRecord;
+        }
       }
+
+      setSeller(sellerRecord ?? null);
 
       setAuthError(null);
     } catch {
