@@ -62,94 +62,94 @@ function GoogleIcon({ className = "size-4.5" }: { className?: string }) {
 
 const FAQS = [
   {
-    q: "What do I need to start selling on FitSeller?",
-    a: "To register your apparel brand, you will need: (1) A valid Indian GSTIN number, (2) Active bank account details for daily IMPS settlements, (3) Your business PAN card, and (4) High-resolution garment photographs with size specifications.",
+    q: "What do I need to start selling?",
+    a: "You just need a GST number, a bank account for payouts, your business PAN, and photos of your clothes with size details.",
   },
   {
-    q: "How does the pricing and commission structure work?",
-    a: "FitSeller operates on a transparent flat 8% referral fee upon successful garment delivery. There are ₹0 listing fees, ₹0 monthly account maintenance charges, and ₹0 closing or payment gateway levies.",
+    q: "How much does FitSeller charge?",
+    a: "We only charge a simple flat 8% fee when an item is delivered. There are no registration fees, no listing charges, and no monthly subscription costs.",
   },
   {
-    q: "How does FitSeller Doorstep Logistics (Fulfillment) operate?",
-    a: "When a customer places an order, you generate a pre-paid courier label with 1 click in your seller portal. Our national logistics partners (BlueDart, Delhivery, Xpressbees) arrive directly at your studio or warehouse to collect and dispatch the parcel.",
+    q: "How does shipping and doorstep pickup work?",
+    a: "When you receive an order, print the prepaid shipping label with one click. Courier partners like BlueDart and Delhivery pick up the package directly from your address.",
   },
   {
-    q: "When and how are my earnings deposited?",
-    a: "Payouts are automated via nightly IMPS bank transfers directly to your registered Indian current account at 11:30 PM for all delivered orders, avoiding traditional 30-day payout freezes.",
+    q: "When do I get my money?",
+    a: "Your earnings are transferred straight into your bank account every night at 11:30 PM for all delivered orders. You never have to wait 30 days.",
   },
   {
-    q: "Can I manage apparel with multiple sizes (XS to 3XL) and colors?",
-    a: "Yes. FitSeller features a native multi-size matrix catalog system. You can define distinct stock quantities across XS, S, M, L, XL, XXL, and 3XL variants with automatic SKU synchronization and zero overselling.",
+    q: "Can I sell multiple sizes like XS, S, M, L, XL?",
+    a: "Yes. You can manage all sizes under a single product listing and track inventory for each size without creating separate listings.",
   },
   {
-    q: "How does the fitMirror 3D virtual try-on engine reduce return rates?",
-    a: "Before purchasing on the fitMirror consumer app, shoppers drape your garments on their exact 3D avatar. This eliminates buyer sizing guesswork, boosting purchase confidence and cutting apparel return rates by up to 68%.",
+    q: "How does the 3D virtual try-on help reduce returns?",
+    a: "Shoppers can see how your clothes fit their body on a 3D avatar before buying. This gives them confidence in sizing and cuts return rates by up to 68%.",
   },
 ];
 
 const TESTIMONIALS = [
   {
     name: "Rhea Deshmukh",
-    role: "Founder & Creative Director",
+    role: "Founder",
     brand: "Aura Linen Wear, Mumbai",
-    tag: "Minimalist Linen & Pret",
-    growth: "+340% YoY Revenue",
+    tag: "Linen & Casual Pret",
+    growth: "+340% Annual Sales",
     avatar: "RD",
     quote:
-      "FitSeller transformed our boutique production into a nationwide brand. The automated courier pickups and daily bank payouts let us focus purely on designing high-quality garments.",
+      "FitSeller helped us take our local boutique nationwide. The doorstep pickups and daily payments make running our business so much easier.",
   },
   {
     name: "Arjun Singhal",
     role: "Co-Founder",
     brand: "Vanguard Streetwear, Delhi",
-    tag: "Heavyweight Cotton Streetwear",
-    growth: "12,400+ Units Shipped",
+    tag: "Streetwear & Hoodies",
+    growth: "12,400+ Orders Delivered",
     avatar: "AS",
     quote:
-      "The multi-size inventory matrix and authentic real-time dashboard give us total visibility over GMV and returns. It is the most reliable, honest platform we have used in Indian e-commerce.",
+      "Managing multiple sizes in one place saves us hours every week. Plus, getting paid every night keeps our cash flow healthy.",
   },
   {
     name: "Meera Krishnan",
     role: "Managing Partner",
     brand: "Kavya Silks & Cottons, Bangalore",
-    tag: "Artisanal Handlooms & Sarees",
-    growth: "99.4% On-time Dispatch",
+    tag: "Handlooms & Sarees",
+    growth: "99.4% On-time Delivery",
     avatar: "MK",
     quote:
-      "Transitioning our traditional handloom business onto FitSeller took less than an afternoon. The transparent 8% commission and prompt customer support are unmatched.",
+      "Setting up our store took less than an hour. The 8% flat fee is completely transparent, and customer support always picks up the phone.",
   },
 ];
 
 const COMPARISON_ROWS = [
   {
-    feature: "Upfront Listing Fees",
-    fitseller: "₹0 / Free Unlimited Listings",
-    legacy: "₹250 – ₹500 per SKU / month",
+    feature: "Listing & Setup Cost",
+    fitseller: "Free / ₹0 to list unlimited clothes",
+    legacy: "Monthly fees or charges per SKU",
   },
   {
-    feature: "Platform Referral Fee",
-    fitseller: "Transparent 8% Flat",
-    legacy: "25% to 40% + Ad Levies + Closing Cut",
+    feature: "Platform Commission",
+    fitseller: "Flat 8% only when you sell",
+    legacy: "25% to 40% + hidden closing cuts",
   },
   {
-    feature: "Bank Settlement Schedule",
-    fitseller: "Daily Automated IMPS (11:30 PM)",
-    legacy: "15 to 45 Days Lock-in Period",
+    feature: "Payout Speed",
+    fitseller: "Daily bank deposits at 11:30 PM",
+    legacy: "15 to 45 days waiting period",
   },
   {
-    feature: "Inventory & Size Matrix",
-    fitseller: "Unified Multi-size (XS–3XL)",
-    legacy: "Fragmented Single-item SKUs",
+    feature: "Size Management",
+    fitseller: "All sizes (XS–3XL) in one clean listing",
+    legacy: "Separate listings for each size",
   },
   {
-    feature: "Customer 3D Sizing Experience",
-    fitseller: "Integrated fitMirror 3D Try-on",
-    legacy: "Static 2D Size Charts (high returns)",
+    feature: "Customer Sizing Help",
+    fitseller: "Interactive 3D virtual try-on",
+    legacy: "Basic 2D size charts (high returns)",
   },
   {
-    feature: "Return Dispute Protection",
-    fitseller: "Fair Automated Inspection Shield",
-    legacy: "Heavy Penalties on Brands",
+    feature: "Return Protection",
+    fitseller: "Fair return checks protect your earnings",
+    legacy: "Heavy return penalties on sellers",
   },
 ];
 
@@ -158,35 +158,35 @@ const ANNOUNCEMENTS = [
     id: 1,
     tag: "0% Setup Fee",
     accent: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-    text: "Zero catalog listing charges & transparent 8% commission vs 35% on traditional marketplaces.",
-    linkText: "Calculate Margin",
+    text: "List your entire clothing catalog for free. Flat 8% fee only when you make a sale.",
+    linkText: "Calculate Profit",
     linkUrl: "#calculator",
     icon: IndianRupee,
   },
   {
     id: 2,
-    tag: "Daily IMPS Clearing",
+    tag: "Daily Payouts",
     accent: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
-    text: "Guaranteed nightly 11:30 PM direct bank deposits for all delivered customer orders.",
-    linkText: "View Settlement Flow",
+    text: "Earnings deposited straight to your bank account every night at 11:30 PM.",
+    linkText: "See How Payouts Work",
     linkUrl: "#interactive-tour",
     icon: CreditCard,
   },
   {
     id: 3,
-    tag: "Pan-India Logistics",
+    tag: "Doorstep Pickup",
     accent: "bg-purple-500/20 text-purple-300 border-purple-500/30",
-    text: "1-Click automated BlueDart, Delhivery & Xpressbees doorstep courier collection across 28,000+ pincodes.",
-    linkText: "Explore Dispatch",
+    text: "BlueDart and Delhivery collect packages directly from your doorstep across India.",
+    linkText: "See Shipping Details",
     linkUrl: "#superpowers",
     icon: Truck,
   },
   {
     id: 4,
-    tag: "3D Fit Technology",
+    tag: "3D Virtual Try-On",
     accent: "bg-pink-500/20 text-pink-300 border-pink-500/30",
-    text: "fitMirror virtual try-on avatars reduce customer sizing uncertainty and cut return rates by 68%.",
-    linkText: "See 3D Demo",
+    text: "Customers try on your clothes virtually before buying, cutting return rates by 68%.",
+    linkText: "Try Interactive Demo",
     linkUrl: "#interactive-tour",
     icon: Shirt,
   },
@@ -267,7 +267,7 @@ export default function SellerLanding() {
   return (
     <div className="min-h-screen w-full bg-background text-foreground selection:bg-indigo-500/20 font-sans">
       {/* ============================================================ */}
-      {/* 1. DYNAMIC ANNOUNCEMENT BANNER CAROUSEL */}
+      {/* 1. DYNAMIC ANNOUNCEMENT BANNER */}
       {/* ============================================================ */}
       {!bannerDismissed && (
         <div
@@ -278,18 +278,18 @@ export default function SellerLanding() {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
 
           <div className="w-full flex items-center justify-between gap-4">
-            {/* Left Status Indicator */}
+            {/* Left Indicator */}
             <div className="hidden md:flex items-center gap-2 shrink-0">
               <span className="flex size-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-indigo-300">
-                LIVE OPERATIONS
+              <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-300">
+                LIVE UPDATES
               </span>
             </div>
 
             {/* Center Carousel Active Message */}
             <div className="flex-1 flex items-center justify-center gap-2.5 sm:gap-3 text-center truncate">
               <span
-                className={`hidden sm:inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider border ${currentBanner.accent} shrink-0`}
+                className={`hidden sm:inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${currentBanner.accent} shrink-0`}
               >
                 <BannerIcon className="size-3" />
                 <span>{currentBanner.tag}</span>
@@ -358,7 +358,7 @@ export default function SellerLanding() {
       )}
 
       {/* ============================================================ */}
-      {/* 2. FULL-WIDTH NAVIGATION HEADER (AMAZON SELLER STYLE) */}
+      {/* 2. NAVIGATION HEADER */}
       {/* ============================================================ */}
       <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/85 backdrop-blur-2xl transition-all">
         <div className="w-full flex h-20 items-center justify-between px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
@@ -370,15 +370,15 @@ export default function SellerLanding() {
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="text-xl font-black tracking-tight text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <span className="text-xl font-bold tracking-tight text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                   FitSeller
                 </span>
-                <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-widest text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
                   SELLER HUB
                 </span>
               </div>
               <span className="text-[11px] font-medium text-muted-foreground">
-                fitMirror Apparel Network
+                Sell clothes online across India
               </span>
             </div>
           </Link>
@@ -420,7 +420,7 @@ export default function SellerLanding() {
                       <div>
                         <p className="text-xs font-bold text-foreground">Designer Boutiques</p>
                         <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
-                          0% catalog fees, premium editorial curation for luxury pret & bespoke.
+                          Zero listing fees and premium placement for pret and custom designer wear.
                         </p>
                       </div>
                     </a>
@@ -436,7 +436,7 @@ export default function SellerLanding() {
                       <div>
                         <p className="text-xs font-bold text-foreground">D2C Fashion Labels</p>
                         <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
-                          High-converting 3D try-on previews and same-day national dispatch.
+                          Virtual try-on preview for customers and fast nationwide shipping.
                         </p>
                       </div>
                     </a>
@@ -452,7 +452,7 @@ export default function SellerLanding() {
                       <div>
                         <p className="text-xs font-bold text-foreground">Handloom Houses</p>
                         <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
-                          Authenticity certificate tagging and daily IMPS direct bank deposits.
+                          Highlight craft authenticity and receive daily direct bank payouts.
                         </p>
                       </div>
                     </a>
@@ -466,9 +466,9 @@ export default function SellerLanding() {
                         <Factory className="size-4.5" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-foreground">Garment Factories</p>
+                        <p className="text-xs font-bold text-foreground">Garment Manufacturers</p>
                         <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">
-                          Unified size matrix (XS–3XL) and high-volume courier pickups.
+                          Manage all sizes (XS to 3XL) with automated high-volume courier pickups.
                         </p>
                       </div>
                     </a>
@@ -488,7 +488,7 @@ export default function SellerLanding() {
               href="#superpowers"
               className="rounded-xl px-3.5 py-2 hover:text-foreground hover:bg-accent/60 transition"
             >
-              Fulfillment
+              Doorstep Shipping
             </a>
 
             <a
@@ -502,7 +502,7 @@ export default function SellerLanding() {
               href="#interactive-tour"
               className="rounded-xl px-3.5 py-2 hover:text-foreground hover:bg-accent/60 transition"
             >
-              Seller Console
+              Seller Dashboard
             </a>
 
             <a
@@ -565,7 +565,7 @@ export default function SellerLanding() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="block rounded-xl px-3 py-2 text-sm font-semibold text-foreground hover:bg-accent transition"
               >
-                Logistics & Fulfillment
+                Doorstep Shipping
               </a>
               <a
                 href="#calculator"
@@ -579,7 +579,7 @@ export default function SellerLanding() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="block rounded-xl px-3 py-2 text-sm font-semibold text-foreground hover:bg-accent transition"
               >
-                Seller Console Demo
+                Seller Dashboard Demo
               </a>
               <a
                 href="#testimonials"
@@ -593,7 +593,7 @@ export default function SellerLanding() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="block rounded-xl px-3 py-2 text-sm font-semibold text-foreground hover:bg-accent transition"
               >
-                Support & FAQs
+                Help & FAQs
               </a>
             </div>
 
@@ -610,7 +610,7 @@ export default function SellerLanding() {
                 className="w-full justify-center rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold h-11 shadow-md shadow-indigo-600/30"
                 asChild
               >
-                <Link to="/auth/sign-up">Start Selling for ₹0 Setup Cost</Link>
+                <Link to="/auth/sign-up">Start Selling for Free</Link>
               </Button>
             </div>
           </div>
@@ -618,7 +618,7 @@ export default function SellerLanding() {
       </header>
 
       {/* ============================================================ */}
-      {/* 3. HERO SECTION (AMAZON SELLER AUTHORITY STYLE) */}
+      {/* 3. HERO SECTION */}
       {/* ============================================================ */}
       <section className="relative w-full overflow-hidden min-h-[calc(100vh-5rem)] flex items-center py-12 lg:py-0 border-b border-border/50">
         <div className="absolute top-1/4 left-1/4 -translate-x-1/2 size-[650px] rounded-full bg-indigo-500/10 blur-[160px] pointer-events-none -z-10" />
@@ -630,18 +630,18 @@ export default function SellerLanding() {
             <div className="lg:col-span-6 xl:col-span-6 space-y-7 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
                 <Sparkles className="size-4" />
-                <span>Become a Seller on FitSeller &bull; fitMirror Network</span>
+                <span>Sell Your Clothes Online on FitSeller</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-[3.85rem] font-extrabold tracking-tight text-foreground leading-[1.08]">
-                Sell apparel online to{" "}
+              <h1 className="text-4xl sm:text-5xl lg:text-5xl xl:text-[3.85rem] font-black tracking-tight text-foreground leading-[1.08]">
+                Reach millions of fashion shoppers{" "}
                 <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  millions of active shoppers.
+                  across India.
                 </span>
               </h1>
 
               <p className="max-w-2xl mx-auto lg:mx-0 text-base sm:text-lg lg:text-xl leading-relaxed text-muted-foreground font-normal">
-                Reach high-intent fashion customers across 28,000+ pin codes. Flat 8% referral fee, zero listing fees, automated doorstep courier pickup, and daily bank payouts.
+                Sell to shoppers in 28,000+ pincodes. Enjoy a flat 8% fee only when you make a sale, zero listing charges, doorstep shipping pickup, and daily bank payouts.
               </p>
 
               {/* Instant Registration Block */}
@@ -663,16 +663,16 @@ export default function SellerLanding() {
                   </Button>
                 </form>
 
-                {/* 3 Core Amazon-style Pillars */}
+                {/* 3 Core Trust Pillars */}
                 <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-xs text-muted-foreground pt-1">
                   <span className="flex items-center gap-1.5 font-semibold">
-                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> Flat 8% Fee Only When You Sell
+                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> Flat 8% Fee Only When Sold
                   </span>
                   <span className="flex items-center gap-1.5 font-semibold">
-                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> Daily IMPS Bank Clearing
+                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> Daily Bank Deposits
                   </span>
                   <span className="flex items-center gap-1.5 font-semibold">
-                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> ₹0 Listing / Fixed Fee
+                    <CheckCircle2 className="size-4 text-emerald-600 shrink-0" /> Free to List & Setup
                   </span>
                 </div>
               </div>
@@ -687,20 +687,20 @@ export default function SellerLanding() {
                 >
                   <Link to="/auth/sign-in">
                     <GoogleIcon className="size-4 mr-2" />
-                    <span>Quick Sign Up with Google</span>
+                    <span>Sign Up with Google</span>
                   </Link>
                 </Button>
-                <span className="text-xs text-muted-foreground font-medium">or log in to existing seller console</span>
+                <span className="text-xs text-muted-foreground font-medium">Already have an account? <Link to="/auth/sign-in" className="text-indigo-600 font-bold hover:underline">Log in</Link></span>
               </div>
             </div>
 
-            {/* Hero Right Visual: High-Fashion Studio + Layered Live Console Cards */}
+            {/* Hero Right Visual: High-Fashion Studio + Margin Card */}
             <div className="lg:col-span-6 xl:col-span-6 relative">
               <div className="relative mx-auto max-w-xl lg:max-w-none">
                 <div className="relative overflow-hidden rounded-3xl border border-border/80 bg-card shadow-2xl shadow-indigo-500/10">
                   <img
                     src="/images/landing/fashion-studio.jpg"
-                    alt="Fashion designers reviewing luxury apparel collections"
+                    alt="Fashion designers reviewing clothing collection"
                     className="h-[460px] sm:h-[520px] lg:h-[550px] w-full object-cover object-top filter brightness-[0.96] contrast-[1.04]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
@@ -709,26 +709,26 @@ export default function SellerLanding() {
                   <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/20 bg-black/75 p-4.5 backdrop-blur-xl text-white space-y-2.5">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-bold tracking-tight">Structured Khadi Linen Blazer</p>
-                        <p className="text-[11px] text-white/70">Aura Studio &bull; SKU #KB-9482-L</p>
+                        <p className="text-sm font-bold tracking-tight">Linen Casual Blazer</p>
+                        <p className="text-[11px] text-white/70">Aura Studio &bull; Size L</p>
                       </div>
                       <div className="flex items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/30">
                         <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span>Live on fitMirror</span>
+                        <span>Live on Store</span>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-2.5 text-center">
                       <div>
-                        <p className="text-[10px] uppercase font-bold text-white/60">Listing Price</p>
+                        <p className="text-[10px] uppercase font-bold text-white/60">Selling Price</p>
                         <p className="text-sm font-extrabold text-white">₹3,499</p>
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase font-bold text-white/60">FitSeller Fee (8%)</p>
+                        <p className="text-[10px] uppercase font-bold text-white/60">Platform Fee (8%)</p>
                         <p className="text-sm font-extrabold text-indigo-300">-₹280</p>
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase font-bold text-emerald-400">Net Settled To Bank</p>
+                        <p className="text-[10px] uppercase font-bold text-emerald-400">Direct to Your Bank</p>
                         <p className="text-sm font-extrabold text-emerald-400">₹3,219 (92%)</p>
                       </div>
                     </div>
@@ -739,26 +739,26 @@ export default function SellerLanding() {
                 <div className="absolute -top-6 -left-6 sm:-left-8 rounded-2xl border border-border bg-card/95 p-4 sm:p-5 shadow-2xl backdrop-blur-2xl max-w-[240px] hidden sm:block">
                   <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
                     <IndianRupee className="size-4 text-emerald-600" />
-                    <span>Daily Bank Settlement</span>
+                    <span>Daily Bank Deposit</span>
                   </div>
                   <p className="mt-1 text-2xl font-black text-foreground">₹1,84,320</p>
                   <p className="text-xs text-emerald-600 font-bold flex items-center gap-1 mt-1">
-                    <TrendingUp className="size-3.5" /> Cleared via IMPS
+                    <TrendingUp className="size-3.5" /> Sent tonight at 11:30 PM
                   </p>
                 </div>
 
                 {/* Floating Widget 2: Fulfillment Status */}
                 <div className="absolute -bottom-6 -right-6 sm:-right-8 rounded-2xl border border-border bg-card/95 p-4 sm:p-5 shadow-2xl backdrop-blur-2xl max-w-[250px] hidden sm:block">
                   <div className="flex items-center justify-between text-xs font-bold text-muted-foreground mb-1.5">
-                    <span className="flex items-center gap-1.5 text-foreground">
+                    <span className="flex items-center gap-1.5 text-foreground font-semibold">
                       <Truck className="size-4 text-indigo-600" /> Doorstep Pickup
                     </span>
-                    <span className="text-[10px] rounded-md bg-indigo-500/10 text-indigo-600 px-2 py-0.5 font-extrabold border border-indigo-500/20">
+                    <span className="text-[10px] rounded-md bg-indigo-500/10 text-indigo-600 px-2 py-0.5 font-bold border border-indigo-500/20">
                       DISPATCHED
                     </span>
                   </div>
-                  <p className="text-sm font-bold text-foreground">48 Parcels Collected</p>
-                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">BlueDart &bull; Delhivery Air Express</p>
+                  <p className="text-sm font-bold text-foreground">48 Packages Picked Up</p>
+                  <p className="text-xs text-muted-foreground mt-0.5 font-medium">BlueDart &bull; Delhivery Express</p>
                 </div>
               </div>
             </div>
@@ -767,7 +767,7 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 4. AMAZON SELLER KEY STATS & TRUST BAR */}
+      {/* 4. KEY STATS BAR */}
       {/* ============================================================ */}
       <section className="w-full border-b border-border/40 bg-muted/20 py-10">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
@@ -775,7 +775,7 @@ export default function SellerLanding() {
             <div className="space-y-1">
               <p className="text-3xl sm:text-4xl font-black text-foreground tracking-tight">1,400+</p>
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                Active Apparel Brands
+                Clothing Brands & Boutiques
               </p>
             </div>
             <div className="space-y-1">
@@ -783,7 +783,7 @@ export default function SellerLanding() {
                 28,000+
               </p>
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                Pin Codes Served
+                Pincodes Served Across India
               </p>
             </div>
             <div className="space-y-1">
@@ -791,7 +791,7 @@ export default function SellerLanding() {
                 99.8%
               </p>
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                On-Time Courier Pickup
+                On-Time Doorstep Pickup
               </p>
             </div>
             <div className="space-y-1">
@@ -805,7 +805,7 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 5. "WHY SELL ON FITSELLER" (4 CORE PILLARS) */}
+      {/* 5. "WHY SELL ON FITSELLER" */}
       {/* ============================================================ */}
       <section id="why-sell" className="w-full py-20 sm:py-28 border-b border-border/50">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
@@ -814,11 +814,11 @@ export default function SellerLanding() {
               <Compass className="size-3.5" />
               <span>Why Sell on FitSeller</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-              Everything you need to grow your apparel business online.
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+              Everything you need to sell your clothes across India.
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg">
-              FitSeller eliminates the complexity of legacy e-commerce with built-in doorstep logistics, daily bank payouts, and 3D customer sizing.
+              We take care of doorstep delivery, customer sizing, and fast daily payouts so you can focus on making great clothes.
             </p>
           </div>
 
@@ -829,13 +829,13 @@ export default function SellerLanding() {
                 <div className="flex size-12 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600">
                   <Store className="size-6" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground">Massive Fashion Audience</h3>
+                <h3 className="text-xl font-bold text-foreground">Millions of Fashion Shoppers</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Direct access to fitMirror&apos;s fast-growing community of fashion shoppers seeking contemporary pret, ethnic wear, and designer streetwear.
+                  Put your clothing collection in front of active buyers looking for daily wear, festive outfits, and designer pieces.
                 </p>
               </div>
               <div className="text-xs font-bold text-indigo-600 flex items-center gap-1">
-                <span>Integrated Customer Network</span> <ArrowRight className="size-3" />
+                <span>Nationwide Reach</span> <ArrowRight className="size-3" />
               </div>
             </div>
 
@@ -845,13 +845,13 @@ export default function SellerLanding() {
                 <div className="flex size-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-600">
                   <Truck className="size-6" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground">FitSeller Doorstep Logistics</h3>
+                <h3 className="text-xl font-bold text-foreground">Doorstep Courier Pickup</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Pre-integrated BlueDart, Delhivery, and Xpressbees. 1-click pre-paid label generation with courier collection straight from your door.
+                  Print prepaid shipping labels with one click. BlueDart and Delhivery pick up packages directly from your doorstep.
                 </p>
               </div>
               <div className="text-xs font-bold text-emerald-600 flex items-center gap-1">
-                <span>Pan-India Air Express</span> <ArrowRight className="size-3" />
+                <span>28,000+ Pincodes</span> <ArrowRight className="size-3" />
               </div>
             </div>
 
@@ -861,13 +861,13 @@ export default function SellerLanding() {
                 <div className="flex size-12 items-center justify-center rounded-2xl bg-purple-500/10 text-purple-600">
                   <CreditCard className="size-6" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground">Daily Direct Bank Payouts</h3>
+                <h3 className="text-xl font-bold text-foreground">Daily Direct Bank Deposits</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  No 30-day escrow freeze. Delivered order earnings are transferred nightly into your registered Indian bank account via automated IMPS.
+                  No waiting weeks for your money. Your earnings are deposited directly into your bank account every night at 11:30 PM.
                 </p>
               </div>
               <div className="text-xs font-bold text-purple-600 flex items-center gap-1">
-                <span>11:30 PM Nightly Clearing</span> <ArrowRight className="size-3" />
+                <span>Nightly Settlements</span> <ArrowRight className="size-3" />
               </div>
             </div>
 
@@ -877,13 +877,13 @@ export default function SellerLanding() {
                 <div className="flex size-12 items-center justify-center rounded-2xl bg-pink-500/10 text-pink-600">
                   <RotateCcw className="size-6" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground">68% Lower Returns via 3D</h3>
+                <h3 className="text-xl font-bold text-foreground">68% Fewer Returns</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Customers test drape and size on their custom 3D avatar prior to ordering, preventing sizing errors and return losses.
+                  Shoppers try on clothes virtually using their 3D avatar before buying, preventing wrong size orders and returns.
                 </p>
               </div>
               <div className="text-xs font-bold text-pink-600 flex items-center gap-1">
-                <span>fitMirror 3D Fitting Room</span> <ArrowRight className="size-3" />
+                <span>3D Virtual Try-On</span> <ArrowRight className="size-3" />
               </div>
             </div>
           </div>
@@ -891,7 +891,7 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 6. "HOW TO START SELLING" (4-STEP OPERATIONAL GUIDE) */}
+      {/* 6. "HOW TO START SELLING" (4 SIMPLE STEPS) */}
       {/* ============================================================ */}
       <section id="how-it-works" className="w-full py-20 sm:py-28 border-b border-border/50 bg-muted/10">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
@@ -900,11 +900,11 @@ export default function SellerLanding() {
               <FileCheck className="size-3.5" />
               <span>How It Works</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
               Start selling in 4 simple steps.
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg">
-              Set up your seller account and publish your first garment catalog in under 10 minutes.
+              Set up your seller account and list your first clothing collection in under 10 minutes.
             </p>
           </div>
 
@@ -914,12 +914,12 @@ export default function SellerLanding() {
               <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-600 text-white font-black text-lg shadow-md shadow-indigo-600/30">
                 1
               </div>
-              <h3 className="text-lg font-bold text-foreground">Register Account</h3>
+              <h3 className="text-lg font-bold text-foreground">Create Your Account</h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Provide your email, business name, GSTIN, and bank account for automated payouts.
+                Enter your business name, GST number, and bank account for your daily payouts.
               </p>
               <div className="text-[11px] font-semibold text-indigo-600 pt-2 border-t border-border">
-                2-Minute Verification
+                Takes only 2 minutes
               </div>
             </div>
 
@@ -928,12 +928,12 @@ export default function SellerLanding() {
               <div className="flex size-11 items-center justify-center rounded-2xl bg-purple-600 text-white font-black text-lg shadow-md shadow-purple-600/30">
                 2
               </div>
-              <h3 className="text-lg font-bold text-foreground">List Garment Catalog</h3>
+              <h3 className="text-lg font-bold text-foreground">List Your Clothes</h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Upload photos, configure size matrices (XS to 3XL), specify fabric details, and set prices.
+                Add photos, choose available sizes (XS to 3XL), write fabric details, and set your price.
               </p>
               <div className="text-[11px] font-semibold text-purple-600 pt-2 border-t border-border">
-                Unified Multi-Size SKUs
+                All sizes in one listing
               </div>
             </div>
 
@@ -944,10 +944,10 @@ export default function SellerLanding() {
               </div>
               <h3 className="text-lg font-bold text-foreground">Pack & Dispatch</h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Receive customer orders, print pre-paid shipping labels in 1 click, and couriers collect from your door.
+                When an order arrives, print the prepaid label in one click and hand the package to the courier.
               </p>
               <div className="text-[11px] font-semibold text-pink-600 pt-2 border-t border-border">
-                1-Click Label Generation
+                Prepaid shipping labels
               </div>
             </div>
 
@@ -956,12 +956,12 @@ export default function SellerLanding() {
               <div className="flex size-11 items-center justify-center rounded-2xl bg-emerald-600 text-white font-black text-lg shadow-md shadow-emerald-600/30">
                 4
               </div>
-              <h3 className="text-lg font-bold text-foreground">Get Paid Daily</h3>
+              <h3 className="text-lg font-bold text-foreground">Receive Daily Money</h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Funds for delivered orders are deposited directly into your bank account every night with 0% hidden fees.
+                Earnings for delivered orders are sent straight to your bank account every night at 11:30 PM.
               </p>
               <div className="text-[11px] font-semibold text-emerald-600 pt-2 border-t border-border">
-                Automated IMPS Transfer
+                Direct to your bank
               </div>
             </div>
           </div>
@@ -969,20 +969,20 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 7. INTERACTIVE SELLER WORKSPACE CONSOLE */}
+      {/* 7. INTERACTIVE SELLER DASHBOARD PREVIEW */}
       {/* ============================================================ */}
       <section id="interactive-tour" className="w-full py-20 sm:py-28 border-b border-border/50">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="text-center max-w-4xl mx-auto space-y-4 mb-12">
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
               <Sliders className="size-3.5" />
-              <span>Seller Console Preview</span>
+              <span>Interactive Seller Dashboard</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-              A seller command center engineered for real speed.
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+              Run your entire business from one simple dashboard.
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg">
-              Test out the interactive seller tools below to see how order fulfillment, multi-size inventory, and bank settlements work in real time.
+              Click through the tabs below to try out shipping, inventory tracking, and payout tools.
             </p>
 
             {/* Tab Buttons */}
@@ -995,7 +995,7 @@ export default function SellerLanding() {
                     : "bg-card border border-border text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <Truck className="size-4" /> 1-Click Dispatch
+                <Truck className="size-4" /> 1-Click Shipping
               </button>
 
               <button
@@ -1006,7 +1006,7 @@ export default function SellerLanding() {
                     : "bg-card border border-border text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <Layers className="size-4" /> Size Matrix ({totalDemoStock} Units)
+                <Layers className="size-4" /> Size Stock ({totalDemoStock} Units)
               </button>
 
               <button
@@ -1017,7 +1017,7 @@ export default function SellerLanding() {
                     : "bg-card border border-border text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <CreditCard className="size-4" /> Daily Payout Ledger
+                <CreditCard className="size-4" /> Bank Payouts
               </button>
 
               <button
@@ -1028,7 +1028,7 @@ export default function SellerLanding() {
                     : "bg-card border border-border text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <BarChart3 className="size-4" /> Authentic Analytics
+                <BarChart3 className="size-4" /> Sales Insights
               </button>
             </div>
           </div>
@@ -1042,12 +1042,12 @@ export default function SellerLanding() {
                 <span className="size-3 rounded-full bg-amber-500/80 inline-block" />
                 <span className="size-3 rounded-full bg-emerald-500/80 inline-block" />
                 <span className="ml-3 font-semibold text-muted-foreground">
-                  FitSeller Console &mdash; {activeDemoTab.toUpperCase()}
+                  Seller Dashboard &mdash; {activeDemoTab === "dispatch" ? "Order Fulfillment" : activeDemoTab === "inventory" ? "Stock Management" : activeDemoTab === "wallet" ? "Daily Payouts" : "Sales Overview"}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-mono">
                 <Lock className="size-3 text-emerald-600" />
-                <span>fitseller.fitmirror.in/dashboard</span>
+                <span>fitseller.in/dashboard</span>
               </div>
             </div>
 
@@ -1059,11 +1059,11 @@ export default function SellerLanding() {
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">Order #FS-9482</span>
                       <span className="rounded bg-amber-500/10 text-amber-600 text-[10px] font-bold px-2.5 py-0.5 border border-amber-500/20">
-                        {demoOrderPacked ? "COURIER MANIFESTED" : "AWAITING PACKING"}
+                        {demoOrderPacked ? "LABEL PRINTED & READY" : "READY TO PACK"}
                       </span>
                     </div>
-                    <h3 className="text-xl font-bold text-foreground mt-1">Oversized Khadi Cotton Blazer</h3>
-                    <p className="text-xs text-muted-foreground">Size: L &bull; Color: Sandstone Tan &bull; Buyer: Bangalore, KA</p>
+                    <h3 className="text-xl font-bold text-foreground mt-1">Oversized Cotton Linen Shirt</h3>
+                    <p className="text-xs text-muted-foreground">Size: L &bull; Color: Sand Tan &bull; Delivery to Bangalore, KA</p>
                   </div>
 
                   <div className="text-left sm:text-right">
@@ -1080,23 +1080,23 @@ export default function SellerLanding() {
                   </div>
 
                   <div className="rounded-2xl border border-border p-5 bg-muted/20">
-                    <p className="text-xs text-muted-foreground font-semibold">Warehouse Pickup</p>
+                    <p className="text-xs text-muted-foreground font-semibold">Doorstep Pickup</p>
                     <p className="text-sm font-bold text-foreground mt-1">Today, 4:30 PM Slot</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">Courier Van Assigned</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">Courier Van Booked</p>
                   </div>
 
                   <div className="rounded-2xl border border-border p-5 bg-muted/20">
                     <p className="text-xs text-muted-foreground font-semibold">Customer Payment</p>
-                    <p className="text-sm font-bold text-emerald-600 mt-1">Paid via UPI Instant</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">Escrow Secured</p>
+                    <p className="text-sm font-bold text-emerald-600 mt-1">Paid Online via UPI</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">Payment Verified</p>
                   </div>
                 </div>
 
                 <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="text-xs text-foreground">
-                    <p className="font-bold text-sm">Interactive Fulfillment Test:</p>
+                    <p className="font-bold text-sm">Try it yourself:</p>
                     <p className="text-muted-foreground text-xs">
-                      Click below to generate the pre-paid courier label and notify courier dispatch.
+                      Click below to print your shipping label and schedule a doorstep pickup.
                     </p>
                   </div>
 
@@ -1110,11 +1110,11 @@ export default function SellerLanding() {
                   >
                     {demoOrderPacked ? (
                       <>
-                        <Check className="size-4 mr-1.5" /> Manifest Printed & Dispatched (Reset)
+                        <Check className="size-4 mr-1.5" /> Label Printed - Ready for Pickup (Reset)
                       </>
                     ) : (
                       <>
-                        <PackageCheck className="size-4 mr-1.5" /> 1-Click Print Label & Pack
+                        <PackageCheck className="size-4 mr-1.5" /> Print Shipping Label
                       </>
                     )}
                   </Button>
@@ -1128,10 +1128,10 @@ export default function SellerLanding() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-lg font-bold text-foreground">Raw Edge Linen Resort Shirt</h3>
-                    <p className="text-xs text-muted-foreground">Test changing size stock quantities in real time below</p>
+                    <p className="text-xs text-muted-foreground">Adjust stock numbers for each size with the + and - buttons</p>
                   </div>
                   <span className="rounded-xl bg-indigo-500/10 text-indigo-600 px-3.5 py-1.5 text-xs font-bold border border-indigo-500/20">
-                    Total Inventory: {totalDemoStock} Units
+                    Total in Stock: {totalDemoStock} Items
                   </span>
                 </div>
 
@@ -1159,8 +1159,8 @@ export default function SellerLanding() {
                 </div>
 
                 <div className="rounded-xl bg-muted/30 p-4 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-2">
-                  <span>Stock levels automatically synchronize across the fitMirror consumer catalog in real time.</span>
-                  <span className="font-semibold text-emerald-600">Zero overselling protection guaranteed</span>
+                  <span>Stock levels update in real time on the customer store as soon as you change them.</span>
+                  <span className="font-semibold text-emerald-600">Never oversell out-of-stock sizes</span>
                 </div>
               </div>
             )}
@@ -1170,38 +1170,38 @@ export default function SellerLanding() {
               <div className="p-6 sm:p-10 space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5">
-                    <p className="text-xs font-bold text-emerald-600 uppercase">Available to Settle</p>
+                    <p className="text-xs font-bold text-emerald-600 uppercase">Ready for Deposit</p>
                     <p className="text-3xl font-black text-foreground mt-1.5">₹84,200</p>
-                    <p className="text-xs text-muted-foreground mt-1">Auto-scheduled for 11:30 PM IMPS</p>
+                    <p className="text-xs text-muted-foreground mt-1">Transfers to your bank tonight at 11:30 PM</p>
                   </div>
 
                   <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-5">
-                    <p className="text-xs font-bold text-amber-600 uppercase">In Courier Transit</p>
+                    <p className="text-xs font-bold text-amber-600 uppercase">Out for Delivery</p>
                     <p className="text-3xl font-black text-foreground mt-1.5">₹32,450</p>
-                    <p className="text-xs text-muted-foreground mt-1">Releases upon order delivery</p>
+                    <p className="text-xs text-muted-foreground mt-1">Deposited once package is delivered</p>
                   </div>
 
                   <div className="rounded-2xl border border-border p-5 bg-muted/20">
-                    <p className="text-xs font-bold text-muted-foreground uppercase">Total Settled (30d)</p>
+                    <p className="text-xs font-bold text-muted-foreground uppercase">Paid to Bank (Last 30 Days)</p>
                     <p className="text-3xl font-black text-foreground mt-1.5">₹4,92,100</p>
-                    <p className="text-xs text-emerald-600 font-bold mt-1">Direct to Current Bank A/c</p>
+                    <p className="text-xs text-emerald-600 font-bold mt-1">Sent to your current account</p>
                   </div>
                 </div>
 
                 <div className="rounded-2xl border border-border p-5 bg-card">
-                  <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-3">Recent Settlement Feeds</p>
+                  <p className="text-xs font-bold text-foreground uppercase tracking-wider mb-3">Recent Bank Payouts</p>
                   <div className="divide-y divide-border text-xs">
                     <div className="py-3 flex items-center justify-between">
                       <div>
-                        <p className="font-semibold text-foreground">IMPS Auto-Transfer &bull; Reference #8492019482</p>
-                        <p className="text-muted-foreground text-[11px]">Settled to Current A/c **9482</p>
+                        <p className="font-semibold text-foreground">Bank Transfer &bull; IMPS #8492019482</p>
+                        <p className="text-muted-foreground text-[11px]">Deposited to Current Account ending in **9482</p>
                       </div>
                       <span className="text-sm font-bold text-emerald-600">+₹34,800</span>
                     </div>
                     <div className="py-3 flex items-center justify-between">
                       <div>
-                        <p className="font-semibold text-foreground">IMPS Auto-Transfer &bull; Reference #8491048201</p>
-                        <p className="text-muted-foreground text-[11px]">Settled to Current A/c **9482</p>
+                        <p className="font-semibold text-foreground">Bank Transfer &bull; IMPS #8491048201</p>
+                        <p className="text-muted-foreground text-[11px]">Deposited to Current Account ending in **9482</p>
                       </div>
                       <span className="text-sm font-bold text-emerald-600">+₹49,400</span>
                     </div>
@@ -1215,7 +1215,7 @@ export default function SellerLanding() {
               <div className="p-6 sm:p-10 space-y-6">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
                   <div className="rounded-2xl border border-border p-4 bg-muted/20 text-center">
-                    <p className="text-xs text-muted-foreground uppercase font-bold">Gross GMV</p>
+                    <p className="text-xs text-muted-foreground uppercase font-bold">Total Sales</p>
                     <p className="text-2xl font-black text-foreground mt-1">₹5,75,680</p>
                   </div>
                   <div className="rounded-2xl border border-border p-4 bg-muted/20 text-center">
@@ -1223,7 +1223,7 @@ export default function SellerLanding() {
                     <p className="text-2xl font-black text-emerald-600 mt-1">₹5,29,625</p>
                   </div>
                   <div className="rounded-2xl border border-border p-4 bg-muted/20 text-center">
-                    <p className="text-xs text-muted-foreground uppercase font-bold">Units Sold</p>
+                    <p className="text-xs text-muted-foreground uppercase font-bold">Pieces Sold</p>
                     <p className="text-2xl font-black text-foreground mt-1">320 pcs</p>
                   </div>
                   <div className="rounded-2xl border border-border p-4 bg-muted/20 text-center">
@@ -1234,8 +1234,8 @@ export default function SellerLanding() {
 
                 <div className="rounded-2xl border border-border bg-muted/10 p-5">
                   <div className="flex items-center justify-between text-xs font-bold text-muted-foreground mb-4">
-                    <span>14-Day Sales & Order Velocity</span>
-                    <span className="text-emerald-600">Updated in Real Time</span>
+                    <span>14-Day Sales & Daily Orders</span>
+                    <span className="text-emerald-600 font-semibold">Updated in real time</span>
                   </div>
                   <div className="h-32 flex items-end gap-2.5 pt-4">
                     {[45, 60, 52, 78, 92, 65, 84, 110, 95, 120, 105, 135, 140, 165].map((val, idx) => (
@@ -1256,20 +1256,20 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 8. PROFIT & PRICING CALCULATOR (AMAZON SELLER FEE STRUCTURE) */}
+      {/* 8. PROFIT & PRICING CALCULATOR */}
       {/* ============================================================ */}
       <section id="calculator" className="w-full py-20 sm:py-28 border-b border-border/50 bg-muted/20">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="text-center max-w-4xl mx-auto space-y-4 mb-16">
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
               <TrendingUp className="size-3.5" />
-              <span>Transparent Pricing & Fee Calculator</span>
+              <span>Profit & Fee Calculator</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-              Calculate your net profit margins.
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+              Calculate your take-home profit.
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg">
-              FitSeller charges a flat 8% referral fee only when your items sell. No fixed closing fees, no listing surcharges, and no monthly fees.
+              We charge a flat 8% fee only when your clothes sell. No listing fees, no closing deductions, and no monthly charges.
             </p>
           </div>
 
@@ -1280,7 +1280,7 @@ export default function SellerLanding() {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <label className="text-sm font-bold text-foreground">
-                      Monthly Garment Orders
+                      Monthly Clothing Orders
                     </label>
                     <span className="rounded-xl bg-indigo-500/10 px-3.5 py-1 text-sm font-extrabold text-indigo-600">
                       {formatNumber(monthlyOrders)} orders
@@ -1305,7 +1305,7 @@ export default function SellerLanding() {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <label className="text-sm font-bold text-foreground">
-                      Average Garment Price
+                      Average Price per Piece
                     </label>
                     <span className="rounded-xl bg-indigo-500/10 px-3.5 py-1 text-sm font-extrabold text-indigo-600">
                       {formatCurrency(avgItemPrice)}
@@ -1323,12 +1323,12 @@ export default function SellerLanding() {
                   <div className="flex justify-between text-xs text-muted-foreground mt-1.5 font-medium">
                     <span>₹499 (Everyday)</span>
                     <span>₹3,500 (Pret)</span>
-                    <span>₹8,999 (Luxury/Festive)</span>
+                    <span>₹8,999 (Designer Wear)</span>
                   </div>
                 </div>
 
                 <div className="rounded-2xl border border-border bg-muted/20 p-5 flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground font-medium">Projected Gross Monthly Turnover (GMV):</span>
+                  <span className="text-muted-foreground font-medium">Estimated Total Monthly Sales:</span>
                   <span className="font-extrabold text-foreground text-base">{formatCurrency(estMonthlyGmv)}</span>
                 </div>
               </div>
@@ -1337,7 +1337,7 @@ export default function SellerLanding() {
               <div className="lg:col-span-5 rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-8 space-y-7 text-center lg:text-left shadow-lg">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-emerald-600">
-                    Your Net Monthly Bank Earnings
+                    Net Money Sent to Your Bank
                   </p>
                   <p className="text-4xl sm:text-5xl font-black text-foreground mt-2">
                     {formatCurrency(fitsellerNetEarnings)}
@@ -1353,7 +1353,7 @@ export default function SellerLanding() {
                     <span className="line-through">{formatCurrency(legacyNetEarnings)}</span>
                   </div>
                   <div className="flex justify-between font-extrabold text-emerald-600 text-sm">
-                    <span>Extra Take-Home Revenue:</span>
+                    <span>Extra Money You Keep:</span>
                     <span>+{formatCurrency(merchantSavings)} / mo</span>
                   </div>
                 </div>
@@ -1363,7 +1363,7 @@ export default function SellerLanding() {
                   asChild
                 >
                   <Link to="/auth/sign-up">
-                    <span>Claim Your 0% Setup Store</span>
+                    <span>Start Selling for Free</span>
                     <ArrowRight className="size-4 ml-2" />
                   </Link>
                 </Button>
@@ -1374,16 +1374,16 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 9. SIDE-BY-SIDE FEE & POLICY COMPARISON */}
+      {/* 9. SIDE-BY-SIDE FEE COMPARISON */}
       {/* ============================================================ */}
       <section id="comparison" className="w-full py-20 sm:py-28 border-b border-border/50">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="text-center max-w-4xl mx-auto space-y-4 mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-              FitSeller vs Traditional Marketplaces.
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+              FitSeller vs Other Marketplaces.
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg">
-              Compare our fee schedule, payout speed, and inventory mechanics side by side.
+              See the difference in pricing, payout timelines, and seller support.
             </p>
           </div>
 
@@ -1392,9 +1392,9 @@ export default function SellerLanding() {
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
-                    <th className="px-8 py-5 font-bold">Feature / Policy</th>
-                    <th className="px-8 py-5 font-extrabold text-indigo-600 bg-indigo-500/5">FitSeller Platform</th>
-                    <th className="px-8 py-5 font-semibold">Legacy Marketplaces</th>
+                    <th className="px-8 py-5 font-bold">What You Get</th>
+                    <th className="px-8 py-5 font-bold text-indigo-600 bg-indigo-500/5">FitSeller</th>
+                    <th className="px-8 py-5 font-semibold">Other Marketplaces</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -1416,7 +1416,7 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 10. REAL BRAND SUCCESS STORIES */}
+      {/* 10. BRAND STORIES */}
       {/* ============================================================ */}
       <section id="testimonials" className="w-full py-20 sm:py-28 border-b border-border/50">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20">
@@ -1425,8 +1425,8 @@ export default function SellerLanding() {
               <Users className="size-3.5" />
               <span>Brand Stories</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
-              Loved by independent designers and fashion houses.
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+              Trusted by fashion brands and designers across India.
             </h2>
           </div>
 
@@ -1438,7 +1438,7 @@ export default function SellerLanding() {
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-indigo-500/10 px-3.5 py-1 text-xs font-extrabold text-indigo-600">
+                    <span className="rounded-full bg-indigo-500/10 px-3.5 py-1 text-xs font-bold text-indigo-600">
                       {t.growth}
                     </span>
                     <span className="text-xs font-medium text-muted-foreground">{t.tag}</span>
@@ -1465,16 +1465,16 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 11. SELLER FREQUENTLY ASKED QUESTIONS */}
+      {/* 11. FAQS */}
       {/* ============================================================ */}
       <section id="faqs" className="w-full py-20 sm:py-28 border-b border-border/50 bg-muted/10">
         <div className="w-full max-w-4xl mx-auto px-4 sm:px-8">
           <div className="text-center space-y-4 mb-14">
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400">
               <HelpCircle className="size-3.5" />
-              <span>Seller Support & FAQs</span>
+              <span>Help & FAQs</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
               Frequently asked questions.
             </h2>
           </div>
@@ -1505,7 +1505,7 @@ export default function SellerLanding() {
       </section>
 
       {/* ============================================================ */}
-      {/* 12. HIGH-IMPACT CLOSING CTA */}
+      {/* 12. CLOSING CALL TO ACTION */}
       {/* ============================================================ */}
       <section className="relative w-full overflow-hidden py-24 sm:py-32 bg-gradient-to-b from-indigo-950 via-slate-950 to-black text-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-500/20 via-purple-500/10 to-transparent pointer-events-none" />
@@ -1513,7 +1513,7 @@ export default function SellerLanding() {
         <div className="relative w-full max-w-5xl mx-auto px-4 sm:px-8 text-center space-y-9">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4.5 py-1.5 text-xs font-bold text-indigo-300 backdrop-blur-md">
             <Sparkles className="size-4" />
-            <span>Ready to scale your fashion label nationwide?</span>
+            <span>Ready to start selling your clothes online?</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
@@ -1521,7 +1521,7 @@ export default function SellerLanding() {
           </h2>
 
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-zinc-300 leading-relaxed font-medium">
-            Register your store in under 2 minutes. Zero listing fees, automated courier dispatch, and daily bank payouts.
+            Register your store in under 2 minutes. Free setup, doorstep courier pickup, and daily bank payouts.
           </p>
 
           <div className="max-w-md mx-auto pt-2">
@@ -1545,32 +1545,32 @@ export default function SellerLanding() {
 
           <div className="pt-4 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-xs text-zinc-400 font-medium">
             <span className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-emerald-400" /> RBI Compliant IMPS Settlement
+              <ShieldCheck className="size-4 text-emerald-400" /> Direct Bank Deposits
             </span>
             <span className="flex items-center gap-2">
-              <Lock className="size-4 text-emerald-400" /> Bank-Grade Security
+              <Lock className="size-4 text-emerald-400" /> Safe & Secure Payments
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle2 className="size-4 text-emerald-400" /> 0% Upfront Setup Cost
+              <CheckCircle2 className="size-4 text-emerald-400" /> Zero Upfront Costs
             </span>
           </div>
         </div>
       </section>
 
       {/* ============================================================ */}
-      {/* 13. STRUCTURED MULTI-COLUMN SELLER FOOTER (AMAZON SELLER STYLE) */}
+      {/* 13. FOOTER */}
       {/* ============================================================ */}
       <footer className="w-full border-t border-border/80 bg-background py-16 text-xs text-muted-foreground">
         <div className="w-full px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 space-y-12">
-          {/* 4 Multi-Column Directory */}
+          {/* 4-Column Directory */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 pb-10 border-b border-border/60">
             <div className="space-y-3">
               <p className="font-bold text-foreground uppercase tracking-wider text-xs">Selling on FitSeller</p>
               <ul className="space-y-2">
                 <li><a href="#how-it-works" className="hover:text-foreground transition-colors">How It Works</a></li>
-                <li><a href="#calculator" className="hover:text-foreground transition-colors">Fee Schedule & Pricing</a></li>
+                <li><a href="#calculator" className="hover:text-foreground transition-colors">Pricing & Fees</a></li>
                 <li><a href="#why-sell" className="hover:text-foreground transition-colors">Doorstep Courier Pickup</a></li>
-                <li><Link to="/auth/sign-up" className="hover:text-foreground transition-colors">Register Your Brand</Link></li>
+                <li><Link to="/auth/sign-up" className="hover:text-foreground transition-colors">Register Your Store</Link></li>
               </ul>
             </div>
 
@@ -1578,19 +1578,19 @@ export default function SellerLanding() {
               <p className="font-bold text-foreground uppercase tracking-wider text-xs">Brand Solutions</p>
               <ul className="space-y-2">
                 <li><a href="#testimonials" className="hover:text-foreground transition-colors">Designer Boutiques</a></li>
-                <li><a href="#superpowers" className="hover:text-foreground transition-colors">D2C Streetwear Labels</a></li>
-                <li><a href="#superpowers" className="hover:text-foreground transition-colors">Handloom & Artisanal Houses</a></li>
+                <li><a href="#superpowers" className="hover:text-foreground transition-colors">Streetwear Labels</a></li>
+                <li><a href="#superpowers" className="hover:text-foreground transition-colors">Handlooms & Sarees</a></li>
                 <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Garment Manufacturers</a></li>
               </ul>
             </div>
 
             <div className="space-y-3">
-              <p className="font-bold text-foreground uppercase tracking-wider text-xs">Seller Console & Tools</p>
+              <p className="font-bold text-foreground uppercase tracking-wider text-xs">Seller Dashboard & Tools</p>
               <ul className="space-y-2">
-                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">1-Click Shipping Dispatch</a></li>
-                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Multi-Size Matrix (XS–3XL)</a></li>
-                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Daily IMPS Settlement Wallet</a></li>
-                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Real-Time Sales Reports</a></li>
+                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">1-Click Shipping Labels</a></li>
+                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Multi-Size Stock (XS–3XL)</a></li>
+                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Daily Bank Deposits</a></li>
+                <li><a href="#interactive-tour" className="hover:text-foreground transition-colors">Sales Reports</a></li>
               </ul>
             </div>
 
@@ -1598,9 +1598,9 @@ export default function SellerLanding() {
               <p className="font-bold text-foreground uppercase tracking-wider text-xs">Support & Trust</p>
               <ul className="space-y-2">
                 <li><a href="#faqs" className="hover:text-foreground transition-colors">Seller FAQs</a></li>
-                <li><Link to="/auth/sign-in" className="hover:text-foreground transition-colors">Seller Console Sign In</Link></li>
-                <li><a href="mailto:support@fitmirror.in" className="hover:text-foreground transition-colors">Partner Desk Help</a></li>
-                <li><span className="text-emerald-600 font-semibold">RBI Compliant Escrow</span></li>
+                <li><Link to="/auth/sign-in" className="hover:text-foreground transition-colors">Seller Sign In</Link></li>
+                <li><a href="mailto:support@fitmirror.in" className="hover:text-foreground transition-colors">Help & Contact</a></li>
+                <li><span className="text-emerald-600 font-semibold">Secure Bank Settlements</span></li>
               </ul>
             </div>
           </div>
@@ -1611,11 +1611,11 @@ export default function SellerLanding() {
               <div className="flex size-7 items-center justify-center rounded-lg bg-indigo-600 text-white font-black text-sm">
                 F
               </div>
-              <p>&copy; {new Date().getFullYear()} FitSeller Inc. Engineered exclusively for Indian fashion labels & designers.</p>
+              <p>&copy; {new Date().getFullYear()} FitSeller Inc. Built for Indian fashion brands & designers.</p>
             </div>
             <div className="flex items-center gap-2 text-emerald-600 font-semibold">
               <Lock className="size-3.5" />
-              <span>Safe & Encrypted Platform</span>
+              <span>Safe & Secure Platform</span>
             </div>
           </div>
         </div>
@@ -1623,4 +1623,3 @@ export default function SellerLanding() {
     </div>
   );
 }
-
