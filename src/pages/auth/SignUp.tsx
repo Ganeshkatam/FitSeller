@@ -160,24 +160,36 @@ export default function SignUp() {
             Join thousands of independent clothing designers and sellers growing with doorstep courier pickup, daily bank payouts, and 3D virtual try-ons.
           </p>
 
-          {/* 3-Step Seller Launch Path */}
+          {/* 6-Step Seller Setup Path */}
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-3">
             <p className="text-xs font-bold uppercase tracking-wider text-indigo-300">
-              How You Start Selling in 3 Simple Steps
+              6-Step Seller Setup Roadmap
             </p>
 
-            <div className="grid grid-cols-3 gap-2.5 text-xs pt-1">
-              <div className="rounded-xl border border-indigo-500/40 bg-indigo-500/20 p-3 space-y-1">
-                <span className="font-bold text-white block">1. Sign Up</span>
-                <span className="text-[11px] text-indigo-200 block">Add GST &amp; Bank A/c</span>
+            <div className="grid grid-cols-3 gap-2 text-xs pt-1">
+              <div className="rounded-xl border border-indigo-500/40 bg-indigo-500/20 p-2.5 space-y-0.5">
+                <span className="font-bold text-white block text-[11px]">1. Account</span>
+                <span className="text-[10px] text-indigo-200 block">User credentials</span>
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3 space-y-1">
-                <span className="font-bold text-white block">2. Add Clothes</span>
-                <span className="text-[11px] text-zinc-400 block">All sizes in 1 listing</span>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
+                <span className="font-bold text-white block text-[11px]">2. GST</span>
+                <span className="text-[10px] text-zinc-400 block">Tax / PAN verify</span>
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3 space-y-1">
-                <span className="font-bold text-white block">3. Start Selling</span>
-                <span className="text-[11px] text-zinc-400 block">Doorstep pickups</span>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
+                <span className="font-bold text-white block text-[11px]">3. Business</span>
+                <span className="text-[10px] text-zinc-400 block">Brand &amp; category</span>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
+                <span className="font-bold text-white block text-[11px]">4. Shipping</span>
+                <span className="text-[10px] text-zinc-400 block">Courier choices</span>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
+                <span className="font-bold text-white block text-[11px]">5. Pickup</span>
+                <span className="text-[10px] text-zinc-400 block">Warehouse address</span>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-0.5">
+                <span className="font-bold text-white block text-[11px]">6. Bank</span>
+                <span className="text-[10px] text-zinc-400 block">Daily payouts</span>
               </div>
             </div>
           </div>

@@ -901,67 +901,107 @@ export default function SellerLanding() {
               <span>How It Works</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
-              Start selling in 4 simple steps.
+              Start selling in 6 simple steps.
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg">
-              Set up your seller account and list your first clothing collection in under 10 minutes.
+              Everything you need to register, configure logistics, and receive daily bank payouts.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
             {/* Step 1 */}
-            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-600 text-white font-black text-lg shadow-md shadow-indigo-600/30">
-                1
+            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative hover:border-indigo-500/40 transition-all flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex size-11 items-center justify-center rounded-2xl bg-indigo-600 text-white font-black text-lg shadow-md shadow-indigo-600/30">
+                  1
+                </div>
+                <h3 className="text-lg font-bold text-foreground">Seller Account Creation</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Sign up with your business email, mobile number, and password to create your primary user credentials.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-foreground">Create Your Account</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Enter your business name, GST number, and bank account for your daily payouts.
-              </p>
               <div className="text-[11px] font-semibold text-indigo-600 pt-2 border-t border-border">
-                Takes only 2 minutes
+                Takes under 2 minutes
               </div>
             </div>
 
             {/* Step 2 */}
-            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-purple-600 text-white font-black text-lg shadow-md shadow-purple-600/30">
-                2
+            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative hover:border-indigo-500/40 transition-all flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex size-11 items-center justify-center rounded-2xl bg-purple-600 text-white font-black text-lg shadow-md shadow-purple-600/30">
+                  2
+                </div>
+                <h3 className="text-lg font-bold text-foreground">GST Verification</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Enter your 15-character GSTIN or business PAN for automated GST tax invoicing on nationwide customer orders.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-foreground">List Your Clothes</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Add photos, choose available sizes (XS to 3XL), write fabric details, and set your price.
-              </p>
               <div className="text-[11px] font-semibold text-purple-600 pt-2 border-t border-border">
-                All sizes in one listing
+                GST / PAN Verification
               </div>
             </div>
 
             {/* Step 3 */}
-            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-pink-600 text-white font-black text-lg shadow-md shadow-pink-600/30">
-                3
+            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative hover:border-indigo-500/40 transition-all flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex size-11 items-center justify-center rounded-2xl bg-blue-600 text-white font-black text-lg shadow-md shadow-blue-600/30">
+                  3
+                </div>
+                <h3 className="text-lg font-bold text-foreground">Business Details</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Provide your seller display name, brand label, and choose primary clothing categories (ethnic, casual, designer).
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-foreground">Pack & Dispatch</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                When an order arrives, print the prepaid label in one click and hand the package to the courier.
-              </p>
+              <div className="text-[11px] font-semibold text-blue-600 pt-2 border-t border-border">
+                Brand &amp; Categories
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative hover:border-indigo-500/40 transition-all flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex size-11 items-center justify-center rounded-2xl bg-pink-600 text-white font-black text-lg shadow-md shadow-pink-600/30">
+                  4
+                </div>
+                <h3 className="text-lg font-bold text-foreground">Shipping Preferences</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Select doorstep courier collection via BlueDart and Delhivery or self-ship mode with flexible 24h dispatch times.
+                </p>
+              </div>
               <div className="text-[11px] font-semibold text-pink-600 pt-2 border-t border-border">
                 Prepaid shipping labels
               </div>
             </div>
 
-            {/* Step 4 */}
-            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-emerald-600 text-white font-black text-lg shadow-md shadow-emerald-600/30">
-                4
+            {/* Step 5 */}
+            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative hover:border-indigo-500/40 transition-all flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex size-11 items-center justify-center rounded-2xl bg-amber-600 text-white font-black text-lg shadow-md shadow-amber-600/30">
+                  5
+                </div>
+                <h3 className="text-lg font-bold text-foreground">Pickup Address</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Specify your warehouse or workshop location where courier delivery partners will pick up packaged garments.
+                </p>
               </div>
-              <h3 className="text-lg font-bold text-foreground">Receive Daily Money</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                Earnings for delivered orders are sent straight to your bank account every night at 11:30 PM.
-              </p>
+              <div className="text-[11px] font-semibold text-amber-600 pt-2 border-t border-border">
+                Warehouse &amp; Pincode
+              </div>
+            </div>
+
+            {/* Step 6 */}
+            <div className="rounded-3xl border border-border bg-card p-7 space-y-4 shadow-sm relative hover:border-indigo-500/40 transition-all flex flex-col justify-between">
+              <div className="space-y-3">
+                <div className="flex size-11 items-center justify-center rounded-2xl bg-emerald-600 text-white font-black text-lg shadow-md shadow-emerald-600/30">
+                  6
+                </div>
+                <h3 className="text-lg font-bold text-foreground">Bank Details</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Add your bank account number and IFSC code for automatic daily 11:30 PM bank deposits on all delivered clothes.
+                </p>
+              </div>
               <div className="text-[11px] font-semibold text-emerald-600 pt-2 border-t border-border">
-                Direct to your bank
+                Daily bank deposits
               </div>
             </div>
           </div>

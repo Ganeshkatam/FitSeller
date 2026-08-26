@@ -11,6 +11,7 @@ const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const VerifyEmail = lazy(() => import("./pages/auth/VerifyEmail"));
 const GlobalError = lazy(() => import("./pages/GlobalError"));
 const SellerLanding = lazy(() => import("./pages/SellerLanding"));
+const SellerOnboarding = lazy(() => import("./pages/SellerOnboarding"));
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Products = lazy(() => import("./pages/Products"));
@@ -124,12 +125,13 @@ export default function App() {
       <Route path="/landing" element={<Suspended><SellerLanding /></Suspended>} />
       <Route path="/welcome" element={<Suspended><SellerLanding /></Suspended>} />
 
-      {/* ---- Auth routes (each with individual distinct layout) ---- */}
+      {/* ---- Auth & Onboarding routes ---- */}
       <Route path="/auth/sign-in" element={<GuestOnly><Suspended><SignIn /></Suspended></GuestOnly>} />
       <Route path="/auth/sign-up" element={<GuestOnly><Suspended><SignUp /></Suspended></GuestOnly>} />
       <Route path="/auth/forgot-password" element={<GuestOnly><Suspended><ForgotPassword /></Suspended></GuestOnly>} />
       <Route path="/auth/reset-password" element={<Suspended><ResetPassword /></Suspended>} />
       <Route path="/auth/verify-email" element={<Suspended><VerifyEmail /></Suspended>} />
+      <Route path="/onboarding" element={<Suspended><SellerOnboarding /></Suspended>} />
 
       {/* ---- App routes (authenticated only) ---- */}
       <Route
