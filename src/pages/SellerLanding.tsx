@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Shirt,
@@ -18,8 +18,8 @@ import {
   IndianRupee,
   Lock,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/Field";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/Field";
 
 function GoogleIcon({ className = "size-4.5" }: { className?: string }) {
   return (
@@ -107,7 +107,7 @@ export default function SellerLanding() {
   const estPlatformCommission = Math.round(estMonthlyGmv * 0.08); // 8% commission
   const estNetEarnings = estMonthlyGmv - estPlatformCommission;
 
-  function handleFastSignUp(e: React.FormEvent) {
+  function handleFastSignUp(e: FormEvent) {
     e.preventDefault();
     if (fastEmail.trim()) {
       navigate(`/auth/sign-up?email=${encodeURIComponent(fastEmail.trim())}`);

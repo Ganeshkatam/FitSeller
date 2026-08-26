@@ -40,26 +40,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoading(false);
-    });
+    let cancelled = false;
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-    });
-
-    return () => sub.subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (!session?.user) {
-      setProfile(null);
-      setSeller(null);
-      return;
+    async function initAuth() {
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (cancelled) return;
+        setSession(data.session);
+        if (data.session?.user) {
+          await loadSellerContext(data.session.user.id, data.session.user.email ?? "");
+        }
+      } catch (err) {
+        console.error("Auth context initialization error:", err);
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
     }
-    loadSellerContext(session.user.id, session.user.email ?? "");
-  }, [session]);
+
+    initAuth();
+
+    const { data: sub } = supabase.auth.onAuthStateChange(async (_event, s) => {
+      if (cancelled) return;
+      setSession(s);
+      if (s?.user) {
+        await loadSellerContext(s.user.id, s.user.email ?? "");
+      } else {
+        setProfile(null);
+        setSeller(null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
 
   async function loadSellerContext(userId: string, email: string) {
     try {
