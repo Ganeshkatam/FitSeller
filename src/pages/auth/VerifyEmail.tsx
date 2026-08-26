@@ -4,14 +4,11 @@ import {
   CheckCircle2,
   MailCheck,
   ArrowRight,
-  PlusCircle,
-  CreditCard,
   LogOut,
   Mail,
   ExternalLink,
   ShieldCheck,
   LifeBuoy,
-  Store,
   Clock,
   Shirt,
   Sparkles,
@@ -26,7 +23,7 @@ import { getHumanErrorMessage } from "@/lib/utils";
 type Phase = "checking" | "verified" | "pending";
 
 export default function VerifyEmail() {
-  const { session, seller, profile, signOut, resendVerification } = useAuth();
+  const { session, signOut, resendVerification } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -126,7 +123,6 @@ export default function VerifyEmail() {
     return null;
   })();
 
-  const businessName = seller?.business_name || profile?.full_name || "Merchant Store";
   const verifiedEmail = email || session?.user?.email || "Registered Email";
 
   return (
@@ -187,62 +183,16 @@ export default function VerifyEmail() {
                 </p>
               </div>
 
-              {/* Store readiness preview card */}
-              <div className="rounded-xl border border-border/80 bg-muted/40 p-4 space-y-3">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-foreground flex items-center gap-1.5">
-                    <Store className="size-4 text-indigo-500" />
-                    <span>{businessName}</span>
-                  </span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
-                    <CheckCircle2 className="size-3.5" /> Ready for Live Selling
-                  </span>
-                </div>
-
-                <div className="border-t border-border/60 pt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                  <div>
-                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground/80">Account Type</p>
-                    <p className="font-medium text-foreground">Verified Merchant</p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] uppercase tracking-wider text-muted-foreground/80">Settlement Wallet</p>
-                    <p className="font-medium text-foreground">Auto-Initialized (INR)</p>
-                  </div>
-                </div>
-              </div>
-
               {/* Primary and Next Steps Actions */}
-              <div className="space-y-2.5">
+              <div className="space-y-3 pt-2">
                 <Button
                   size="lg"
                   className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 font-semibold shadow-md shadow-indigo-600/20"
                   onClick={() => navigate("/", { replace: true })}
                 >
-                  <span>Go to Merchant Dashboard</span>
+                  <span>Go to dashboard</span>
                   <ArrowRight className="size-4" />
                 </Button>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full flex items-center justify-center gap-1.5 text-xs"
-                    onClick={() => navigate("/products")}
-                  >
-                    <PlusCircle className="size-3.5 text-indigo-500" />
-                    <span>List Products</span>
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full flex items-center justify-center gap-1.5 text-xs"
-                    onClick={() => navigate("/payouts")}
-                  >
-                    <CreditCard className="size-3.5 text-emerald-500" />
-                    <span>Setup Payouts</span>
-                  </Button>
-                </div>
               </div>
 
               {/* Secondary Account Switcher */}
