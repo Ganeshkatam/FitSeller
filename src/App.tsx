@@ -32,9 +32,9 @@ function Suspended({ children }: { children: ReactNode }) {
   return <Suspense fallback={<PageLoader />}>{children}</Suspense>;
 }
 
-/** Blocks app routes for visitors without an active session AND valid seller record */
+/** Blocks app routes for visitors without an active user session AND valid seller record */
 function RequireAuth({ children }: { children: ReactNode }) {
-  const { session, seller, loading } = useAuth();
+  const { session, profile, seller, loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -45,11 +45,13 @@ function RequireAuth({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!session) {
+  // 1. Must be an authenticated, valid user first
+  if (!session || !session.user) {
     return <Navigate to="/auth/sign-in" replace state={{ from: location.pathname }} />;
   }
 
-  if (!seller) {
+  // 2. Must be a valid user with an active seller profile
+  if (!profile || !seller) {
     return (
       <Navigate
         to="/error"
@@ -59,7 +61,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
           code: "SELLER_PROFILE_UNLINKED",
           account: session.user.email,
           title: "Seller Profile Missing",
-          message: "You are signed in, but no active seller profile was found for this account.",
+          message: "You are signed in as a valid user, but no active seller profile was found for this account.",
           backTo: "/auth/sign-in",
           primaryActionLabel: "Sign In With Another Account",
           primaryActionUrl: "/auth/sign-in",
