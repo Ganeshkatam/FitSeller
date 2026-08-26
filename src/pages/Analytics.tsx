@@ -249,6 +249,14 @@ export default function Analytics() {
 
           {isLoading ? (
             <TableSkeleton rows={6} cols={7} />
+          ) : !data || data.orderCount === 0 ? (
+            <div className="h-64 flex items-center justify-center">
+              <EmptyState
+                title="Not enough data yet"
+                description="Revenue trends will appear once customer orders are placed."
+                icon="inbox"
+              />
+            </div>
           ) : (
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -267,7 +275,7 @@ export default function Analytics() {
                     tickLine={false}
                     width={48}
                     tickFormatter={(v: number) =>
-                      v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}k` : String(v)
+                    v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}k` : String(v)
                     }
                   />
                   <Tooltip
