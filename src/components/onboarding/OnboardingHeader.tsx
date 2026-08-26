@@ -15,14 +15,9 @@ export function OnboardingHeader({ currentStep, seller }: OnboardingHeaderProps)
           <div className="flex size-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-600/30">
             <Shirt className="size-5" />
           </div>
-          <div>
-            <span className="font-bold tracking-tight text-foreground text-lg">
-              FitSeller
-            </span>
-            <span className="hidden sm:inline-block ml-2 text-[11px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20">
-              6-STEP SELLER ONBOARDING
-            </span>
-          </div>
+          <span className="font-bold tracking-tight text-foreground text-lg">
+            FitSeller
+          </span>
         </Link>
 
         <div className="flex items-center gap-4 text-xs">
