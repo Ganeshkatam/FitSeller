@@ -13,9 +13,9 @@ import {
   Tag,
   Layers,
   Sparkles,
-  Check,
-  PhoneCall,
   Lock,
+  FileCheck,
+  HelpCircle,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -126,10 +126,13 @@ export default function SignUp() {
           </Link>
 
           <div className="flex items-center gap-4 text-xs">
-            <div className="hidden lg:flex items-center gap-1.5 text-muted-foreground">
-              <PhoneCall className="size-3.5 text-emerald-600" />
-              <span>Seller Support: <strong>1800-FIT-SELL</strong></span>
-            </div>
+            <Link
+              to="/#faqs"
+              className="hidden sm:flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <HelpCircle className="size-3.5" />
+              <span>Seller FAQs</span>
+            </Link>
 
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground hidden sm:inline">Already registered?</span>
@@ -216,7 +219,7 @@ export default function SignUp() {
                     id="fullName"
                     type="text"
                     required
-                    placeholder="e.g. Ramesh Sharma"
+                    placeholder="Full name"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     disabled={loading}
@@ -235,7 +238,7 @@ export default function SignUp() {
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="98765 43210"
+                      placeholder="10-digit mobile"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       disabled={loading}
@@ -386,19 +389,26 @@ export default function SignUp() {
               </div>
             </div>
 
-            {/* Testimonial Quote */}
-            <div className="rounded-2xl border border-border/80 bg-muted/40 p-5 space-y-2.5">
-              <div className="flex items-center gap-1 text-amber-500">
-                <Check className="size-4" />
-                <span className="text-[11px] font-bold text-foreground">Verified Seller Experience</span>
+            {/* Platform Security & Direct Settlements Card */}
+            <div className="rounded-2xl border border-border/80 bg-muted/30 p-5 space-y-3">
+              <div className="flex items-center gap-2 text-foreground font-bold text-xs">
+                <ShieldCheck className="size-4 text-emerald-600" />
+                <span>Seller Security &amp; Compliance</span>
               </div>
-              <p className="text-xs text-foreground italic leading-relaxed">
-                &ldquo;Doorstep pickups and automated daily payouts allowed our handloom brand to expand from a local boutique to selling 500+ pieces a month nationwide.&rdquo;
-              </p>
-              <div className="text-[11px] text-muted-foreground pt-1 border-t border-border/60 flex justify-between">
-                <span className="font-bold text-foreground">Kavita Nair</span>
-                <span>Founder, Nair Handlooms</span>
-              </div>
+              <ul className="space-y-2 text-[11px] text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <Lock className="size-3.5 text-indigo-500 shrink-0" />
+                  <span>256-bit encrypted authentication &amp; session security</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <IndianRupee className="size-3.5 text-emerald-500 shrink-0" />
+                  <span>Direct NEFT / IMPS bank transfers without wallet lock-in</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <FileCheck className="size-3.5 text-blue-500 shrink-0" />
+                  <span>Automated GST invoice generation for every dispatched order</span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -408,9 +418,8 @@ export default function SignUp() {
       <footer className="border-t border-border bg-card/80 backdrop-blur-md py-4 text-center text-xs text-muted-foreground">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-8">
           <div className="flex items-center gap-2 text-[11px]">
-            <Lock className="size-3 text-emerald-600" />
             <ShieldCheck className="size-3.5 text-emerald-600" />
-            <span>256-Bit Encrypted Seller Registration &bull; Direct Bank Settlements</span>
+            <span>Encrypted Seller Registration &bull; Direct Bank Settlements</span>
           </div>
           <span className="text-[11px]">&copy; {new Date().getFullYear()} FitSeller</span>
         </div>
