@@ -180,6 +180,23 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
         p_business_email: user.email || formData.email.trim(),
         p_full_name: formData.fullName.trim() || null,
         p_phone: formData.phone.trim() || null,
+        p_gstin: formData.gstNumber.trim() || null,
+        p_pan: formData.panNumber.trim() || null,
+        p_is_gst_exempt: formData.isGstExempt,
+        p_brand_name: formData.brandName.trim() || formData.tradeName.trim() || businessName,
+        p_primary_category: formData.primaryCategory.trim() || null,
+        p_shipping_mode: formData.shippingMode,
+        p_courier_partner: formData.courierPartner,
+        p_dispatch_time_hours: formData.dispatchTimeHours,
+        p_pickup_address_line1: formData.addressLine1.trim(),
+        p_pickup_address_line2: formData.addressLine2.trim() || null,
+        p_pickup_city: formData.city.trim(),
+        p_pickup_state: formData.state.trim(),
+        p_pickup_pincode: formData.pincode.trim(),
+        p_bank_account_number: formData.accountNumber.trim(),
+        p_bank_ifsc: formData.ifscCode.trim(),
+        p_bank_account_holder: formData.accountHolderName.trim(),
+        p_bank_name: formData.bankName.trim() || null,
       });
 
       if (rpcErr) {
