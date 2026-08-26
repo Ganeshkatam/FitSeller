@@ -1,6 +1,18 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CheckCircle2, MailCheck } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  AlertCircle,
+  X,
+  Shirt,
+  CheckCircle2,
+  Sparkles,
+  Zap,
+  Tag,
+  Store,
+  Layers,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/Field";
@@ -29,28 +41,29 @@ function GoogleIcon({ className = "size-4.5" }: { className?: string }) {
   );
 }
 
-const RULES = [
-  { label: "At least 8 characters", test: (p: string) => p.length >= 8 },
-  { label: "One uppercase letter", test: (p: string) => /[A-Z]/.test(p) },
-  { label: "One number", test: (p: string) => /\d/.test(p) },
+const PASSWORD_RULES = [
+  { id: "length", label: "8+ characters", test: (p: string) => p.length >= 8 },
+  { id: "upper", label: "Uppercase letter", test: (p: string) => /[A-Z]/.test(p) },
+  { id: "number", label: "Number", test: (p: string) => /[0-9]/.test(p) },
 ];
 
 export default function SignUp() {
-  const { signUp, signInWithGoogle, clearAuthError } = useAuth();
+  const { signUp, signInWithGoogle, authError, clearAuthError } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [awaitingVerification, setAwaitingVerification] = useState(false);
+  const [dismissAlert, setDismissAlert] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     clearAuthError();
 
-    if (!RULES.every((r) => r.test(password))) {
+    if (!PASSWORD_RULES.every((r) => r.test(password))) {
       return navigate("/error", {
         state: {
           category: "auth",
@@ -83,7 +96,7 @@ export default function SignUp() {
     setLoading(true);
     try {
       await signUp(email.trim(), password);
-      setAwaitingVerification(true);
+      navigate("/auth/verify-email", { state: { email: email.trim() } });
     } catch (err) {
       const raw = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
       let code = "signup_failed";
@@ -130,134 +143,285 @@ export default function SignUp() {
     }
   }
 
-  if (awaitingVerification) {
-    return (
-      <div className="text-center">
-        <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-emerald-500/15">
-          <MailCheck className="size-6 text-emerald-600" />
-        </div>
-        <h2 className="text-xl font-bold tracking-tight text-foreground">
-          Check your inbox
-        </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          We sent a verification link to <strong className="text-foreground">{email}</strong>.
-          Click it to activate your seller account.
-        </p>
-        <Button className="mt-6 w-full" onClick={() => navigate("/auth/verify-email", { state: { email } })}>
-          I've verified — continue
-        </Button>
-        <p className="mt-4 text-center text-sm text-muted-foreground">
-          Already verified?{" "}
-          <Link to="/auth/sign-in" className="font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
-            Sign in
-          </Link>
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <div>
-      <h2 className="text-xl font-bold tracking-tight text-foreground">
-        Create your seller account
-      </h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Start selling on fitMirror in minutes
-      </p>
+    <div className="min-h-screen w-full bg-background text-foreground grid grid-cols-1 lg:grid-cols-12 selection:bg-indigo-500/20">
+      {/* LEFT COLUMN: Store Onboarding Studio Canvas (7 Cols) */}
+      <div className="relative hidden lg:flex lg:col-span-7 flex-col justify-between overflow-hidden bg-zinc-950 p-10 xl:p-14 text-white">
+        {/* Background photo */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/auth/sign-up.jpg"
+            alt="Store Growth and Catalog"
+            className="h-full w-full object-cover object-center filter brightness-[0.45] contrast-110 scale-105 transition-transform duration-1000 ease-out"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/40" />
+          <div className="absolute inset-0 bg-radial from-transparent via-transparent to-black/70" />
+        </div>
 
-      {/* Google OAuth Button */}
-      <div className="mt-6">
-        <Button
-          type="button"
-          variant="outline"
-          size="lg"
-          loading={googleLoading}
-          disabled={loading || googleLoading}
-          onClick={handleGoogleSignUp}
-          className="w-full flex items-center justify-center gap-2.5 font-medium border-border/80 hover:bg-muted/50"
-        >
-          <GoogleIcon className="size-4.5 shrink-0" />
-          <span>Sign up with Google</span>
-        </Button>
+        {/* Top Branding */}
+        <div className="relative z-10 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-indigo-600 shadow-lg shadow-indigo-600/40 border border-indigo-400/20">
+              <Shirt className="size-5.5 text-white" />
+            </div>
+            <div>
+              <span className="font-bold tracking-tight text-white text-xl">FitSeller</span>
+              <span className="block text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+                Merchant Onboarding Studio
+              </span>
+            </div>
+          </Link>
+
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-3.5 py-1 text-xs font-medium text-zinc-300">
+            <Sparkles className="size-3.5 text-indigo-400" />
+            <span>Instant Store Provisioning</span>
+          </div>
+        </div>
+
+        {/* Center Onboarding Value Prop & Roadmap */}
+        <div className="relative z-10 max-w-xl my-auto py-10 space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 backdrop-blur-md px-3.5 py-1 text-xs font-semibold text-indigo-300">
+            <Zap className="size-3.5" />
+            <span>0% Platform Listing Fee</span>
+          </div>
+
+          <h1 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-white leading-tight">
+            Launch your store and reach verified fashion shoppers nationwide.
+          </h1>
+
+          <p className="text-sm xl:text-base leading-relaxed text-zinc-300">
+            Join thousands of apparel brands growing their sales with automated inventory sync, transparent analytics, and guaranteed payouts.
+          </p>
+
+          {/* 3-Step Merchant Roadmap */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-5 space-y-3">
+            <p className="text-xs font-bold uppercase tracking-wider text-indigo-300">
+              Your 3-Step Store Launch Path
+            </p>
+
+            <div className="grid grid-cols-3 gap-2 text-xs pt-1">
+              <div className="rounded-xl border border-indigo-500/40 bg-indigo-500/20 p-2.5 space-y-1">
+                <span className="font-bold text-white block">1. Register</span>
+                <span className="text-[10px] text-indigo-200 block">Create credentials</span>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-1">
+                <span className="font-bold text-white block">2. Verify</span>
+                <span className="text-[10px] text-zinc-400 block">Activate store</span>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2.5 space-y-1">
+                <span className="font-bold text-white block">3. Go Live</span>
+                <span className="text-[10px] text-zinc-400 block">Publish offers</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Value Prop Highlights */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-2.5 text-xs text-zinc-300">
+              <Store className="size-4 text-emerald-400" />
+              <span>Dedicated Merchant Portal</span>
+            </div>
+            <div className="flex items-center gap-2.5 text-xs text-zinc-300">
+              <Tag className="size-4 text-indigo-400" />
+              <span>Custom Pricing & Discounts</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Feature Badges */}
+        <div className="relative z-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs text-zinc-400">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="size-4 text-emerald-400" />
+            <span>Automatic Profile & Wallet Creation</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Layers className="size-4 text-indigo-400" />
+            <span>Real Multi-Variant Inventory</span>
+          </div>
+        </div>
       </div>
 
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border/70" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2.5 text-muted-foreground font-medium">
-            or sign up with email
-          </span>
-        </div>
-      </div>
+      {/* RIGHT COLUMN: Sign Up Form Container (5 Cols) */}
+      <div className="col-span-1 lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 xl:p-14 bg-card/60 backdrop-blur-xl border-l border-border/40">
+        {/* Mobile Header */}
+        <div className="flex lg:hidden items-center justify-between mb-8">
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-600/30">
+              <Shirt className="size-5" />
+            </div>
+            <span className="font-bold tracking-tight text-foreground text-lg">FitSeller</span>
+          </Link>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label htmlFor="email">Business email</Label>
-          <Input
-            id="email"
-            type="email"
-            required
-            autoComplete="email"
-            placeholder="you@brand.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <Link
+            to="/auth/sign-in"
+            className="text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+          >
+            Sign in &rarr;
+          </Link>
         </div>
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            required
-            autoComplete="new-password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <ul className="mt-2 space-y-1">
-            {RULES.map((r) => {
-              const ok = r.test(password);
-              return (
-                <li
-                  key={r.label}
-                  className={`flex items-center gap-1.5 text-xs ${
-                    ok ? "text-emerald-600" : "text-muted-foreground"
-                  }`}
+
+        {/* Centered Form Body */}
+        <div className="my-auto max-w-md w-full mx-auto space-y-6">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              Register your store
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Get instant access to inventory listing and order management.
+            </p>
+          </div>
+
+          {/* Incoming Error Alert Banner */}
+          {authError && !dismissAlert && (
+            <div className="flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-xs sm:text-sm text-destructive font-medium">
+              <AlertCircle className="mt-0.5 size-4.5 shrink-0 text-destructive" />
+              <div className="flex-1 leading-snug">{getHumanErrorMessage(authError)}</div>
+              <button
+                type="button"
+                onClick={() => {
+                  setDismissAlert(true);
+                  clearAuthError();
+                }}
+                className="text-destructive/70 hover:text-destructive transition-colors cursor-pointer"
+                aria-label="Dismiss error"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Google One-Click Auth */}
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            loading={googleLoading}
+            disabled={loading || googleLoading}
+            onClick={handleGoogleSignUp}
+            className="w-full flex items-center justify-center gap-2.5 font-medium border-border hover:bg-muted/50 transition-colors shadow-sm"
+          >
+            <GoogleIcon className="size-4.5 shrink-0" />
+            <span>Sign up with Google</span>
+          </Button>
+
+          {/* Divider */}
+          <div className="relative flex items-center justify-center">
+            <div className="w-full border-t border-border" />
+            <span className="bg-card px-3 text-xs font-medium uppercase text-muted-foreground absolute">
+              or register with email
+            </span>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="email">Business Email Address</Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                autoComplete="email"
+                placeholder="seller@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="password">Create Password</Label>
+              <div className="relative mt-1">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  autoComplete="new-password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  <CheckCircle2 className="size-3.5" />
-                  {r.label}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div>
-          <Label htmlFor="confirm">Confirm password</Label>
-          <Input
-            id="confirm"
-            type="password"
-            required
-            autoComplete="new-password"
-            placeholder="••••••••"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-          />
+                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
+              </div>
+
+              {/* Password Rule Validation Pills */}
+              <div className="mt-2.5 flex flex-wrap gap-2 text-[11px]">
+                {PASSWORD_RULES.map((rule) => {
+                  const pass = rule.test(password);
+                  return (
+                    <span
+                      key={rule.id}
+                      className={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 font-medium border transition-colors ${
+                        pass
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20"
+                          : "bg-muted text-muted-foreground border-border"
+                      }`}
+                    >
+                      <CheckCircle2 className={`size-3 ${pass ? "text-emerald-500" : "text-muted-foreground/40"}`} />
+                      <span>{rule.label}</span>
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="confirm">Confirm Password</Label>
+              <Input
+                id="confirm"
+                type={showPassword ? "text" : "password"}
+                required
+                autoComplete="new-password"
+                placeholder="••••••••"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                disabled={loading}
+                className="mt-1"
+              />
+            </div>
+
+            <Button
+              type="submit"
+              size="lg"
+              loading={loading}
+              disabled={googleLoading}
+              className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20"
+            >
+              Create Merchant Account
+            </Button>
+          </form>
+
+          {/* Footer Navigation */}
+          <div className="rounded-xl border border-border/60 bg-muted/20 p-4 text-center text-xs text-muted-foreground space-y-1">
+            <p>
+              Already registered?{" "}
+              <Link
+                to="/auth/sign-in"
+                className="font-semibold text-indigo-600 hover:text-indigo-700 hover:underline"
+              >
+                Sign in to your store
+              </Link>
+            </p>
+          </div>
         </div>
 
-        <Button type="submit" size="lg" loading={loading} disabled={googleLoading} className="w-full">
-          Create account
-        </Button>
-      </form>
-
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
-        <Link to="/auth/sign-in" className="font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
-          Sign in
-        </Link>
-      </p>
+        {/* Security Reassurance Footer */}
+        <div className="flex items-center justify-between border-t border-border/40 pt-6 text-[11px] text-muted-foreground">
+          <span>By signing up, you accept FitSeller Merchant Terms.</span>
+          <Link to="/auth/sign-in" className="hover:text-foreground transition-colors">
+            Login
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
-

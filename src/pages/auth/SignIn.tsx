@@ -1,6 +1,18 @@
 import { useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { Eye, EyeOff, AlertCircle, X } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  AlertCircle,
+  X,
+  Shirt,
+  ShieldCheck,
+  CheckCircle2,
+  TrendingUp,
+  Truck,
+  Sparkles,
+  Lock,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/Field";
@@ -108,114 +120,252 @@ export default function SignIn() {
   }
 
   return (
-    <div>
-      <h2 className="text-xl font-bold tracking-tight text-foreground">Welcome back</h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Sign in to manage your fitMirror store
-      </p>
-
-      {incomingError && !dismissAlert && (
-        <div className="mt-4 flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-sm text-destructive font-medium">
-          <AlertCircle className="mt-0.5 size-4.5 shrink-0 text-destructive" />
-          <div className="flex-1 leading-snug">{getHumanErrorMessage(incomingError)}</div>
-          <button
-            type="button"
-            onClick={() => {
-              setDismissAlert(true);
-              clearAuthError();
-            }}
-            className="text-destructive/70 hover:text-destructive transition-colors cursor-pointer"
-            aria-label="Dismiss error"
-          >
-            <X className="size-4" />
-          </button>
-        </div>
-      )}
-
-      {/* Google OAuth Button */}
-      <div className="mt-6">
-        <Button
-          type="button"
-          variant="outline"
-          size="lg"
-          loading={googleLoading}
-          disabled={loading || googleLoading}
-          onClick={handleGoogleSignIn}
-          className="w-full flex items-center justify-center gap-2.5 font-medium border-border/80 hover:bg-muted/50"
-        >
-          <GoogleIcon className="size-4.5 shrink-0" />
-          <span>Continue with Google</span>
-        </Button>
-      </div>
-
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border/70" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2.5 text-muted-foreground font-medium">
-            or continue with email
-          </span>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            required
-            autoComplete="email"
-            placeholder="seller@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+    <div className="min-h-screen w-full bg-background text-foreground grid grid-cols-1 lg:grid-cols-12 selection:bg-indigo-500/20">
+      {/* LEFT COLUMN: Operations & Logistics Command Hero (7 Cols) */}
+      <div className="relative hidden lg:flex lg:col-span-7 flex-col justify-between overflow-hidden bg-zinc-950 p-10 xl:p-14 text-white">
+        {/* Background photo with deep contrast scrim */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/auth/sign-in.jpg"
+            alt="Fulfillment and operations"
+            className="h-full w-full object-cover object-center filter brightness-[0.45] contrast-110 scale-105 transition-transform duration-1000 ease-out"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-zinc-950/40" />
+          <div className="absolute inset-0 bg-radial from-transparent via-transparent to-black/70" />
         </div>
-        <div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password" className="mb-1.5">Password</Label>
-            <Link
-              to="/auth/forgot-password"
-              className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
-          <div className="relative">
-            <Input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              required
-              autoComplete="current-password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="pr-10"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-            </button>
+
+        {/* Top Branding */}
+        <div className="relative z-10 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-indigo-600 shadow-lg shadow-indigo-600/40 border border-indigo-400/20">
+              <Shirt className="size-5.5 text-white" />
+            </div>
+            <div>
+              <span className="font-bold tracking-tight text-white text-xl">FitSeller</span>
+              <span className="block text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+                Merchant Operations Hub
+              </span>
+            </div>
+          </Link>
+
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md px-3.5 py-1 text-xs font-medium text-zinc-300">
+            <div className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Platform Status: Operational</span>
           </div>
         </div>
 
-        <Button type="submit" size="lg" loading={loading} disabled={googleLoading} className="w-full">
-          Sign in
-        </Button>
-      </form>
+        {/* Center Operations Value Prop */}
+        <div className="relative z-10 max-w-xl my-auto py-12 space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 backdrop-blur-md px-3.5 py-1 text-xs font-semibold text-indigo-300">
+            <Sparkles className="size-3.5" />
+            <span>Operations & Dispatch Control</span>
+          </div>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        New to fitMirror?{" "}
-        <Link to="/auth/sign-up" className="font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
-          Create a seller account
-        </Link>
-      </p>
+          <h1 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-white leading-tight">
+            Manage your store, track inventory, and accelerate fashion sales.
+          </h1>
+
+          <p className="text-sm xl:text-base leading-relaxed text-zinc-300">
+            Real-time sales tracking, lightning-fast order dispatch, and automated wallet settlement for modern apparel sellers.
+          </p>
+
+          {/* Operational highlight cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-3.5 flex items-start gap-3">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400">
+                <Truck className="size-4" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-white">99.8% On-Time Dispatch</p>
+                <p className="text-[11px] text-zinc-400">Automated courier integration</p>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md p-3.5 flex items-start gap-3">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
+                <TrendingUp className="size-4" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-white">Same-Day Settlement</p>
+                <p className="text-[11px] text-zinc-400">Direct INR bank payouts</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Feature Badges */}
+        <div className="relative z-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs text-zinc-400">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="size-4 text-indigo-400" />
+            <span>256-bit Encrypted Portal</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="size-4 text-emerald-400" />
+            <span>Real Seller Metrics (No Faking)</span>
+          </div>
+        </div>
+      </div>
+
+      {/* RIGHT COLUMN: Sign In Card Container (5 Cols) */}
+      <div className="col-span-1 lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 xl:p-14 bg-card/60 backdrop-blur-xl border-l border-border/40">
+        {/* Mobile Header */}
+        <div className="flex lg:hidden items-center justify-between mb-8">
+          <Link to="/" className="flex items-center gap-2.5">
+            <div className="flex size-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-600/30">
+              <Shirt className="size-5" />
+            </div>
+            <span className="font-bold tracking-tight text-foreground text-lg">FitSeller</span>
+          </Link>
+
+          <Link
+            to="/auth/sign-up"
+            className="text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+          >
+            Create store &rarr;
+          </Link>
+        </div>
+
+        {/* Centered Form Body */}
+        <div className="my-auto max-w-md w-full mx-auto space-y-6">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              Sign in to your store
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Access your merchant catalog, live orders, and earnings.
+            </p>
+          </div>
+
+          {/* Incoming Error Alert Banner */}
+          {incomingError && !dismissAlert && (
+            <div className="flex items-start gap-3 rounded-xl border border-destructive/30 bg-destructive/10 p-3.5 text-xs sm:text-sm text-destructive font-medium">
+              <AlertCircle className="mt-0.5 size-4.5 shrink-0 text-destructive" />
+              <div className="flex-1 leading-snug">{getHumanErrorMessage(incomingError)}</div>
+              <button
+                type="button"
+                onClick={() => {
+                  setDismissAlert(true);
+                  clearAuthError();
+                }}
+                className="text-destructive/70 hover:text-destructive transition-colors cursor-pointer"
+                aria-label="Dismiss error"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+          )}
+
+          {/* Google One-Click Auth */}
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            loading={googleLoading}
+            disabled={loading || googleLoading}
+            onClick={handleGoogleSignIn}
+            className="w-full flex items-center justify-center gap-2.5 font-medium border-border hover:bg-muted/50 transition-colors shadow-sm"
+          >
+            <GoogleIcon className="size-4.5 shrink-0" />
+            <span>Continue with Google</span>
+          </Button>
+
+          {/* Divider */}
+          <div className="relative flex items-center justify-center">
+            <div className="w-full border-t border-border" />
+            <span className="bg-card px-3 text-xs font-medium uppercase text-muted-foreground absolute">
+              or sign in with email
+            </span>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="email">Registered Business Email</Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                autoComplete="email"
+                placeholder="seller@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link
+                  to="/auth/forgot-password"
+                  className="text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative mt-1">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              size="lg"
+              loading={loading}
+              disabled={googleLoading}
+              className="w-full font-semibold bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-600/20"
+            >
+              Sign In to Dashboard
+            </Button>
+          </form>
+
+          {/* Footer Navigation */}
+          <div className="rounded-xl border border-border/60 bg-muted/20 p-4 text-center text-xs text-muted-foreground space-y-1">
+            <p>
+              New to FitSeller?{" "}
+              <Link
+                to="/auth/sign-up"
+                className="font-semibold text-indigo-600 hover:text-indigo-700 hover:underline"
+              >
+                Register your store
+              </Link>
+            </p>
+          </div>
+        </div>
+
+        {/* Security Reassurance Footer */}
+        <div className="flex items-center justify-between border-t border-border/40 pt-6 text-[11px] text-muted-foreground">
+          <div className="flex items-center gap-1.5">
+            <Lock className="size-3 text-emerald-600" />
+            <span>Secure Merchant Gateway</span>
+          </div>
+          <a
+            href="mailto:sellers@fitmirror.shop"
+            className="hover:text-foreground transition-colors"
+          >
+            Need Help?
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
-

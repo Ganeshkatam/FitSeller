@@ -2,7 +2,6 @@ import { lazy, Suspense, type ReactNode } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { AppLayout } from "./components/layout/AppLayout";
-import AuthLayout from "./layouts/AuthLayout";
 import { Spinner } from "./components/ui/States";
 
 const SignIn = lazy(() => import("./pages/auth/SignIn"));
@@ -102,14 +101,12 @@ export default function App() {
       {/* ---- Standalone Global Error Route (accessible by any use case) ---- */}
       <Route path="/error" element={<Suspended><GlobalError /></Suspended>} />
 
-      {/* ---- Auth routes (interactive background layout) ---- */}
-      <Route element={<AuthLayout />}>
-        <Route path="/auth/sign-in" element={<GuestOnly><Suspended><SignIn /></Suspended></GuestOnly>} />
-        <Route path="/auth/sign-up" element={<GuestOnly><Suspended><SignUp /></Suspended></GuestOnly>} />
-        <Route path="/auth/forgot-password" element={<GuestOnly><Suspended><ForgotPassword /></Suspended></GuestOnly>} />
-        <Route path="/auth/reset-password" element={<Suspended><ResetPassword /></Suspended>} />
-        <Route path="/auth/verify-email" element={<Suspended><VerifyEmail /></Suspended>} />
-      </Route>
+      {/* ---- Auth routes (each with individual distinct layout) ---- */}
+      <Route path="/auth/sign-in" element={<GuestOnly><Suspended><SignIn /></Suspended></GuestOnly>} />
+      <Route path="/auth/sign-up" element={<GuestOnly><Suspended><SignUp /></Suspended></GuestOnly>} />
+      <Route path="/auth/forgot-password" element={<GuestOnly><Suspended><ForgotPassword /></Suspended></GuestOnly>} />
+      <Route path="/auth/reset-password" element={<Suspended><ResetPassword /></Suspended>} />
+      <Route path="/auth/verify-email" element={<Suspended><VerifyEmail /></Suspended>} />
 
       {/* ---- App routes (authenticated only) ---- */}
       <Route
