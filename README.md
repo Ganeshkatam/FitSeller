@@ -1,158 +1,316 @@
 # FitSeller
 
-FitSeller is a seller-facing ecommerce dashboard built with React, TypeScript, Vite, and Supabase. It provides authenticated sellers with visibility into products, orders, returns, payouts, analytics, and seller performance.
+FitSeller is a seller-facing ecommerce dashboard for managing a fashion/ecommerce seller business. The current application is a client-rendered React + TypeScript dashboard backed directly by Supabase.
 
-## Tech stack
+> **Project status:** early-stage application. The repository currently contains the frontend application and Supabase client integration; database migrations/schema and automated CI are not included in the current repository tree.
 
-- React 19
-- TypeScript
-- Vite
-- React Router
-- TanStack React Query
-- Supabase Auth and Postgres
-- Recharts
-- Tailwind CSS
-- Radix UI / shadcn-style components
-- Lucide React
+## Overview
 
-## Features
+FitSeller provides an authenticated seller workspace for:
 
-- Supabase authentication with persistent sessions
-- Seller-aware application routing
-- Dashboard with earnings, sales, offers, returns, and try-on metrics
-- Earnings trend visualization for the previous 14 days
-- Recent sales and top-performing products
+- Dashboard and seller performance metrics
 - Product management
 - Order management
-- Returns management
+- Returns
 - Payouts
 - Analytics
 - Seller settings
-- Lazy-loaded application pages for improved initial loading performance
+- Offer-related functionality
+- Try-on session metrics
 
-## Project structure
+The application uses Supabase Auth for identity and Supabase/Postgres for application data. React Query manages server-state fetching/caching, while React Router handles the authenticated application routes.
+
+## Technology stack
+
+| Area | Technology |
+| --- | --- |
+| Language | TypeScript 5.8 |
+| UI | React 19 |
+| Build tool | Vite 6 |
+| Routing | React Router 7 |
+| Server state | TanStack React Query 5 |
+| Backend/data | Supabase JS 2 / PostgreSQL |
+| Authentication | Supabase Auth |
+| Charts | Recharts 2 |
+| Styling | Tailwind CSS 4 |
+| UI primitives | Radix UI / shadcn-style components |
+| Icons | Lucide React |
+| Notifications | Sonner |
+| Font | Geist variable font |
+
+Dependency versions are defined in `package.json` and should be treated as the source of truth. fileciteturn4file0L2-L2
+
+## Application architecture
 
 ```text
-src/
-├── components/
-│   ├── dashboard/      # Dashboard-specific components
-│   ├── layout/         # Application shell and page layout
-│   └── ui/              # Shared UI primitives
-├── contexts/
-│   └── AuthContext.tsx  # Supabase authentication and seller context
-├── lib/
-│   ├── offers.ts        # Offer-related helpers
-│   ├── supabase.ts      # Supabase client
-│   └── utils.ts         # Shared utilities
-├── pages/
-│   ├── Analytics.tsx
-│   ├── Dashboard.tsx
-│   ├── Login.tsx
-│   ├── Orders.tsx
-│   ├── Payouts.tsx
-│   ├── Products.tsx
-│   ├── Returns.tsx
-│   └── Settings.tsx
-├── App.tsx
-├── main.tsx
-└── index.css
+Browser
+  │
+  ├── React 19 + Vite
+  │     ├── App routing
+  │     ├── Lazy-loaded pages
+  │     ├── Shared UI components
+  │     └── AuthContext
+  │
+  ├── TanStack React Query
+  │     └── Server-state caching/fetching
+  │
+  └── Supabase JS
+        ├── Supabase Auth
+        └── PostgreSQL / RLS
 ```
 
-## Requirements
+The current `App.tsx` lazy-loads the Login, Dashboard, Products, Orders, Returns, Payouts, Analytics, and Settings pages and gates the application on the Supabase session. fileciteturn5file0L2-L2
+
+## Repository structure
+
+```text
+.
+├── .env.example
+├── .gitignore
+├── components.json
+├── index.html
+├── package.json
+├── package-lock.json
+├── LICENSE
+└── src/
+    ├── App.tsx
+    ├── main.tsx
+    ├── index.css
+    ├── components/
+    │   ├── dashboard/
+    │   │   └── StatCard.tsx
+    │   ├── layout/
+    │   │   ├── AppLayout.tsx
+    │   │   ├── Header.tsx
+    │   │   └── Page.tsx
+    │   └── ui/
+    │       ├── Badge.tsx
+    │       ├── Field.tsx
+    │       ├── States.tsx
+    │       ├── Toast.tsx
+    │       └── shared UI primitives
+    ├── contexts/
+    │   └── AuthContext.tsx
+    ├── lib/
+    │   ├── offers.ts
+    │   ├── supabase.ts
+    │   └── utils.ts
+    └── pages/
+        ├── Analytics.tsx
+        ├── Dashboard.tsx
+        ├── Login.tsx
+        ├── Orders.tsx
+        ├── Payouts.tsx
+        ├── Products.tsx
+        ├── Returns.tsx
+        └── Settings.tsx
+```
+
+## Features and data flows
+
+### Authentication
+
+`AuthContext` maintains the Supabase session, exposes sign-in/sign-up/sign-out operations, and loads the authenticated user's profile and seller context. The Supabase client is configured with persistent sessions and automatic token refresh. fileciteturn6file0L2-L2 fileciteturn7file0L2-L2
+
+Seller lookup currently attempts `profile_id` first and then falls back to `business_email`. The stable long-term ownership relationship should be `profile_id`; email matching should not be relied upon as an authorization mechanism. fileciteturn6file0L2-L2
+
+### Dashboard
+
+The dashboard currently queries seller-scoped `order_items` for earnings and sales metrics, `product_offers` for active offers, and `order_items` for returns. It also queries `tryon_sessions` for try-on counts. The earnings chart aggregates the previous 14 days in the client. fileciteturn10file0L2-L2
+
+Current dashboard concepts include:
+
+- Net seller earnings
+- Units sold
+- Active offers
+- Try-on sessions
+- 14-day earnings trend
+- Best sellers by earnings
+- Recent sales
+- Monthly earnings
+- Returns
+- GMV
+
+## Routes
+
+| Route | Screen | Access |
+| --- | --- | --- |
+| `/` | Dashboard | Authenticated |
+| `/products` | Products | Authenticated |
+| `/orders` | Orders | Authenticated |
+| `/returns` | Returns | Authenticated |
+| `/payouts` | Payouts | Authenticated |
+| `/analytics` | Analytics | Authenticated |
+| `/settings` | Settings | Authenticated |
+
+Unauthenticated users are directed to the login experience; unknown authenticated routes redirect to `/`. fileciteturn5file0L2-L2
+
+## Local development
+
+### Requirements
 
 - Node.js 20+
+- npm
 - A Supabase project
 - Supabase Auth configured for email/password authentication
 
-## Environment variables
+### Environment
 
-Create a local `.env` file from `.env.example` and provide the public Supabase configuration:
+Copy `.env.example` to `.env` and configure:
 
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
 ```
 
-The frontend uses the Supabase anonymous/public key. Database authorization must therefore be enforced with PostgreSQL Row Level Security (RLS) policies; client-side filtering is not an authorization boundary.
+The Supabase client validates that both variables exist at application startup. fileciteturn7file0L2-L2
 
-## Installation
+Do **not** put a Supabase service-role key in any `VITE_*` variable. Vite exposes `VITE_*` values to browser code.
+
+### Install
 
 ```bash
 npm install
 ```
 
-## Development
-
-Start the Vite development server:
+### Start development server
 
 ```bash
 npm run dev
 ```
 
-## Type checking
+### Typecheck
 
 ```bash
 npm run typecheck
 ```
 
-## Production build
-
-The build performs a TypeScript check before generating the Vite production bundle:
+### Production build
 
 ```bash
 npm run build
 ```
 
-Preview the production bundle locally with:
+The build currently runs `tsc --noEmit` before `vite build`. fileciteturn4file0L2-L2
+
+### Preview production build
 
 ```bash
 npm run preview
 ```
 
-## Authentication and seller context
+## Supabase security model
 
-FitSeller authenticates users through Supabase Auth. After a session is established, the application loads the corresponding profile and seller records before rendering seller-specific dashboard data.
+The browser talks directly to Supabase, so PostgreSQL Row Level Security is the actual tenant-security boundary. Client-side `.eq("seller_id", sellerId)` filters are useful for query correctness and performance but **are not authorization**.
 
-Seller ownership should be represented by stable relational identifiers such as `profile_id`. Email-based matching should only be treated as a migration or recovery mechanism, not as the primary authorization boundary.
+Production deployments should ensure:
 
-## Data security
+1. RLS is enabled on every browser-accessible application table.
+2. Seller-owned rows are restricted to the authenticated user's seller/profile relationship.
+3. Policies do not trust a `seller_id` supplied by the browser.
+4. Service-role credentials never reach frontend code.
+5. Sensitive columns are excluded from normal client queries.
+6. Foreign keys enforce seller/profile ownership relationships where appropriate.
+7. Indexes support common RLS predicates and seller-scoped queries.
+8. Reporting functions/views do not bypass tenant isolation.
 
-Because the application talks directly to Supabase from the browser, production deployments should enforce all tenant isolation in the database layer.
+### Important current security consideration
 
-Recommended controls include:
+The dashboard's try-on count currently queries `tryon_sessions` without an explicit seller filter. fileciteturn10file0L2-L2 If `tryon_sessions` is multi-tenant data, its RLS policy must independently prevent cross-seller visibility. Prefer making the query explicitly seller-scoped as well.
 
-- Enable RLS on every application table exposed through the client.
-- Restrict seller-owned rows using the authenticated user identity and seller/profile relationship.
-- Never trust a `seller_id` supplied by the browser for authorization.
-- Keep service-role credentials out of frontend environment variables.
-- Return only the columns required by each screen.
-- Add indexes for common seller-scoped filters such as `seller_id`, `profile_id`, and timestamp fields.
+## Data and reporting considerations
 
-## Performance notes
+The dashboard currently performs some aggregation in the browser after fetching `order_items`. fileciteturn10file0L2-L2 This is acceptable for a small prototype but should not become the production reporting strategy.
 
-Dashboard reporting should remain bounded as data volume grows. Large historical datasets should not be downloaded to the browser solely to calculate totals. Prefer indexed SQL views, RPC functions, or pre-aggregated reporting tables for production-scale reporting.
+At scale, prefer:
 
-Application pages are lazy-loaded with React `lazy`/`Suspense`, and TanStack React Query is used to cache server state.
+- SQL aggregate queries
+- Indexed views
+- Supabase RPC functions for controlled reporting operations
+- Materialized/pre-aggregated reporting tables for expensive analytics
+- Explicit date-range constraints
+- Pagination for transactional lists
 
-## Current application routes
+This prevents large historical datasets from being transferred to every browser just to calculate totals.
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Seller dashboard |
-| `/products` | Product management |
-| `/orders` | Order management |
-| `/returns` | Returns management |
-| `/payouts` | Seller payouts |
-| `/analytics` | Performance analytics |
-| `/settings` | Seller settings |
+## Error handling
+
+The current frontend contains several Supabase queries where the response `error` should be handled explicitly rather than relying only on empty/null data states. Production data-access functions should return typed success/error results or throw structured errors that React Query can expose through predictable UI states.
+
+Recommended error contract:
+
+```text
+Data access layer
+  ├── success → typed domain data
+  └── failure → typed/structured error
+                    ├── code
+                    ├── message
+                    └── safe user-facing context
+```
+
+Never expose database internals, credentials, SQL statements, or stack traces to end users.
+
+## Performance
+
+The application already uses route-level code splitting through React `lazy`/`Suspense` and server-state caching through TanStack React Query. fileciteturn5file0L2-L2
+
+For continued performance improvements:
+
+- Keep queries seller-scoped and date-bounded.
+- Select only required columns instead of `select("*")` where possible.
+- Add database indexes matching common filters/order clauses.
+- Paginate large orders/products tables.
+- Move heavy aggregation to PostgreSQL.
+- Use appropriate React Query `staleTime`/cache policies per resource.
+- Avoid duplicate requests across dashboard widgets.
+- Keep chart datasets bounded to the requested reporting window.
+
+## Testing and CI
+
+The current `package.json` exposes development, build, preview, and typecheck scripts, but does not currently define a dedicated unit-test or end-to-end-test script. fileciteturn4file0L2-L2
+
+Before production release, add automated coverage for at least:
+
+- Authentication state transitions
+- Seller/tenant isolation
+- RLS policies
+- Dashboard aggregation boundaries
+- Product CRUD validation
+- Order status transitions
+- Return workflows
+- Payout calculations
+- Permission/role boundaries
+- Empty, loading, and error states
+
+CI should run typechecking, tests, and production builds on every pull request.
+
+## Deployment checklist
+
+- [ ] Configure production Supabase project
+- [ ] Apply and verify database schema/migrations
+- [ ] Enable and test RLS for all exposed tables
+- [ ] Verify seller-to-profile ownership constraints
+- [ ] Configure production `VITE_SUPABASE_URL`
+- [ ] Configure production `VITE_SUPABASE_ANON_KEY`
+- [ ] Confirm no service-role secrets are exposed to Vite
+- [ ] Run `npm run typecheck`
+- [ ] Run automated tests
+- [ ] Run `npm run build`
+- [ ] Verify authentication redirects
+- [ ] Verify cross-seller access is denied
+- [ ] Verify empty/loading/error states
+- [ ] Verify production database indexes and query plans
+- [ ] Configure application monitoring
 
 ## Contributing
 
-1. Create a focused branch for the change.
+1. Create a focused branch.
 2. Keep TypeScript strict and preserve existing type safety.
-3. Run `npm run typecheck` and `npm run build` before opening a pull request.
-4. For database changes, verify RLS policies and seller-tenant isolation as part of the change.
-5. Prefer small, reviewable commits with clear messages.
+3. Keep database access seller-scoped.
+4. Treat RLS as part of every data-model change.
+5. Run typechecking and the production build before submitting a PR.
+6. Add regression tests for security-sensitive or business-critical changes.
+7. Prefer small, reviewable commits.
 
 ## License
 
