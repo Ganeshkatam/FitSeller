@@ -5,26 +5,30 @@ import { OnboardingHeader } from "./OnboardingHeader";
 import { OnboardingStepper } from "./OnboardingStepper";
 import { OnboardingSuccess } from "./OnboardingSuccess";
 
+import { ONBOARDING_STEPS } from "./OnboardingTypes";
+
 function OnboardingContent() {
   const { user, seller } = useAuth();
   const { completed } = useOnboarding();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Extract active step number from pathname (e.g. /onboarding/step-3 -> 3)
-  const match = location.pathname.match(/step-(\d)/);
-  const currentStep = match ? parseInt(match[1], 10) : 1;
+  // Extract active step slug from pathname (e.g. /onboarding/shipping -> "shipping")
+  const activeSlug = location.pathname.split("/").pop() || "account";
+  const matchedStep = ONBOARDING_STEPS.find((s) => s.slug === activeSlug);
+  const currentStep = matchedStep ? matchedStep.id : 1;
 
-  // Guard: if someone visits /onboarding/step-2 through step-6 without a normal user account, redirect to step-1
+  // Guard: if someone visits any subsequent step without a normal user account, redirect to /onboarding/account
   if (!user && currentStep > 1) {
-    return <Navigate to="/onboarding/step-1" replace />;
+    return <Navigate to="/onboarding/account" replace />;
   }
 
-  function handleSelectStep(stepId: number) {
-    if (!user && stepId > 1) {
+  function handleSelectStep(slug: string) {
+    const targetStep = ONBOARDING_STEPS.find((s) => s.slug === slug);
+    if (!user && targetStep && targetStep.id > 1) {
       return;
     }
-    navigate(`/onboarding/step-${stepId}`);
+    navigate(`/onboarding/${slug}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 

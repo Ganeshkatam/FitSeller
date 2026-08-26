@@ -74,18 +74,19 @@ export type OnboardingData = Step1AccountData &
 
 export interface StepItem {
   id: number;
+  slug: string;
   title: string;
   subtitle: string;
   icon: LucideIcon;
 }
 
 export const ONBOARDING_STEPS: StepItem[] = [
-  { id: 1, title: "Seller Account", subtitle: "Basic Credentials", icon: UserCheck },
-  { id: 2, title: "GST Verification", subtitle: "Tax & PAN Details", icon: FileCheck },
-  { id: 3, title: "Business Details", subtitle: "Brand & Categories", icon: Building2 },
-  { id: 4, title: "Shipping Preferences", subtitle: "Courier & Timelines", icon: Truck },
-  { id: 5, title: "Pickup Address", subtitle: "Warehouse Location", icon: MapPin },
-  { id: 6, title: "Bank Details", subtitle: "Daily Payout Account", icon: CreditCard },
+  { id: 1, slug: "account", title: "Seller Account", subtitle: "Basic Credentials", icon: UserCheck },
+  { id: 2, slug: "gst", title: "GST Verification", subtitle: "Tax & PAN Details", icon: FileCheck },
+  { id: 3, slug: "business", title: "Business Details", subtitle: "Brand & Categories", icon: Building2 },
+  { id: 4, slug: "shipping", title: "Shipping Preferences", subtitle: "Courier & Timelines", icon: Truck },
+  { id: 5, slug: "pickup-address", title: "Pickup Address", subtitle: "Warehouse Location", icon: MapPin },
+  { id: 6, slug: "bank", title: "Bank Details", subtitle: "Daily Payout Account", icon: CreditCard },
 ];
 
 export const APPAREL_CATEGORIES = [

@@ -19,7 +19,7 @@ export default function Step1AccountPage() {
       toast("error", error);
       return;
     }
-    navigate("/onboarding/step-2");
+    navigate("/onboarding/gst");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -30,7 +30,7 @@ export default function Step1AccountPage() {
         onChange={updateField}
         onAuthenticated={() => {
           toast("success", "User account authenticated successfully!");
-          navigate("/onboarding/step-2");
+          navigate("/onboarding/gst");
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       />

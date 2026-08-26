@@ -65,7 +65,7 @@ function RequireAuth({ children }: { children: ReactNode }) {
   // 2. Must be a valid user with an active seller profile
   // If user is authenticated but hasn't created a seller profile yet, direct to onboarding
   if (!seller) {
-    return <Navigate to="/onboarding/step-1" replace state={{ from: location.pathname }} />;
+    return <Navigate to="/onboarding/account" replace state={{ from: location.pathname }} />;
   }
 
   return <>{children}</>;
@@ -128,7 +128,7 @@ export default function App() {
       <Route path="/auth/forgot-password" element={<GuestOnly><Suspended><ForgotPassword /></Suspended></GuestOnly>} />
       <Route path="/auth/reset-password" element={<Suspended><ResetPassword /></Suspended>} />
       <Route path="/auth/verify-email" element={<Suspended><VerifyEmail /></Suspended>} />
-      {/* ---- Individual Onboarding Routes ---- */}
+      {/* ---- Individual Onboarding Routes (Semantic Slugs) ---- */}
       <Route
         path="/onboarding"
         element={
@@ -137,9 +137,9 @@ export default function App() {
           </Suspended>
         }
       >
-        <Route index element={<Navigate to="/onboarding/step-1" replace />} />
+        <Route index element={<Navigate to="/onboarding/account" replace />} />
         <Route
-          path="step-1"
+          path="account"
           element={
             <Suspended>
               <Step1AccountPage />
@@ -147,7 +147,7 @@ export default function App() {
           }
         />
         <Route
-          path="step-2"
+          path="gst"
           element={
             <Suspended>
               <Step2GstPage />
@@ -155,7 +155,7 @@ export default function App() {
           }
         />
         <Route
-          path="step-3"
+          path="business"
           element={
             <Suspended>
               <Step3BusinessPage />
@@ -163,7 +163,7 @@ export default function App() {
           }
         />
         <Route
-          path="step-4"
+          path="shipping"
           element={
             <Suspended>
               <Step4ShippingPage />
@@ -171,7 +171,7 @@ export default function App() {
           }
         />
         <Route
-          path="step-5"
+          path="pickup-address"
           element={
             <Suspended>
               <Step5PickupAddressPage />
@@ -179,7 +179,7 @@ export default function App() {
           }
         />
         <Route
-          path="step-6"
+          path="bank"
           element={
             <Suspended>
               <Step6BankPage />

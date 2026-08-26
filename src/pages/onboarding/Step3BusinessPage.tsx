@@ -19,12 +19,12 @@ export default function Step3BusinessPage() {
       toast("error", error);
       return;
     }
-    navigate("/onboarding/step-4");
+    navigate("/onboarding/shipping");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleBack() {
-    navigate("/onboarding/step-2");
+    navigate("/onboarding/gst");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 

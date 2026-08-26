@@ -19,12 +19,12 @@ export default function Step2GstPage() {
       toast("error", error);
       return;
     }
-    navigate("/onboarding/step-3");
+    navigate("/onboarding/business");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleBack() {
-    navigate("/onboarding/step-1");
+    navigate("/onboarding/account");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 

@@ -45,7 +45,15 @@ export function OnboardingNavigation({
             ? "Complete Seller Registration"
             : currentStep === 1
             ? "Proceed to GST Verification"
-            : `Next: Step ${currentStep + 1}`}
+            : currentStep === 2
+            ? "Continue to Business Details"
+            : currentStep === 3
+            ? "Continue to Shipping Preferences"
+            : currentStep === 4
+            ? "Continue to Pickup Address"
+            : currentStep === 5
+            ? "Continue to Bank Details"
+            : "Next"}
         </span>
         <ArrowRight className="size-4 ml-1.5" />
       </Button>

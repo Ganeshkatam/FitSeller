@@ -30,7 +30,7 @@ export default function Step6BankPage() {
   }
 
   function handleBack() {
-    navigate("/onboarding/step-5");
+    navigate("/onboarding/pickup-address");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 

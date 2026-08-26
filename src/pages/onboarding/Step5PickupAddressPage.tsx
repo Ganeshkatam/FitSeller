@@ -19,12 +19,12 @@ export default function Step5PickupAddressPage() {
       toast("error", error);
       return;
     }
-    navigate("/onboarding/step-6");
+    navigate("/onboarding/bank");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleBack() {
-    navigate("/onboarding/step-4");
+    navigate("/onboarding/shipping");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 

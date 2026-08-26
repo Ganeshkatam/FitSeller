@@ -12,12 +12,12 @@ export default function Step4ShippingPage() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    navigate("/onboarding/step-5");
+    navigate("/onboarding/pickup-address");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function handleBack() {
-    navigate("/onboarding/step-3");
+    navigate("/onboarding/business");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 

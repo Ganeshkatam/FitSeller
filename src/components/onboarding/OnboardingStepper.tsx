@@ -3,7 +3,7 @@ import { ONBOARDING_STEPS } from "./OnboardingTypes";
 
 interface StepperProps {
   currentStep: number;
-  onSelectStep: (stepId: number) => void;
+  onSelectStep: (slug: string) => void;
   isUserAuthenticated?: boolean;
 }
 
@@ -26,7 +26,7 @@ export function OnboardingStepper({
             type="button"
             disabled={isLocked}
             onClick={() => {
-              if (!isLocked) onSelectStep(step.id);
+              if (!isLocked) onSelectStep(step.slug);
             }}
             className={`text-left rounded-2xl border p-2.5 sm:p-3.5 transition-all flex flex-col justify-between ${
               isCurrent
